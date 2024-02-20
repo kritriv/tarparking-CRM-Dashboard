@@ -1,0 +1,38 @@
+/* styles.css */
+body {
+  margin: 0;
+  font-family: "Arial", sans-serif;
+}
+.brand-container {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.brand-title {
+  font-weight: bolder;
+}
+.breadcrum-main {
+  margin-left: 10px;
+}
+.navbar-right {
+  margin-left: auto;
+}
+
+.home-card-area {
+  margin: 20px;
+}
+.settings-button {
+margin-right: 64px;
+}
+.home-user-table {
+  margin: 30px;
+}
+.clipboard {
+  cursor: pointer
+}
+.clipboard:hover {
+  width: 40px; /* Increased size on hover */
+  height: 40px;
+  transition: all 0.2s ease;
+}
