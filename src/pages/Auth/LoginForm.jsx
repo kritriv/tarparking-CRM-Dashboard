@@ -94,7 +94,7 @@ function LoginForm() {
                           onCopy={() => handleCopy('username')}
                         >
                           <span className="clipboard">
-                          {copied === 'username' ? <LuCopyCheck /> : <LuCopy />}
+                            {copied === 'username' ? <LuCopyCheck /> : <LuCopy />}
                           </span>
                         </CopyToClipboard>
                       </Space>
@@ -149,9 +149,6 @@ function LoginForm() {
                 <Checkbox>remember me</Checkbox>
               </Form.Item>
             </Col>
-            <Col span={12} style={{ textAlign: "right" }}>
-              <button className="underline">forget password</button>
-            </Col>
           </Row>
         </Form.Item>
         <Form.Item>
@@ -164,26 +161,26 @@ function LoginForm() {
             login
           </Button>
         </Form.Item>
+        <Divider style={{ fontSize: "0.75rem" }}>Other Login Options</Divider>
 
         <Row align="middle" gutter={8}>
           <Col span={12} flex="1">
             <Button
               style={{ width: "100%", fontSize: "0.875rem" }}
-              onClick={() => navigate("/qr-code-page")}
+              onClick={() => navigate("/")}
             >
-              mobile signIn
+              Mobile SignIn
             </Button>
           </Col>
 
-          <Col span={9} flex="1" onClick={() => navigate("/qr-code-page")}>
+          <Col span={9} flex="1" onClick={() => navigate("/")}>
             <Button style={{ width: "100%", fontSize: "0.875rem" }}>
-              sign up
+              Sign Up
             </Button>
           </Col>
         </Row>
 
-        <Divider style={{ fontSize: "0.75rem" }}>other sign in</Divider>
-
+        {/* 
         <div
           style={{
             display: "flex",
@@ -194,7 +191,7 @@ function LoginForm() {
           <AiFillGithub />
           <AiFillWechat />
           <AiFillGoogleCircle />
-        </div>
+        </div> */}
       </Form>
     </div>
   );

@@ -42,24 +42,21 @@ export const useSignIn = () => {
   const signIn = async (data) => {
     try {
       const res = await UserServicesAPI.signin(data);
-      const { email, id, accessToken, role, username } = res.data;
+      const { email, id, accessToken, role, username, name } = res.data;
       setUserToken({ accessToken });
       setUserInfo({
         userID: id,
         userEmail: email,
         userRole: role,
         userName: username,
+        userFullName: name,
       });
       navigate("/", { replace: true });
 
       notification.success({
-        message: "login",
-        description: `${"login successful"}: ${username}`,
+        message: "Login Successful",
+        description: `Welcome Back : ${name}`,
         duration: 3,
-        style: {
-          background: "linear-gradient(90deg, rgba(9,121,82,0.969625350140056) 0%, rgba(0,212,255,1) 100%)",
-          fontWeight: "bold",
-        },
       });
     } catch (err) {
       message.warning({

@@ -38,10 +38,10 @@ const sidebarMenuItems = [
   {
     key: "sub2",
     icon: <FaUsersGear  />,
-    label: "Users",
+    label: "People",
     children: [
-      { key: "sub2_option1", label: "Admins", path: "users/admin" },
-      { key: "sub2_option2", label: "Users", path: "users/user" },
+      { key: "sub2_option1", label: "Admins", path: "people/admin" },
+      { key: "sub2_option2", label: "Users", path: "people/user" },
     ],
   },
   {

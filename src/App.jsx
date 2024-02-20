@@ -25,9 +25,9 @@ function App() {
               <Route path="/about/list/create" element={<About />} />
             </Route>
             <Route path="/clients" element={<Client />} />
-            <Route path="/users" >
-              <Route path="/users/admin" element={<Admins />} />
-              <Route path="/users/user" element={<Users />} />
+            <Route path="/people" >
+              <Route path="/people/admin" element={<Admins />} />
+              <Route path="/people/user" element={<Users />} />
             </Route>
           </Routes>
         </MainLayout>

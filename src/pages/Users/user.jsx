@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { Flex, Pagination, Space } from "antd";
-import { HomeServicesAPI } from "../../apis";
+import { Modal, Space, Button, notification } from "antd";
+import { UsersServicesAPI, HomeServicesAPI } from "../../apis";
 
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
@@ -13,6 +13,36 @@ const Home = () => {
     const [userData, setUserData] = useState();
     const [totalUsers, setTotalUsers] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+
+    const handleDelete = (record) => {
+        Modal.confirm({
+            title: 'Delete User',
+            content: `Are you sure you want to delete user ${record.email}?`,
+            onOk: async () => {
+                try {
+                    const response = await UsersServicesAPI.deleteUser(record.id);
+
+                    if (response && response.success) {
+                        notification.success({
+                            message: 'User Deleted',
+                            description: `${record.email} has been deleted successfully.`,
+                        });
+                        fetchUserData(currentPage);
+                    } else {
+                        notification.error({
+                            message: 'Error',
+                            description: response.message || 'Failed to delete user.',
+                        });
+                    }
+                } catch (error) {
+                    notification.error({
+                        message: 'Error',
+                        description: 'Failed to delete user. Please try again later.',
+                    });
+                }
+            },
+        });
+    };
 
     const handlePageChange = (page, pageSize) => {
         // Handle page change logic here
@@ -29,7 +59,6 @@ const Home = () => {
         },
         getCheckboxProps: (record) => ({
             disabled: record.name === "Disabled User",
-            // Column configuration not to be checked
             name: record.name,
         }),
     };
@@ -68,7 +97,7 @@ const Home = () => {
     const userTableData =
         userData &&
         userData
-            .filter((item) => item.role === 'USER') 
+            .filter((item) => item.role === 'USER')
             .map((item) => ({
                 key: item.id, // Set the unique key for each row
                 id: item.id,
@@ -109,6 +138,17 @@ const Home = () => {
             onFilter: (value, record) => record.role === value,
             filterSearch: true,
             width: "40%",
+        },
+        {
+            title: "Actions",
+            dataIndex: "",
+            render: (_, record) => (
+                <Space>
+                    <Button type="link" onClick={() => handleDelete(record)}>View</Button>
+                    <Button type="link" onClick={() => handleDelete(record)}>Edit</Button>
+                    <Button type="link" onClick={() => handleDelete(record)}>Delete</Button>
+                </Space>
+            ),
         },
     ];
 
