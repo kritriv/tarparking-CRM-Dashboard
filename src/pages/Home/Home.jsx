@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { Flex, Pagination, Space } from "antd";
+import { Flex, Space } from "antd";
 import { HomeServicesAPI } from "../../apis";
 
 import CardComponent from "../../components/Card";
@@ -8,7 +8,6 @@ import CardComponent from "../../components/Card";
 const Home = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [selectionType, setSelectionType] = useState("checkbox");
   const [userData, setUserData] = useState();
   const [totalUsers, setTotalUsers] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);

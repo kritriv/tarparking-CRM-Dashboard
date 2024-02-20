@@ -73,6 +73,7 @@ const Home = () => {
             key: item.id, // Set the unique key for each row
             id: item.id,
             username: item.username,
+            name: item.name,
             email: item.email,
             role: item.role,
         }));

@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { Modal, Space, Button, notification } from "antd";
+import { MdDeleteSweep } from "react-icons/md";
+import { BiEditAlt } from "react-icons/bi";
+import { IoMdEye } from "react-icons/io";
 import { UsersServicesAPI, HomeServicesAPI } from "../../apis";
 
 import TableComponent from "../../components/Table";
@@ -102,6 +105,7 @@ const Home = () => {
                 key: item.id, // Set the unique key for each row
                 id: item.id,
                 username: item.username,
+                name: item.name,
                 email: item.email,
                 role: item.role,
             }));
@@ -115,6 +119,11 @@ const Home = () => {
             title: "ID",
             dataIndex: "id",
             sorter: (a, b) => a.id.localeCompare(b.id),
+        },
+        {
+            title: "Name",
+            dataIndex: "name",
+            sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
             title: "Username",
@@ -137,16 +146,15 @@ const Home = () => {
             ],
             onFilter: (value, record) => record.role === value,
             filterSearch: true,
-            width: "40%",
         },
         {
             title: "Actions",
             dataIndex: "",
             render: (_, record) => (
                 <Space>
-                    <Button type="link" onClick={() => handleDelete(record)}>View</Button>
-                    <Button type="link" onClick={() => handleDelete(record)}>Edit</Button>
-                    <Button type="link" onClick={() => handleDelete(record)}>Delete</Button>
+                    <Button type="link" onClick={() => handleDelete(record)}><IoMdEye size={18}/></Button>
+                    <Button type="link" onClick={() => handleDelete(record)}><BiEditAlt size={18} /></Button>
+                    <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18}/></Button>
                 </Space>
             ),
         },
