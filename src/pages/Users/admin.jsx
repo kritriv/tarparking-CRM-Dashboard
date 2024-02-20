@@ -17,7 +17,6 @@ const Home = () => {
     const handlePageChange = (page, pageSize) => {
         // Handle page change logic here
         setCurrentPage(page)
-        console.log("Page Number:", page, "PageSize:", pageSize);
     };
     const rowSelection = {
         type: selectionType,

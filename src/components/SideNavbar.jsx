@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import {
   AiOutlineDashboard,
-  AiOutlineLaptop,
-  AiOutlineNotification,
 } from "react-icons/ai";
-import { FcBusinessman } from "react-icons/fc";
-import { FaTags, FaPeopleArrows, FaUsersGear  } from "react-icons/fa6";
+import { RiCustomerService2Line } from "react-icons/ri";
+import { FaTags, FaUsersGear  } from "react-icons/fa6";
 import { IoSettingsOutline } from "react-icons/io5";
 import reactLogo from "../assets/tarparking.svg";
 import { Layout, Menu, Grid, Image } from "antd";
@@ -23,9 +21,9 @@ const sidebarMenuItems = [
   },
   {
     key: "2",
-    icon: <FaPeopleArrows />,
+    icon: <RiCustomerService2Line />,
     label: "Clients",
-    path: "/contact-us",
+    path: "/clients",
   },
   {
     key: "sub1",

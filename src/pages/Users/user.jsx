@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Flex, Pagination, Space } from "antd";
 import { HomeServicesAPI } from "../../apis";
 
-import CardComponent from "../../components/Card";
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
 
@@ -18,7 +17,6 @@ const Home = () => {
     const handlePageChange = (page, pageSize) => {
         // Handle page change logic here
         setCurrentPage(page)
-        console.log("Page Number:", page, "PageSize:", pageSize);
     };
     const rowSelection = {
         type: selectionType,

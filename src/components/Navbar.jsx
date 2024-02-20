@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import {
   AiOutlineMenuFold,
@@ -6,7 +6,9 @@ import {
   AiOutlineLogin,
   AiOutlineDown,
 } from "react-icons/ai";
+import { RiLogoutCircleRLine } from "react-icons/ri";
 import { AliwangwangOutlined } from "@ant-design/icons";
+import { ImProfile } from "react-icons/im";
 import { Layout, Button, Avatar, Space, Flex, theme } from "antd";
 import BreadcrumbComponent from "./Breadcrumb";
 import DropdownComponent from "./Dropdown";
@@ -41,7 +43,7 @@ const Navbar = ({ collapsed, toggleCollapse }) => {
       label: (
         <span style={{ fontStyle: "italic", fontWeight: "bold" }}>
           <Space>
-            <AiOutlineLogin />
+          <RiLogoutCircleRLine />
             Logout
           </Space>
         </span>
@@ -56,13 +58,13 @@ const Navbar = ({ collapsed, toggleCollapse }) => {
       label: (
         <span style={{ fontStyle: "italic", fontWeight: "bold" }}>
           <Space>
-            <AliwangwangOutlined />
+          <ImProfile />
             Profile
           </Space>
         </span>
       ),
       key: "1",
-      onClick: handleLogout,
+      onClick: <Navigate to="/" />,
     },
   ];
 
@@ -116,7 +118,7 @@ const Navbar = ({ collapsed, toggleCollapse }) => {
             xl: 40,
             xxl: 40,
           }}
-          src="https://api.dicebear.com/7.x/miniavs/svg?seed=3"
+          src="https://cdn-icons-png.flaticon.com/512/14122/14122142.png"
         />
         <DropdownComponent
           items={dropdownIems}
@@ -124,7 +126,6 @@ const Navbar = ({ collapsed, toggleCollapse }) => {
           arrow
           icon={<AiOutlineDown />}
         />
-        {/* <DropdownComponent items={dropdownIems} trigger button buttonText={'clickhere'} /> */}
       </Flex>
     </Header>
   );

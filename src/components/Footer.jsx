@@ -6,7 +6,7 @@ const FooterComponent = () => {
         textAlign: "center",
       }}
     >
-      Admin Dashboard ©{new Date().getFullYear()} Created by Shail International
+      Admin Dashboard ©{new Date().getFullYear()} Created by <a href="https://www.avtarspace.com" target="_blank">Avtar Space Technology</a>
     </Footer>
   );
 };

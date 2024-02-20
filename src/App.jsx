@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./css/custom.css";
 import MainLayout from "./components/Layouts/MainLayout";
 import Home from "./pages/Home/Home";
-import ContactUs from "./pages/ContactUs/ContactUs";
+import Client from "./pages/Clients/client";
 import Users from "./pages/Users/user";
 import Admins from "./pages/Users/admin";
 import About from "./pages/About/About";
@@ -24,7 +24,7 @@ function App() {
               <Route path="/about/list/update" element={<About />} />
               <Route path="/about/list/create" element={<About />} />
             </Route>
-            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/clients" element={<Client />} />
             <Route path="/users" >
               <Route path="/users/admin" element={<Admins />} />
               <Route path="/users/user" element={<Users />} />

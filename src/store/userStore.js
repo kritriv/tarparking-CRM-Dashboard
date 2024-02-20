@@ -42,7 +42,6 @@ export const useSignIn = () => {
   const signIn = async (data) => {
     try {
       const res = await UserServicesAPI.signin(data);
-      console.log('api res', res);
       const { email, id, accessToken, role, username } = res.data;
       setUserToken({ accessToken });
       setUserInfo({
