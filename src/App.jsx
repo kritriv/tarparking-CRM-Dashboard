@@ -3,7 +3,7 @@ import "./css/custom.css";
 import MainLayout from "./components/Layouts/MainLayout";
 import Home from "./pages/Home/Home";
 import Client from "./pages/Clients/client";
-import Users from "./pages/Users/user";
+import UserPage from "./pages/Users/user";
 import Admins from "./pages/Users/admin";
 import About from "./pages/About/About";
 import Login from "./pages/Auth/Login";
@@ -27,7 +27,7 @@ function App() {
             <Route path="/clients" element={<Client />} />
             <Route path="/people" >
               <Route path="/people/admin" element={<Admins />} />
-              <Route path="/people/user" element={<Users />} />
+              <Route path="/people/user" element={<UserPage />} />
             </Route>
           </Routes>
         </MainLayout>

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { Modal, Space, Button, notification } from "antd";
+import { Modal, Space, Button, notification, Form, Input } from "antd";
 import { MdDeleteSweep } from "react-icons/md";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
@@ -9,13 +9,51 @@ import { UsersServicesAPI, HomeServicesAPI } from "../../apis";
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
 
-const Home = () => {
+const UserPage = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [selectionType, setSelectionType] = useState("checkbox");
     const [userData, setUserData] = useState();
     const [totalUsers, setTotalUsers] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [currentPageSize, setCurrentPageSize] = useState(10);
+    const [editModalVisible, setEditModalVisible] = useState(false);
+    const [editFormData, setEditFormData] = useState({});
+    const [form] = Form.useForm();
+
+
+
+    const handleEdit = (record) => {
+        setEditFormData(record);
+        setEditModalVisible(true);
+    };
+
+    const handleEditModalOk = () => {
+        form.validateFields().then((values) => {
+            // Perform API call to update user details
+            UsersServicesAPI.updateUser(editFormData.id, values)
+                .then(() => {
+                    notification.success({
+                        message: "Success",
+                        description: "User details updated successfully.",
+                    });
+                    fetchUserData(currentPage, currentPageSize); // Fetch updated data
+                    setEditModalVisible(false);
+                })
+                .catch((error) => {
+                    console.error("Error updating user details:", error);
+                    notification.error({
+                        message: "Error",
+                        description:
+                            "Failed to update user details. Please try again later.",
+                    });
+                });
+        });
+    };
+
+    const handleEditModalCancel = () => {
+        setEditModalVisible(false);
+    };
 
     const handleDelete = (record) => {
         Modal.confirm({
@@ -48,9 +86,15 @@ const Home = () => {
     };
 
     const handlePageChange = (page, pageSize) => {
-        // Handle page change logic here
-        setCurrentPage(page)
+        setCurrentPage(page);
+        setCurrentPageSize(pageSize);
+        fetchUserData(page, pageSize);
     };
+
+    useEffect(() => {
+        fetchUserData(currentPage, currentPageSize);
+    }, [currentPage, currentPageSize]);
+
     const rowSelection = {
         type: selectionType,
         onChange: (selectedRowKeys, selectedRows) => {
@@ -74,6 +118,7 @@ const Home = () => {
             setUserData(response.data);
             setTotalUsers(response.total);
             setCurrentPage(page);
+            setCurrentPageSize(pageSize);
             setLoading(false);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -84,7 +129,6 @@ const Home = () => {
 
     useEffect(() => {
         const controller = new AbortController();
-        // Call the fetchUserData function with currentPage
         fetchUserData(currentPage);
         return () => {
             controller.abort();
@@ -102,7 +146,7 @@ const Home = () => {
         userData
             .filter((item) => item.role === 'USER')
             .map((item) => ({
-                key: item.id, // Set the unique key for each row
+                key: item.id,
                 id: item.id,
                 username: item.username,
                 name: item.name,
@@ -152,9 +196,9 @@ const Home = () => {
             dataIndex: "",
             render: (_, record) => (
                 <Space>
-                    <Button type="link" onClick={() => handleDelete(record)}><IoMdEye size={18}/></Button>
-                    <Button type="link" onClick={() => handleDelete(record)}><BiEditAlt size={18} /></Button>
-                    <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18}/></Button>
+                    <Button type="link" onClick={() => handleDelete(record)}><IoMdEye size={18} /></Button>
+                    <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
+                    <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} /></Button>
                 </Space>
             ),
         },
@@ -179,8 +223,50 @@ const Home = () => {
                     currentPage={currentPage}
                 />
             </Space>
+            <Modal
+                title="Edit User"
+                visible={editModalVisible}
+                onOk={handleEditModalOk}
+                onCancel={handleEditModalCancel}
+            >
+                <Form
+                    form={form}
+                    initialValues={editFormData}
+                    layout="vertical"
+                >
+                    <Form.Item
+                        name="name"
+                        label="Name"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please enter name",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="email"
+                        label="Email"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please enter email",
+                            },
+                            {
+                                type: "email",
+                                message: "Please enter a valid email",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    {/* Add more fields as needed */}
+                </Form>
+            </Modal>
         </div>
     );
 };
 
-export default Home;
+export default UserPage;
