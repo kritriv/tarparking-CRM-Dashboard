@@ -26,7 +26,6 @@ const DeleteUserModal = ({ visible, onCancel, record, fetchUserData, currentPage
             });
         }
     };
-
     return (
         <Modal
             title="Delete User"
@@ -37,7 +36,8 @@ const DeleteUserModal = ({ visible, onCancel, record, fetchUserData, currentPage
                 <Button key="delete" type="primary" danger onClick={handleDelete}>Delete</Button>,
             ]}
         >
-            {/* <p>Are you sure you want to delete user <b>{record.email} ?</b></p> */}
+            {/* <p>Are you sure you want to delete user <b>{UserEmail} ?</b></p> */}
+            <p>Are you sure you want to delete this user ?</p>
         </Modal>
     );
 };

@@ -7,7 +7,8 @@ import UserPage from "./pages/Users/user";
 import Admins from "./pages/Users/admin";
 import About from "./pages/About/About";
 import Login from "./pages/Auth/Login";
-import EditUser from "./Views/User/EditUser"; // Import EditUser component
+import EditUser from "./Views/User/EditUser"; 
+import ViewUser from "./Views/User/ViewUser"; 
 
 import { useUserInfo } from "./store/userStore";
 
@@ -26,15 +27,11 @@ function App() {
               <Route path="/about/list/update" element={<About />} />
               <Route path="/about/list/create" element={<About />} />
             </Route>
-            {/* <Route path="/users" element={<UserPage />}>
-              <Route path="/users/list" element={<UserPage />} />
-            </Route> */}
-              <Route path="/edit-user/:id" element={<EditUser />} /> 
             <Route path="/clients" element={<Client />} />
-            <Route path="/people" >
-              <Route path="/people/admin" element={<Admins />} />
-              <Route path="/people/user" element={<UserPage />} />
-            </Route>
+            <Route path="/admins" element={<Admins />} />
+            <Route path="/users" element={<UserPage />} />
+            <Route path="/edit-user/:id" element={<EditUser />} />
+            <Route path="/users/:id" element={<ViewUser />} />
           </Routes>
         </MainLayout>
       ) : (

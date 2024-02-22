@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Space, Button, notification, Form, Input, Select } from "antd";
+import { Space, Button, notification, Form, Input, Select, Card } from "antd";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
@@ -24,6 +24,10 @@ const UserPage = () => {
 
     const handleEdit = (record) => {
         navigate(`/edit-user/${record.id}`);
+    };
+
+    const handleView = (record) => {
+        navigate(`/users/${record.id}`);
     };
 
     const handleDelete = (record) => {
@@ -117,7 +121,7 @@ const UserPage = () => {
             dataIndex: "",
             render: (_, record) => (
                 <Space>
-                    <Button type="link" onClick={() => handleDelete(record)}><IoMdEye size={18} /></Button>
+                    <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
                     <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
                     <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} /></Button>
                 </Space>
@@ -126,7 +130,7 @@ const UserPage = () => {
     ];
 
     return (
-        <div className="home-card-area">
+        <Card title="Users List"  style={{ padding: 20, margin: 10 }}>
             <Space direction="vertical" style={{ display: "flex" }} wrap>
                 <TableComponent
                     pagination={false}
@@ -150,7 +154,7 @@ const UserPage = () => {
                 fetchUserData={fetchUserData}
                 currentPage={currentPage}
             />
-        </div>
+        </Card>
     );
 };
 
