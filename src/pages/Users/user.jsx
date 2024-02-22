@@ -1,114 +1,43 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { Modal, Space, Button, notification, Form, Input } from "antd";
-import { MdDeleteSweep } from "react-icons/md";
+import { Space, Button, notification, Form, Input, Select } from "antd";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
-import { UsersServicesAPI, HomeServicesAPI } from "../../apis";
+import { MdDeleteSweep } from "react-icons/md";
+import { UsersServicesAPI, HomeServicesAPI } from "../../apis"
+import { useNavigate } from "react-router-dom";
 
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
+import DeleteUserModal from "../../Views/User/DeleteUser";
 
 const UserPage = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [selectionType, setSelectionType] = useState("checkbox");
-    const [userData, setUserData] = useState();
+    const [userData, setUserData] = useState([]);
     const [totalUsers, setTotalUsers] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentPageSize, setCurrentPageSize] = useState(10);
-    const [editModalVisible, setEditModalVisible] = useState(false);
-    const [editFormData, setEditFormData] = useState({});
-    const [form] = Form.useForm();
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [deleteRecord, setDeleteRecord] = useState(null);
 
-
+    const navigate = useNavigate();
 
     const handleEdit = (record) => {
-        setEditFormData(record);
-        setEditModalVisible(true);
-    };
-
-    const handleEditModalOk = () => {
-        form.validateFields().then((values) => {
-            // Perform API call to update user details
-            UsersServicesAPI.updateUser(editFormData.id, values)
-                .then(() => {
-                    notification.success({
-                        message: "Success",
-                        description: "User details updated successfully.",
-                    });
-                    fetchUserData(currentPage, currentPageSize); // Fetch updated data
-                    setEditModalVisible(false);
-                })
-                .catch((error) => {
-                    console.error("Error updating user details:", error);
-                    notification.error({
-                        message: "Error",
-                        description:
-                            "Failed to update user details. Please try again later.",
-                    });
-                });
-        });
-    };
-
-    const handleEditModalCancel = () => {
-        setEditModalVisible(false);
+        navigate(`/edit-user/${record.id}`);
     };
 
     const handleDelete = (record) => {
-        Modal.confirm({
-            title: 'Delete User',
-            content: `Are you sure you want to delete user ${record.email}?`,
-            onOk: async () => {
-                try {
-                    const response = await UsersServicesAPI.deleteUser(record.id);
-
-                    if (response && response.success) {
-                        notification.success({
-                            message: 'User Deleted',
-                            description: `${record.email} has been deleted successfully.`,
-                        });
-                        fetchUserData(currentPage);
-                    } else {
-                        notification.error({
-                            message: 'Error',
-                            description: response.message || 'Failed to delete user.',
-                        });
-                    }
-                } catch (error) {
-                    notification.error({
-                        message: 'Error',
-                        description: 'Failed to delete user. Please try again later.',
-                    });
-                }
-            },
-        });
+        setDeleteRecord(record);
+        setDeleteModalVisible(true);
     };
 
-    const handlePageChange = (page, pageSize) => {
-        setCurrentPage(page);
-        setCurrentPageSize(pageSize);
-        fetchUserData(page, pageSize);
+    const handleDeleteModalCancel = () => {
+        setDeleteModalVisible(false);
     };
 
     useEffect(() => {
         fetchUserData(currentPage, currentPageSize);
     }, [currentPage, currentPageSize]);
-
-    const rowSelection = {
-        type: selectionType,
-        onChange: (selectedRowKeys, selectedRows) => {
-            console.log(
-                `selectedRowKeys: ${selectedRowKeys}`,
-                "selectedRows: ",
-                selectedRows
-            );
-        },
-        getCheckboxProps: (record) => ({
-            disabled: record.name === "Disabled User",
-            name: record.name,
-        }),
-    };
 
     const fetchUserData = async (page = 1, pageSize = 10) => {
         try {
@@ -127,20 +56,6 @@ const UserPage = () => {
         }
     };
 
-    useEffect(() => {
-        const controller = new AbortController();
-        fetchUserData(currentPage);
-        return () => {
-            controller.abort();
-        };
-    }, [currentPage]);
-
-
-    if (error) {
-        return <h1>{error}</h1>;
-    }
-
-
     const userTableData =
         userData &&
         userData
@@ -153,6 +68,12 @@ const UserPage = () => {
                 email: item.email,
                 role: item.role,
             }));
+
+    const handlePageChange = (page, pageSize) => {
+        setCurrentPage(page);
+        setCurrentPageSize(pageSize);
+        fetchUserData(page, pageSize);
+    };
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
@@ -210,7 +131,6 @@ const UserPage = () => {
                 <TableComponent
                     pagination={false}
                     style={{ margin: "30px" }}
-                    rowSelection={rowSelection}
                     columns={columns}
                     data={userTableData}
                     onChange={onChange}
@@ -223,48 +143,13 @@ const UserPage = () => {
                     currentPage={currentPage}
                 />
             </Space>
-            <Modal
-                title="Edit User"
-                visible={editModalVisible}
-                onOk={handleEditModalOk}
-                onCancel={handleEditModalCancel}
-            >
-                <Form
-                    form={form}
-                    initialValues={editFormData}
-                    layout="vertical"
-                >
-                    <Form.Item
-                        name="name"
-                        label="Name"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please enter name",
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name="email"
-                        label="Email"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please enter email",
-                            },
-                            {
-                                type: "email",
-                                message: "Please enter a valid email",
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    {/* Add more fields as needed */}
-                </Form>
-            </Modal>
+            <DeleteUserModal
+                visible={deleteModalVisible}
+                onCancel={handleDeleteModalCancel}
+                record={deleteRecord}
+                fetchUserData={fetchUserData}
+                currentPage={currentPage}
+            />
         </div>
     );
 };

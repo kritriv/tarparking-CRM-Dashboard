@@ -5,7 +5,7 @@ import { isEmpty } from "ramda";
 import { getItem } from "../utils/storage";
 
 // Create axios instance
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 50000,
   headers: { "Content-Type": "application/json;charset=utf-8" },
@@ -61,37 +61,31 @@ axiosInstance.interceptors.response.use(
     const { response, message } = error || {};
     let errMsg = "";
     try {
-      errMsg = response?.data?.message || message;
+      errMsg = response?.data?.message || message || "sys.api.errorMessage";
     } catch (error) {
       throw new Error(error);
     }
-    // Do something with response error
-    if (isEmpty(errMsg)) {
-      // checkStatus
-      // errMsg = checkStatus(response.data.status);
-      errMsg = "sys.api.errorMessage";
-    }
     Message.error(errMsg);
     // Reject the Promise with the original error
-    return Promise.reject(error); // Fix here
+    return Promise.reject(error);
   }
 );
 
 class APIClient {
   async get(config) {
-    return await this.request({ ...config, method: "GET" });
+    return this.request({ ...config, method: "GET" });
   }
 
   async post(config) {
-    return await this.request({ ...config, method: "POST" });
+    return this.request({ ...config, method: "POST" });
   }
 
   async put(config) {
-    return await this.request({ ...config, method: "PUT" });
+    return this.request({ ...config, method: "PUT" });
   }
 
   async delete(config) {
-    return await this.request({ ...config, method: "DELETE" });
+    return this.request({ ...config, method: "DELETE" });
   }
 
   async request(config) {
