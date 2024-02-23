@@ -92,18 +92,6 @@ const ViewUserPage = () => {
                                 <Select.Option value="SUPERADMIN">SUPERADMIN</Select.Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item
-                            name="password"
-                            label="Password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter password",
-                                },
-                            ]}
-                        >
-                            <Input.Password placeholder="Enter password" disabled />
-                        </Form.Item>
                         <Form.Item>
                             <Button type="primary" onClick={handleGoBack} loading={loading}>
                                 Go Back

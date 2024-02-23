@@ -1,47 +1,61 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { Space } from "antd";
-import { HomeServicesAPI } from "../../apis";
+import { Space, Button, notification, Form, Input, Select, Card } from "antd";
+import { BiEditAlt } from "react-icons/bi";
+import { IoMdEye } from "react-icons/io";
+import { MdDeleteSweep } from "react-icons/md";
+import { UsersServicesAPI } from "../../apis"
+import { useNavigate } from "react-router-dom";
 
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
+import DeleteUserModal from "../../Views/User/DeleteUser";
 
-const Home = () => {
+const AdminPage = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [selectionType, setSelectionType] = useState("checkbox");
-    const [userData, setUserData] = useState();
+    const [userData, setUserData] = useState([]);
     const [totalUsers, setTotalUsers] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [currentPageSize, setCurrentPageSize] = useState(10);
+    const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [deleteRecord, setDeleteRecord] = useState(null);
 
-    const handlePageChange = (page, pageSize) => {
-        // Handle page change logic here
-        setCurrentPage(page)
+    const navigate = useNavigate();
+
+    const handleEdit = (record) => {
+        navigate(`/edit-user/${record.id}`);
     };
-    const rowSelection = {
-        type: selectionType,
-        onChange: (selectedRowKeys, selectedRows) => {
-            console.log(
-                `selectedRowKeys: ${selectedRowKeys}`,
-                "selectedRows: ",
-                selectedRows
-            );
-        },
-        getCheckboxProps: (record) => ({
-            disabled: record.name === "Disabled User",
-            // Column configuration not to be checked
-            name: record.name,
-        }),
+
+    const handleView = (record) => {
+        navigate(`/users/${record.id}`);
     };
+
+    const handleCreate = () => {
+        navigate(`/admins/create`);
+    };
+
+    const handleDelete = (record) => {
+        setDeleteRecord(record);
+        setDeleteModalVisible(true);
+    };
+
+    const handleDeleteModalCancel = () => {
+        setDeleteModalVisible(false);
+    };
+
+    useEffect(() => {
+        fetchUserData(currentPage, currentPageSize);
+    }, [currentPage, currentPageSize]);
 
     const fetchUserData = async (page = 1, pageSize = 10) => {
         try {
             setLoading(true);
             setError(false);
-            const response = await HomeServicesAPI.users(page, pageSize);
+            const response = await UsersServicesAPI.listUser(page, pageSize);
             setUserData(response.data);
             setTotalUsers(response.total);
             setCurrentPage(page);
+            setCurrentPageSize(pageSize);
             setLoading(false);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -50,33 +64,24 @@ const Home = () => {
         }
     };
 
-    useEffect(() => {
-        const controller = new AbortController();
-        // Call the fetchUserData function with currentPage
-        fetchUserData(currentPage);
-        return () => {
-            controller.abort();
-        };
-    }, [currentPage]);
-
-
-    if (error) {
-        return <h1>{error}</h1>;
-    }
-
-
     const userTableData =
-    userData &&
-    userData
-        .filter((item) => item.role === 'ADMIN' || item.role === 'SUPERADMIN') 
-        .map((item) => ({
-            key: item.id, // Set the unique key for each row
-            id: item.id,
-            username: item.username,
-            name: item.name,
-            email: item.email,
-            role: item.role,
-        }));
+        userData &&
+        userData
+            .filter((item) => item.role === 'ADMIN' || item.role === 'SUPERADMIN')
+            .map((item) => ({
+                key: item.id,
+                id: item.id,
+                username: item.username,
+                name: item.name,
+                email: item.email,
+                role: item.role,
+            }));
+
+    const handlePageChange = (page, pageSize) => {
+        setCurrentPage(page);
+        setCurrentPageSize(pageSize);
+        fetchUserData(page, pageSize);
+    };
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log("params", pagination, filters, sorter, extra);
@@ -108,27 +113,32 @@ const Home = () => {
             dataIndex: "role",
             filters: [
                 {
-                    text: "Admin",
-                    value: "ADMIN",
-                },
-                {
-                    text: "Super Admin",
-                    value: "SUPERADMIN",
+                    text: "User",
+                    value: "USER",
                 },
             ],
             onFilter: (value, record) => record.role === value,
             filterSearch: true,
-            width: "40%",
+        },
+        {
+            title: "Actions",
+            dataIndex: "",
+            render: (_, record) => (
+                <Space>
+                    <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
+                    <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
+                    <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} /></Button>
+                </Space>
+            ),
         },
     ];
 
     return (
-        <div className="home-card-area">
+        <Card title="Users List" extra={<Button onClick={() => handleCreate()}>Create New Admin</Button>} style={{ padding: 20, margin: 10 }}>
             <Space direction="vertical" style={{ display: "flex" }} wrap>
                 <TableComponent
                     pagination={false}
                     style={{ margin: "30px" }}
-                    rowSelection={rowSelection}
                     columns={columns}
                     data={userTableData}
                     onChange={onChange}
@@ -141,8 +151,15 @@ const Home = () => {
                     currentPage={currentPage}
                 />
             </Space>
-        </div>
+            <DeleteUserModal
+                visible={deleteModalVisible}
+                onCancel={handleDeleteModalCancel}
+                record={deleteRecord}
+                fetchUserData={fetchUserData}
+                currentPage={currentPage}
+            />
+        </Card>
     );
 };
 
-export default Home;
+export default AdminPage;

@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { create } from "zustand";
 
-import { UserServicesAPI } from "../apis";
+import { AuthServicesAPI } from "../apis";
 import { getItem, removeItem, setItem } from "../utils/storage";
 import { StorageEnum } from "../utils/enum";
 
@@ -41,7 +41,7 @@ export const useSignIn = () => {
 
   const signIn = async (data) => {
     try {
-      const res = await UserServicesAPI.signin(data);
+      const res = await AuthServicesAPI.signin(data);
       const { email, id, accessToken, role, username, name } = res.data;
       setUserToken({ accessToken });
       setUserInfo({

@@ -3,7 +3,7 @@ import { Space, Button, notification, Form, Input, Select, Card } from "antd";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
-import { UsersServicesAPI, HomeServicesAPI } from "../../apis"
+import { UsersServicesAPI } from "../../apis"
 import { useNavigate } from "react-router-dom";
 
 import TableComponent from "../../components/Table";
@@ -29,6 +29,9 @@ const UserPage = () => {
     const handleView = (record) => {
         navigate(`/users/${record.id}`);
     };
+    const handleCreate = () => {
+        navigate(`/users/create`);
+    };
 
     const handleDelete = (record) => {
         setDeleteRecord(record);
@@ -47,7 +50,7 @@ const UserPage = () => {
         try {
             setLoading(true);
             setError(false);
-            const response = await HomeServicesAPI.users(page, pageSize);
+            const response = await UsersServicesAPI.listUser(page, pageSize);
             setUserData(response.data);
             setTotalUsers(response.total);
             setCurrentPage(page);
@@ -130,7 +133,7 @@ const UserPage = () => {
     ];
 
     return (
-        <Card title="Users List"  style={{ padding: 20, margin: 10 }}>
+        <Card title="Users List" extra={<Button onClick={() => handleCreate()}>Create New User</Button>} style={{ padding: 20, margin: 10 }}>
             <Space direction="vertical" style={{ display: "flex" }} wrap>
                 <TableComponent
                     pagination={false}

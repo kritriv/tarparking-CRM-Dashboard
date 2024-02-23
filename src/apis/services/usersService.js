@@ -9,7 +9,7 @@ export const UserApi = {
 };
 
 const createUser = (data) => apiClient.post({ url: UserApi.Create, data });
-const listUser = () => apiClient.get({ url: UserApi.List });
+const listUser = (page, size) => apiClient.get({  url: `${UserApi.List}?page=${page}&size=${size}` });
 const readUser = (id) => apiClient.get({ url: `${UserApi.Read}/${id}` });
 const deleteUser = (id) => apiClient.delete({ url: `${UserApi.Delete}/${id}` });
 const updateUser = (id, data) => apiClient.put({ url: `${UserApi.Update}/${id}`, data });

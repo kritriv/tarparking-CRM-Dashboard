@@ -121,11 +121,12 @@ const SideBarComponent = ({ collapsed, setCollapsed }) => {
             collapsible
             collapsed={collapsed}
             theme={themeMode}
+            width={280}
           >
             <div className="brand-container">
               <Image
                 preview={false}
-                width={150}
+                width={140}
                 src={reactLogo}
                 alt="Brand Logo"
               />
@@ -134,7 +135,8 @@ const SideBarComponent = ({ collapsed, setCollapsed }) => {
               theme={themeMode}
               mode="inline"
               defaultSelectedKeys={["1"]}
-              items={transformedMenuItems}
+              items={transformedMenuItems} 
+              style={{padding: 30}}
             />
           </Sider>
         </>
