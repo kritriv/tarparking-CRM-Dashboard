@@ -1,7 +1,6 @@
 /* eslint-disable no-useless-catch */
 import { message as Message } from "antd";
 import axios from "axios";
-import { isEmpty } from "ramda";
 import { getItem } from "../utils/storage";
 
 // Create axios instance
@@ -51,9 +50,10 @@ axiosInstance.interceptors.response.use(
     }
 
     // Business request error
-    if (message && message !== "User deleted successfully") {
-      throw new Error(message || "sys.api.apiRequestFailed");
-    }
+    // if (message && message !== "User deleted successfully" || message && message !== "Client deleted successfully") {
+    //   console.log(message)
+    //   throw new Error(message || "sys.api.apiRequestFailed");
+    // }
 
     return res.data; // Return response data for successful deletion without throwing an error
   },

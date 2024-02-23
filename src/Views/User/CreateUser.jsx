@@ -80,7 +80,7 @@ const CreateUserPage = () => {
                             { required: true, message: "Please select a role" },
                         ]}
                     >
-                        <Select>
+                        <Select placeholder="Select Role">
                             <Select.Option value="USER">USER</Select.Option>
                             <Select.Option value="ADMIN">ADMIN</Select.Option>
                             <Select.Option value="SUPERADMIN">SUPERADMIN</Select.Option>
