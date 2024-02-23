@@ -3,7 +3,7 @@ import {
   AiOutlineDashboard,
 } from "react-icons/ai";
 import { RiCustomerService2Line } from "react-icons/ri";
-import { FaTags, FaUsersGear  } from "react-icons/fa6";
+import { FaTags, FaUsersGear } from "react-icons/fa6";
 import { IoSettingsOutline } from "react-icons/io5";
 import reactLogo from "../assets/tarparking.svg";
 import { Layout, Menu, Grid, Image } from "antd";
@@ -27,7 +27,7 @@ const sidebarMenuItems = [
   },
   {
     key: "sub1",
-    icon: <FaTags  />,
+    icon: <FaTags />,
     label: "Products",
     children: [
       { key: "sub1_option1", label: "Category", path: "/category" },
@@ -37,7 +37,7 @@ const sidebarMenuItems = [
   },
   {
     key: "sub2",
-    icon: <FaUsersGear  />,
+    icon: <FaUsersGear />,
     label: "People",
     children: [
       { key: "sub2_option1", label: "Admins", path: "admins" },
@@ -126,7 +126,9 @@ const SideBarComponent = ({ collapsed, setCollapsed }) => {
             <div className="brand-container">
               <Image
                 preview={false}
-                width={140}
+                // width={140}
+                style={collapsed ? { width: 50 } : { width: 140 }}
+
                 src={reactLogo}
                 alt="Brand Logo"
               />
@@ -135,8 +137,8 @@ const SideBarComponent = ({ collapsed, setCollapsed }) => {
               theme={themeMode}
               mode="inline"
               defaultSelectedKeys={["1"]}
-              items={transformedMenuItems} 
-              style={{padding: 30}}
+              items={transformedMenuItems}
+              style={collapsed ? { padding: 10 } : { padding: 30 }}
             />
           </Sider>
         </>
