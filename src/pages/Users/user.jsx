@@ -23,7 +23,7 @@ const UserPage = () => {
     const navigate = useNavigate();
 
     const handleEdit = (record) => {
-        navigate(`/edit-user/${record.id}`);
+        navigate(`edit-user/${record.id}`);
     };
 
     const handleView = (record) => {

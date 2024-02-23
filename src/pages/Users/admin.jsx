@@ -23,11 +23,11 @@ const AdminPage = () => {
     const navigate = useNavigate();
 
     const handleEdit = (record) => {
-        navigate(`/edit-user/${record.id}`);
+        navigate(`edit-admin/${record.id}`);
     };
 
     const handleView = (record) => {
-        navigate(`/users/${record.id}`);
+        navigate(`/admins/${record.id}`);
     };
 
     const handleCreate = () => {
