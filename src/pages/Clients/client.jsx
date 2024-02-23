@@ -68,6 +68,7 @@ const ClientPage = () => {
     ClientData.map((item) => ({
       key: item.id,
       id: item.id,
+      status: item.status,
       username: item.username,
       name: item.name,
       email: item.email,
@@ -92,6 +93,14 @@ const ClientPage = () => {
       title: "ID",
       dataIndex: "id",
       sorter: (a, b) => a.id.localeCompare(b.id),
+    },
+    {
+      title: "Client Status",
+      dataIndex: "status",
+      sorter: (a, b) => a.status.localeCompare(b.status),
+      render: (status) => (
+        <span>{status ? "Active" : "Inactive"}</span>
+      ),
     },
     {
       title: "Username",

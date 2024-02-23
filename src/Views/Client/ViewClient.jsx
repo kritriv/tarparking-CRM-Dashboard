@@ -1,16 +1,23 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Card, Form, Input, Select, Button, notification, Space } from "antd";
-import { ClientsServicesAPI } from "../../apis";
+import { Card, Form, Input, Switch, Button, notification, Row, Col, InputNumber } from "antd";
+import { ClientServicesAPI } from "../../apis";
 import { useNavigate } from "react-router-dom";
+import { useUserInfo } from "../../store/userStore";
 
 const ViewClientPage = () => {
     const { id } = useParams();
+    const userInfo = useUserInfo();
+    const editBy = userInfo.userID;
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [ClientData, setClientData] = useState(null);
+    const [clientData, setClientData] = useState(null);
 
     const navigate = useNavigate();
+
+    const handleBack = () => {
+        navigate(`/clients`);
+    };
 
     useEffect(() => {
         fetchClientData(id);
@@ -19,87 +26,145 @@ const ViewClientPage = () => {
     const fetchClientData = async (id) => {
         try {
             setLoading(true);
-            const response = await ClientsServicesAPI.readClient(id);
+            const response = await ClientServicesAPI.readClient(id);
 
             if (response.success) {
+                // Set the fetched data as initial values
+                form.setFieldsValue(response.data);
                 setClientData(response.data);
             } else {
-                console.error("Error fetching Client data:", response.message);
+                console.error("Error fetching user data:", response.message);
                 notification.error({
                     message: "Error",
-                    description: "Failed to fetch Client details.",
+                    description: "Failed to fetch user details.",
                 });
             }
 
             setLoading(false);
         } catch (error) {
             setLoading(false);
-            console.error("Error fetching Client data:", error);
+            console.error("Error fetching user data:", error);
             notification.error({
                 message: "Error",
-                description: "Failed to fetch Client details. Please try again later.",
+                description: "Failed to fetch user details. Please try again later.",
             });
         }
     };
 
-    const handleGoBack = () => {
-        navigate(`/Clients`);
-    };
-
     return (
-        <Card title="Client details" style={{ padding: 30, margin: 10 }}>
-            <div>
-                {ClientData && (
-                    <Form form={form} layout="vertical" initialValues={ClientData}>
-                        <Form.Item
-                            name="name"
-                            label="Name"
-                            rules={[
-                                { required: true, message: "Please enter name" },
-                            ]}
-                        >
-                            <Input placeholder="Enter Name" disabled />
-                        </Form.Item>
-                        <Form.Item
-                            name="Clientname"
-                            label="Clientname"
-                            rules={[
-                                { required: true, message: "Please enter Clientname" },
-                            ]}
-                        >
-                            <Input placeholder="Enter Clientname" disabled />
-                        </Form.Item>
-                        <Form.Item
-                            name="email"
-                            label="Email"
-                            rules={[
-                                { required: true, message: "Please enter email" },
-                                { type: "email", message: "Please enter a valid email" },
-                            ]}
-                        >
-                            <Input placeholder="Enter Email" disabled />
-                        </Form.Item>
-                        <Form.Item
-                            name="role"
-                            label="Role"
-                            rules={[
-                                { required: true, message: "Please select a role" },
-                            ]}
-                        >
-                            <Select disabled >
-                                <Select.Option value="Client">Client</Select.Option>
-                                <Select.Option value="ADMIN">ADMIN</Select.Option>
-                                <Select.Option value="SUPERADMIN">SUPERADMIN</Select.Option>
-                            </Select>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button type="primary" onClick={handleGoBack} loading={loading}>
-                                Go Back
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                )}
-            </div>
+        <Card title="View Client Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
+            <Row gutter={16}>
+                <Col span={12}>
+                    <div>
+                        <h2>Client Information</h2>
+                        <Form form={form} layout="vertical" initialValues={clientData}>
+                            <Row gutter={16}>
+                                <Col span={6}>
+                                    <Form.Item name="status" label="Status">
+                                        <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked={clientData?.status === 'Active'} disabled/>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item
+                                        name="editBy"
+                                        label="EditBy (You)"
+                                        initialValue={editBy}
+                                    >
+                                        <Input placeholder="Enter EditBy Id" disabled />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item name="username" label="Username">
+                                        <Input placeholder="Enter Username" disabled />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item name="name" label="Name">
+                                        <Input placeholder="Enter Name" disabled />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Form.Item
+                                name="email"
+                                label="Email"
+                            >
+                                <Input placeholder="Enter Email" disabled />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="phone"
+                                label="Phone Number"
+                            >
+                                <Input placeholder="Enter Phone Number" disabled />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="company"
+                                label="Company"
+                            >
+                                <Input placeholder="Enter Company" disabled />
+                            </Form.Item>
+
+                            <Form.Item name="gst" label="GST">
+                                <Input placeholder="Enter GST" disabled />
+                            </Form.Item>
+                        </Form>
+                    </div>
+                </Col>
+                <Col span={12}>
+                    <div>
+                        <h2>Address Information</h2>
+                        <Form form={form} layout="vertical">
+                            <Form.Item
+                                name={["address", "site"]}
+                                label="Site"
+                            >
+                                <Input placeholder="Enter Site" disabled />
+                            </Form.Item>
+
+                            <Form.Item
+                                name={["address", "street"]}
+                                label="Street"
+                            >
+                                <Input placeholder="Enter Street" disabled />
+                            </Form.Item>
+                            <Row gutter={16}>
+                                <Col span={18}>
+                                    <Form.Item
+                                        name={["address", "city"]}
+                                        label="City"
+                                    >
+                                        <Input placeholder="Enter City" disabled />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={4}>
+                                    <Form.Item
+                                        name={["address", "pincode"]}
+                                        label="Pincode"
+                                    >
+                                        <InputNumber placeholder="Enter Pincode" disabled />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Form.Item
+                                name={["address", "state"]}
+                                label="State"
+                            >
+                                <Input placeholder="Enter State" disabled />
+                            </Form.Item>
+                            <Form.Item
+                                name={["address", "country"]}
+                                label="Country"
+                            >
+                                <Input placeholder="Enter Country" disabled />
+                            </Form.Item>
+                        </Form>
+                    </div>
+                </Col>
+            </Row>
+            {/* No need for the Update button in view mode */}
         </Card>
     );
 };
