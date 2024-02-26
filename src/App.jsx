@@ -16,6 +16,10 @@ import EditClient from "./Views/Client/EditClient";
 import CreateClient from "./Views/Client/CreateClient";
 import ViewClient from "./Views/Client/ViewClient";
 
+import CompanyPage from "./pages/Company/company";
+import CreateCompany from "./Views/Company/CreateCompany";
+import EditCompany from "./Views/Company/EditCompany";
+import ViewCompany from "./Views/Company/ViewCompany";
 
 import { useUserInfo } from "./store/userStore";
 
@@ -28,6 +32,11 @@ function App() {
         <MainLayout>
           <Routes>
             <Route path="/" element={<Home />} />
+
+            <Route path="/company" element={<CompanyPage />} />
+            <Route path="/company/:id" element={<ViewCompany />} />
+            <Route path="/company/create" element={<CreateCompany />} />
+            <Route path="/company/edit-company/:id" element={<EditCompany />} />
 
             <Route path="/clients" element={<ClientPage />} />
             <Route path="/clients/:id" element={<ViewClient />} />

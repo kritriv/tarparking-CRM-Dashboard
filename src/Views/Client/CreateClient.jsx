@@ -55,8 +55,8 @@ const CreateClientPage = () => {
                         <Form form={form} layout="vertical">
                             <Row gutter={16}>
                                 <Col span={6}>
-                                    <Form.Item name="status" label="Status" >
-                                        <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked={"Active"} />
+                                    <Form.Item name="status" label="Status" rules={[{ required: true }]}>
+                                        <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>

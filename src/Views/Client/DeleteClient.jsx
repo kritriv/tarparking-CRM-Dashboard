@@ -9,7 +9,7 @@ const DeleteClientModal = ({ visible, onCancel, record, fetchClientData, current
             if (response && response.success) {
                 notification.success({
                     message: 'Client Deleted',
-                    description: `${record.email} has been deleted successfully.`,
+                    description: `${record.username} has been deleted successfully.`,
                 });
                 fetchClientData(currentPage);
                 onCancel();

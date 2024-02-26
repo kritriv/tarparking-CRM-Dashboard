@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Card, Form, Input, Select, Button, notification, Space } from "antd";
-import { UsersServicesAPI } from "../../apis";
+import { Card, Form, Input, Select, Button, notification } from "antd";
+import { UserServicesAPI } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const ViewUserPage = () => {
@@ -16,10 +16,14 @@ const ViewUserPage = () => {
         fetchUserData(id);
     }, [id]);
 
+    const handleBack = () => {
+        navigate(`/users`);
+    };
+
     const fetchUserData = async (id) => {
         try {
             setLoading(true);
-            const response = await UsersServicesAPI.readUser(id);
+            const response = await UserServicesAPI.readUser(id);
 
             if (response.success) {
                 setUserData(response.data);
@@ -47,7 +51,7 @@ const ViewUserPage = () => {
     };
 
     return (
-        <Card title="User details" style={{ padding: 30, margin: 10 }}>
+        <Card title="User details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 30, margin: 10 }}>
             <div>
                 {userData && (
                     <Form form={form} layout="vertical" initialValues={userData}>

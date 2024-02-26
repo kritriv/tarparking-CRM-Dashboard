@@ -1,34 +1,34 @@
 import { Modal, Button, notification } from "antd";
-import { UserServicesAPI } from "../../apis";
+import { CompanyServicesAPI } from "../../apis";
 
-const DeleteUserModal = ({ visible, onCancel, record, fetchUserData, currentPage }) => {
+const DeleteCompanyModal = ({ visible, onCancel, record, fetchCompanyData, currentPage }) => {
     const handleDelete = async () => {
         try {
-            const response = await UserServicesAPI.deleteUser(record.id);
+            const response = await CompanyServicesAPI.deleteCompany(record.id);
 
             if (response && response.success) {
                 notification.success({
-                    message: 'User Deleted',
-                    description: `${record.email} has been deleted successfully.`,
+                    message: 'Company Details Deleted',
+                    description: `${record.name} has been deleted successfully.`,
                 });
-                fetchUserData(currentPage);
+                fetchCompanyData(currentPage);
                 onCancel();
             } else {
                 notification.error({
                     message: 'Error',
-                    description: response.message || 'Failed to delete user.',
+                    description: response.message || 'Failed to delete company.',
                 });
             }
         } catch (error) {
             notification.error({
                 message: 'Error',
-                description: 'Failed to delete user. Please try again later.',
+                description: 'Failed to delete company. Please try again later.',
             });
         }
     };
     return (
         <Modal
-            title="Delete User"
+            title="Delete Company"
             open={visible}
             onCancel={onCancel}
             footer={[
@@ -36,10 +36,10 @@ const DeleteUserModal = ({ visible, onCancel, record, fetchUserData, currentPage
                 <Button key="delete" type="primary" danger onClick={handleDelete}>Delete</Button>,
             ]}
         >
-            {/* <p>Are you sure you want to delete user <b>{UserEmail} ?</b></p> */}
-            <p>Are you sure you want to delete this user ?</p>
+            {/* <p>Are you sure you want to delete company <b>{CompanyEmail} ?</b></p> */}
+            <p>Are you sure you want to delete this company ?</p>
         </Modal>
     );
 };
 
-export default DeleteUserModal;
+export default DeleteCompanyModal;

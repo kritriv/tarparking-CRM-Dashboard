@@ -1,22 +1,22 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import { Card, Form, Input, Select, Button, notification } from "antd";
-import { UsersServicesAPI } from "../../apis";
+import { UserServicesAPI } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const CreateUserPage = () => {
-    const { id } = useParams();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [userData, setUserData] = useState(null);
 
     const navigate = useNavigate();
 
+    const handleBack = () => {
+        navigate(`/users`);
+    };
     const handleCreateUser = async () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
-                UsersServicesAPI.createUser(values)
+                UserServicesAPI.createUser(values)
                     .then(() => {
                         notification.success({
                             message: "Success",
@@ -42,7 +42,7 @@ const CreateUserPage = () => {
     };
 
     return (
-        <Card title="Create User Or Admin" style={{ padding: 30, margin: 10 }}>
+        <Card title="Create User Or Admin" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 30, margin: 10 }}>
             <div>
                 <Form form={form} layout="vertical" >
                     <Form.Item

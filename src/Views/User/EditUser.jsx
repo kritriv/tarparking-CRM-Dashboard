@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Form, Input, Select, Button, notification, Space } from "antd";
-import { UsersServicesAPI } from "../../apis";
+import { UserServicesAPI } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const EditUserPage = () => {
@@ -12,6 +12,10 @@ const EditUserPage = () => {
 
     const navigate = useNavigate();
 
+    const handleBack = () => {
+        navigate(`/users`);
+    };
+    
     useEffect(() => {
         fetchUserData(id);
     }, [id]);
@@ -19,7 +23,7 @@ const EditUserPage = () => {
     const fetchUserData = async (id) => {
         try {
             setLoading(true);
-            const response = await UsersServicesAPI.readUser(id);
+            const response = await UserServicesAPI.readUser(id);
 
             if (response.success) {
                 setUserData(response.data);
@@ -46,7 +50,7 @@ const EditUserPage = () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
-                UsersServicesAPI.updateUser(id, values)
+                UserServicesAPI.updateUser(id, values)
                     .then(() => {
                         notification.success({
                             message: "Success",
@@ -74,7 +78,7 @@ const EditUserPage = () => {
     };
 
     return (
-        <Card title="Edit User"  style={{ padding: 30, margin: 10 }}>
+        <Card title="Edit User"  extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 30, margin: 10 }}>
             <div>
                 {userData && (
                     <Form form={form} layout="vertical" initialValues={userData}>
