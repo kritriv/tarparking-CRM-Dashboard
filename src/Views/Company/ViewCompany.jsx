@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Form, Input, Switch, Button, notification, Row, Col } from "antd";
 import { CompanyServicesAPI } from "../../apis";
-import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
-import { useUserInfo } from "../../store/userStore";
+
+const { TextArea } = Input;
 
 const ViewCompanyPage = () => {
     const { id } = useParams();
@@ -61,23 +61,23 @@ const ViewCompanyPage = () => {
                             <Row gutter={16}>
                                 <Col span={6}>
                                     <Form.Item name="status" label="Status" rules={[{ required: true }]}>
-                                        <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked disabled/>
+                                        <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked disabled />
                                     </Form.Item>
                                 </Col>
                                 <Col span={18}>
                                     <Form.Item name="name" label="Name" rules={[{ required: true, message: "Please enter Name" }]}>
-                                        <Input placeholder="Enter Name" disabled/>
+                                        <Input placeholder="Enter Name" readOnly />
                                     </Form.Item>
                                 </Col>
                             </Row>
-                            <Row gutter={50}>
+                            <Row gutter={10}>
                                 <Col span={12}>
                                     <Form.List name="emails" initialValue={['']}>
-                                        {(fields, { add, remove }) => (
+                                        {(fields) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }) => (
-                                                    <Row gutter={16} key={key}>
-                                                        <Col span={18}>
+                                                    <Row gutter={50} key={key}>
+                                                        <Col span={22}>
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={name}
@@ -87,39 +87,23 @@ const ViewCompanyPage = () => {
                                                                     { type: 'email', message: 'Please enter a valid Email' },
                                                                 ]}
                                                             >
-                                                                <Input placeholder="Enter Email" disabled/>
+                                                                <Input placeholder="Enter Email" readOnly />
                                                             </Form.Item>
-                                                        </Col>
-                                                        <Col span={6}>
-                                                            <Button
-                                                                type="danger"
-                                                                onClick={() => {
-                                                                    if (fields.length > 1) {
-                                                                        remove(name);
-                                                                    }
-                                                                }}
-                                                            >
-                                                                Remove
-                                                            </Button>
                                                         </Col>
                                                     </Row>
                                                 ))}
-                                                <Form.Item>
-                                                    <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />} disabled>
-                                                        Add Email
-                                                    </Button>
-                                                </Form.Item>
+
                                             </>
                                         )}
                                     </Form.List>
                                 </Col>
                                 <Col span={12}>
                                     <Form.List name="websites" initialValue={['']}>
-                                        {(fields, { add, remove }) => (
+                                        {(fields) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }) => (
-                                                    <Row gutter={16} key={key}>
-                                                        <Col span={18}>
+                                                    <Row gutter={50} key={key}>
+                                                        <Col span={22}>
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={name}
@@ -128,32 +112,23 @@ const ViewCompanyPage = () => {
                                                                     { required: true, message: 'Please enter Website' },
                                                                 ]}
                                                             >
-                                                                <Input placeholder="Enter Website" disabled/>
+                                                                <Input placeholder="Enter Website" readOnly />
                                                             </Form.Item>
-                                                        </Col>
-                                                        <Col span={6}>
-                                                            <Button type="danger" onClick={() => remove(name)}>
-                                                                Remove
-                                                            </Button>
                                                         </Col>
                                                     </Row>
                                                 ))}
-                                                <Form.Item>
-                                                    <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />} disabled>
-                                                        Add Website
-                                                    </Button>
-                                                </Form.Item>
+
                                             </>
                                         )}
                                     </Form.List>
                                 </Col>
                                 <Col span={12}>
                                     <Form.List name="phones" initialValue={['']}>
-                                        {(fields, { add, remove }) => (
+                                        {(fields) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }) => (
-                                                    <Row gutter={16} key={key}>
-                                                        <Col span={18}>
+                                                    <Row gutter={50} key={key}>
+                                                        <Col span={22}>
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={name}
@@ -162,21 +137,12 @@ const ViewCompanyPage = () => {
                                                                     { required: true, message: 'Please enter Phone' },
                                                                 ]}
                                                             >
-                                                                <Input placeholder="Enter Phone no" disabled/>
+                                                                <Input placeholder="Enter Phone no" readOnly />
                                                             </Form.Item>
-                                                        </Col>
-                                                        <Col span={6}>
-                                                            <Button type="danger" onClick={() => remove(name)}>
-                                                                Remove
-                                                            </Button>
                                                         </Col>
                                                     </Row>
                                                 ))}
-                                                <Form.Item>
-                                                    <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />} disabled>
-                                                        Add Phone No
-                                                    </Button>
-                                                </Form.Item>
+
                                             </>
                                         )}
                                     </Form.List>
@@ -187,28 +153,28 @@ const ViewCompanyPage = () => {
                                 label="CIN No"
                                 rules={[{ required: true, message: "Please enter CIN No" }]}
                             >
-                                <Input placeholder="Enter CIN No" disabled/>
+                                <Input placeholder="Enter CIN No" readOnly />
                             </Form.Item>
                             <Form.Item
                                 name="tan_no"
                                 label="TAN No"
                                 rules={[{ required: true, message: "Please enter TAN No" }]}
                             >
-                                <Input placeholder="Enter TAN No" disabled/>
+                                <Input placeholder="Enter TAN No" readOnly />
                             </Form.Item>
                             <Form.Item
                                 name="pan_no"
                                 label="PAN No"
                                 rules={[{ required: true, message: "Please enter PAN No" }]}
                             >
-                                <Input placeholder="Enter PAN No" disabled/>
+                                <Input placeholder="Enter PAN No" readOnly />
                             </Form.Item>
                             <Form.Item
                                 name="gst_no"
                                 label="GST No"
                                 rules={[{ required: true, message: "Please enter GST No" }]}
                             >
-                                <Input placeholder="Enter GST No" disabled/>
+                                <Input placeholder="Enter GST No" readOnly />
                             </Form.Item>
                         </Form>
                     </div>
@@ -226,14 +192,14 @@ const ViewCompanyPage = () => {
                                         label="Office Address"
                                         rules={[{ required: true, message: "Please enter office Address" }]}
                                     >
-                                        <Input placeholder="Enter office address" disabled/>
+                                        <TextArea placeholder="Enter office address" autoSize={{ minRows: 2, maxRows: 6 }} readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name={["address", "factory"]}
                                         label="Factory Address"
                                         rules={[{ required: true, message: "Please enter factory Address" }]}
                                     >
-                                        <Input placeholder="Enter factory address" disabled/>
+                                        <TextArea placeholder="Enter factory address" autoSize={{ minRows: 2, maxRows: 6 }} readOnly />
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -247,28 +213,33 @@ const ViewCompanyPage = () => {
                                         label="Bank Name"
                                         rules={[{ required: true, message: "Please enter Bank name" }]}
                                     >
-                                        <Input placeholder="Enter Bank name" disabled/>
+                                        <Input placeholder="Enter Bank name" readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name={["bank_details", "account_no"]}
                                         label="Account Number"
                                         rules={[{ required: true, message: "Please enter Account Number" }]}
                                     >
-                                        <Input placeholder="Enter Account Number" disabled/>
+                                        <Input placeholder="Enter Account Number" readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name={["bank_details", "ifsc"]}
                                         label="Ifsc Code"
                                         rules={[{ required: true, message: "Please enter Ifsc Code" }]}
                                     >
-                                        <Input placeholder="Enter Ifsc Code" disabled/>
+                                        <Input placeholder="Enter Ifsc Code" readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name={["bank_details", "branch"]}
                                         label="Branch & Address"
                                         rules={[{ required: true, message: "Please enter Branch & Address" }]}
                                     >
-                                        <Input placeholder="Enter Branch & Address" disabled/>
+                                        <Input placeholder="Enter Branch & Address" readOnly />
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button type="primary" onClick={handleBack} loading={loading}>
+                                            Go Back
+                                        </Button>
                                     </Form.Item>
                                 </Form>
                             </div>

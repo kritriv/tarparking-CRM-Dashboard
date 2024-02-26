@@ -46,10 +46,6 @@ const ViewUserPage = () => {
         }
     };
 
-    const handleGoBack = () => {
-        navigate(`/users`);
-    };
-
     return (
         <Card title="User details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 30, margin: 10 }}>
             <div>
@@ -62,7 +58,7 @@ const ViewUserPage = () => {
                                 { required: true, message: "Please enter name" },
                             ]}
                         >
-                            <Input placeholder="Enter Name" disabled />
+                            <Input placeholder="Enter Name" readOnly />
                         </Form.Item>
                         <Form.Item
                             name="username"
@@ -71,7 +67,7 @@ const ViewUserPage = () => {
                                 { required: true, message: "Please enter username" },
                             ]}
                         >
-                            <Input placeholder="Enter username" disabled />
+                            <Input placeholder="Enter username" readOnly />
                         </Form.Item>
                         <Form.Item
                             name="email"
@@ -81,7 +77,7 @@ const ViewUserPage = () => {
                                 { type: "email", message: "Please enter a valid email" },
                             ]}
                         >
-                            <Input placeholder="Enter Email" disabled />
+                            <Input placeholder="Enter Email" readOnly />
                         </Form.Item>
                         <Form.Item
                             name="role"
@@ -90,14 +86,14 @@ const ViewUserPage = () => {
                                 { required: true, message: "Please select a role" },
                             ]}
                         >
-                            <Select disabled >
+                            <Select disabled  >
                                 <Select.Option value="USER">USER</Select.Option>
                                 <Select.Option value="ADMIN">ADMIN</Select.Option>
                                 <Select.Option value="SUPERADMIN">SUPERADMIN</Select.Option>
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Button type="primary" onClick={handleGoBack} loading={loading}>
+                            <Button type="primary" onClick={handleBack} loading={loading}>
                                 Go Back
                             </Button>
                         </Form.Item>

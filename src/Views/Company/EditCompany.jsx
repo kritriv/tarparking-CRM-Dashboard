@@ -5,6 +5,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import { CompanyServicesAPI } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
+const { TextArea } = Input;
+
 const EditCompanyPage = () => {
     const { id } = useParams();
     const [form] = Form.useForm();
@@ -250,14 +252,14 @@ const EditCompanyPage = () => {
                                         label="Office Address"
                                         rules={[{ required: true, message: "Please enter office Address" }]}
                                     >
-                                        <Input placeholder="Enter office address" />
+                                        <TextArea placeholder="Enter office address" autoSize={{ minRows: 2, maxRows: 6 }}  />
                                     </Form.Item>
                                     <Form.Item
                                         name={["address", "factory"]}
                                         label="Factory Address"
                                         rules={[{ required: true, message: "Please enter factory Address" }]}
                                     >
-                                        <Input placeholder="Enter factory address" />
+                                        <TextArea placeholder="Enter factory address" autoSize={{ minRows: 2, maxRows: 6 }}  />
                                     </Form.Item>
                                 </Form>
                             </div>

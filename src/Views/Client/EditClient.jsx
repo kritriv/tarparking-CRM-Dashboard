@@ -83,7 +83,7 @@ const EditClientPage = () => {
 
     return (
         <Card title="Edit Client" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={100}>
+            <Row gutter={150}>
                 <Col span={12}>
                     <div>
                         <h2>Client Information</h2>

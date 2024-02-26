@@ -4,6 +4,8 @@ import { ClientServicesAPI } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
 
+const { TextArea } = Input;
+
 const CreateClientPage = () => {
     const userInfo = useUserInfo();
     const createby = userInfo.userID;
@@ -47,7 +49,7 @@ const CreateClientPage = () => {
 
     return (
         <Card title="Create Client" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={100}>
+            <Row gutter={150}>
                 {/* Left Side - Client Information */}
                 <Col span={12}>
                     <div>
@@ -103,14 +105,14 @@ const CreateClientPage = () => {
 
                             <Form.Item
                                 name="company"
-                                label="Company"
+                                label="Company Name"
                                 rules={[{ required: true, message: "Please enter Company" }]}
                             >
-                                <Input placeholder="Enter Company" />
+                                <Input placeholder="Enter Company Name" />
                             </Form.Item>
 
-                            <Form.Item name="gst" label="GST" rules={[{ required: true, message: "Please enter GST" }]}>
-                                <Input placeholder="Enter GST" />
+                            <Form.Item name="gst" label="GST No" rules={[{ required: true, message: "Please enter GST" }]}>
+                                <Input placeholder="Enter GST No" />
                             </Form.Item>
                         </Form>
                     </div>
@@ -126,7 +128,8 @@ const CreateClientPage = () => {
                                 label="Site"
                                 rules={[{ required: true, message: "Please enter Site" }]}
                             >
-                                <Input placeholder="Enter Site" />
+                                <TextArea placeholder="Enter site address" autoSize={{ minRows: 2, maxRows: 6 }} />
+
                             </Form.Item>
 
                             <Form.Item
