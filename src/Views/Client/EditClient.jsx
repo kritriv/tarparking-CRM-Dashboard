@@ -27,7 +27,6 @@ const EditClientPage = () => {
         try {
             setLoading(true);
             const response = await APIService.ClientApi.readResource(id);
-
             if (response.success) {
                 form.setFieldsValue(response.data);
                 setClientData(response.data);
@@ -91,7 +90,7 @@ const EditClientPage = () => {
                             <Row gutter={16}>
                                 <Col span={6}>
                                     <Form.Item name="status" label="Status">
-                                        <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked={clientData?.status === 'Active'} />
+                                        <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked={clientData?.status === 'true'} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>

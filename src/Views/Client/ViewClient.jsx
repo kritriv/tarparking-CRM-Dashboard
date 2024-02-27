@@ -29,7 +29,6 @@ const ViewClientPage = () => {
         try {
             setLoading(true);
             const response = await APIService.ClientApi.readResource(id);
-
             if (response.success) {
                 form.setFieldsValue(response.data);
                 setClientData(response.data);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card } from "antd";
+import { Space, Button, Card, Tag } from "antd";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
@@ -95,9 +95,22 @@ const CompanyPage = () => {
       title: "Company Status",
       dataIndex: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
-      render: (status) => (
-        <span>{status ? "Active" : "Inactive"}</span>
-      ),
+      align: 'center',
+      render: (_, { status }) => {
+        let color = 'green';
+        let text = 'Active';
+
+        if (status === false || status === 'false') {
+          color = 'red';
+          text = 'Inactive';
+        }
+
+        return (
+          <Tag color={color} text={text} key={status}>
+            {text}
+          </Tag>
+        );
+      },
     },
     {
       title: "Name",
@@ -126,7 +139,7 @@ const CompanyPage = () => {
         <Space>
           <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
           <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
-          <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} /></Button>
+          <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red"/></Button>
         </Space>
       ),
     },

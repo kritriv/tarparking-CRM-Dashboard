@@ -126,7 +126,7 @@ const UserPage = () => {
                 <Space>
                     <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
                     <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
-                    <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} /></Button>
+                    <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red"/></Button>
                 </Space>
             ),
         },

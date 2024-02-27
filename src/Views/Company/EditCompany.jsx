@@ -52,8 +52,6 @@ const EditCompanyPage = () => {
 
     const handleEditCompany = async () => {
         try {
-            const formData = await form.validateFields();
-            console.log(formData);
             form.validateFields().then((values) => {
                 setLoading(true);
                 APIService.CompanyApi.updateResource(id, values)
@@ -252,14 +250,14 @@ const EditCompanyPage = () => {
                                         label="Office Address"
                                         rules={[{ required: true, message: "Please enter office Address" }]}
                                     >
-                                        <TextArea placeholder="Enter office address" autoSize={{ minRows: 2, maxRows: 6 }}  />
+                                        <TextArea placeholder="Enter office address" autoSize={{ minRows: 2, maxRows: 6 }} />
                                     </Form.Item>
                                     <Form.Item
                                         name={["address", "factory"]}
                                         label="Factory Address"
                                         rules={[{ required: true, message: "Please enter factory Address" }]}
                                     >
-                                        <TextArea placeholder="Enter factory address" autoSize={{ minRows: 2, maxRows: 6 }}  />
+                                        <TextArea placeholder="Enter factory address" autoSize={{ minRows: 2, maxRows: 6 }} />
                                     </Form.Item>
                                 </Form>
                             </div>

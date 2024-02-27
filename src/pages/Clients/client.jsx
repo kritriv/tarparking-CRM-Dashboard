@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card } from "antd";
+import { Space, Button, Card, Tag } from "antd";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
@@ -98,9 +98,22 @@ const ClientPage = () => {
       title: "Client Status",
       dataIndex: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
-      render: (status) => (
-        <span>{status ? "Active" : "Inactive"}</span>
-      ),
+      align: 'center',
+      render: (_, { status }) => {
+        let color = 'green';
+        let text = 'Active';
+  
+        if (status === false || status === 'false') {
+          color = 'red';
+          text = 'Inactive';
+        }
+  
+        return (
+          <Tag color={color} key={status}>
+            {text}
+          </Tag>
+        );
+      },
     },
     {
       title: "Username",
@@ -144,7 +157,7 @@ const ClientPage = () => {
         <Space>
           <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
           <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
-          <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} /></Button>
+          <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red"/></Button>
         </Space>
       ),
     },
@@ -169,12 +182,12 @@ const ClientPage = () => {
         />
       </Space>
       <DeleteClientModal
-                visible={deleteModalVisible}
-                onCancel={handleDeleteModalCancel}
-                record={deleteRecord}
-                fetchClientData={fetchClientData}
-                currentPage={currentPage}
-            />
+        visible={deleteModalVisible}
+        onCancel={handleDeleteModalCancel}
+        record={deleteRecord}
+        fetchClientData={fetchClientData}
+        currentPage={currentPage}
+      />
     </Card>
   );
 };
