@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card, Input, Spin } from "antd";
+import { Space, Button, Card, Input, Spin, Tag } from "antd";
 import { BiEditAlt, BiRefresh } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
 import DeleteUserModal from "../../Views/User/DeleteUser";
+import { ifElse } from "ramda";
 
 const AdminPage = () => {
     const [searchText, setSearchText] = useState("");
@@ -144,6 +145,21 @@ const AdminPage = () => {
             ],
             onFilter: (value, record) => record.role === value,
             filterSearch: true,
+            render: (_, { role }) => {
+                const roleMapping = {
+                    'USER': { color: 'magenta', text: 'User' },
+                    'ADMIN': { color: 'red', text: 'Admin' },
+                    'SUPERADMIN': { color: 'blue', text: 'Super Admin' },
+                };
+
+                const { color, text } = roleMapping[role] || { color: 'black', text: 'No Role' };
+
+                return (
+                    <Tag color={color} key={role}>
+                        {text}
+                    </Tag>
+                );
+            },
         },
         {
             title: "Actions",
@@ -162,7 +178,7 @@ const AdminPage = () => {
         <Card title="Users List" extra={
             <Space>
                 {loading && <Spin size="large" />}
-                <Button onClick={() => handleCreate()} type="primary">Create Admin</Button>
+                <Button onClick={() => handleCreate()} type="primary">Add Admin</Button>
                 <Input
                     placeholder="Search by username"
                     value={searchText}

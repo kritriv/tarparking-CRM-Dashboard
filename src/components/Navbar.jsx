@@ -58,7 +58,7 @@ const Navbar = ({ collapsed, toggleCollapse }) => {
                   xl: 40,
                   xxl: 40,
                 }}
-                src="https://cdn-icons-png.flaticon.com/512/14122/14122142.png"
+                src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png"
                 style={{ margin: " 0 10px 0 0 " }} />
               <Space direction="vertical">
                 <span style={{ fontWeight: "bold" }}>{userName}</span>
@@ -151,7 +151,7 @@ const Navbar = ({ collapsed, toggleCollapse }) => {
               xl: 40,
               xxl: 40,
             }}
-            src="https://cdn-icons-png.flaticon.com/512/14122/14122142.png"
+            src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png"
           />}
         />
       </Flex>

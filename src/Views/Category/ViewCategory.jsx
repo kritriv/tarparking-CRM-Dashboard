@@ -68,10 +68,10 @@ const ViewCategoryPage = () => {
                                 <Col span={12}>
                                     <Form.Item
                                         name="editBy"
-                                        label="EditBy (You)"
+                                        label="Created By"
                                         initialValue={editBy}
                                     >
-                                        <Input placeholder="Enter EditBy Id" disabled />
+                                        <Input placeholder="Enter Created By Id" disabled />
                                     </Form.Item>
                                 </Col>
                             </Row>

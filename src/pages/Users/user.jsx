@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card, Input, Spin } from "antd";
+import { Space, Button, Card, Input, Spin, Tag } from "antd";
 import { BiEditAlt, BiRefresh } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
@@ -140,6 +140,21 @@ const UserPage = () => {
             ],
             onFilter: (value, record) => record.role === value,
             filterSearch: true,
+            render: (_, { role }) => {
+                const roleMapping = {
+                    'USER': { color: 'magenta', text: 'User' },
+                    'ADMIN': { color: 'red', text: 'Admin' },
+                    'SUPERADMIN': { color: 'blue', text: 'Super Admin' },
+                };
+
+                const { color, text } = roleMapping[role] || { color: 'black', text: 'No Role' };
+
+                return (
+                    <Tag color={color} key={role}>
+                        {text}
+                    </Tag>
+                );
+            },
         },
         {
             title: "Actions",
@@ -158,7 +173,7 @@ const UserPage = () => {
         <Card title="Users List" extra={
             <Space>
                 {loading && <Spin size="large" />}
-                <Button onClick={() => handleCreate()} type="primary">Create User</Button>
+                <Button onClick={() => handleCreate()} type="primary">Add User</Button>
                 <Input
                     placeholder="Search by username"
                     value={searchText}

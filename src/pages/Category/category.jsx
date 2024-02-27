@@ -116,6 +116,18 @@ const CategoryPage = () => {
             title: "Category Status",
             dataIndex: "status",
             align: 'center',
+            filters: [
+                {
+                    text: "Active",
+                    value: true,
+                },
+                {
+                    text: "Deactive",
+                    value: false,
+                }
+            ],
+            onFilter: (value, record) => record.status === value,
+            filterSearch: true,
             render: (_, { status }) => {
                 let color = 'green';
                 let text = 'Active';
@@ -168,7 +180,7 @@ const CategoryPage = () => {
         <Card title="Category List" extra={
             <Space>
                 {loading && <Spin size="large" />}
-                <Button onClick={() => handleCreate()} type="primary">Create Category</Button>
+                <Button onClick={() => handleCreate()} type="primary">Add Category</Button>
                 <Input
                     placeholder="Search by name"
                     value={searchText}

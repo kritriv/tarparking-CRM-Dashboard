@@ -67,10 +67,10 @@ const ViewClientPage = () => {
                                 <Col span={12}>
                                     <Form.Item
                                         name="editBy"
-                                        label="EditBy (You)"
+                                        label="Created By"
                                         initialValue={editBy}
                                     >
-                                        <Input placeholder="Enter EditBy Id" readOnly />
+                                        <Input placeholder="Enter Created By Id" readOnly />
                                     </Form.Item>
                                 </Col>
                             </Row>
