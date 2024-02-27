@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, Form, Input, Switch, Button, notification, Row, Col } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
-import { CompanyServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
@@ -21,7 +21,7 @@ const CreateCompanyPage = () => {
             form.validateFields().then((values) => {
                 setLoading(true);
                 console.log(values)
-                CompanyServicesAPI.createCompany(values)
+                APIService.CompanyApi.createResource(values)
                     .then(() => {
                         notification.success({
                             message: "Success",

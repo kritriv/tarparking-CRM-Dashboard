@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Form, Input, Switch, Button, notification, Row, Col, InputNumber } from "antd";
-import { ClientServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
 
@@ -28,10 +28,9 @@ const ViewClientPage = () => {
     const fetchClientData = async (id) => {
         try {
             setLoading(true);
-            const response = await ClientServicesAPI.readClient(id);
+            const response = await APIService.ClientApi.readResource(id);
 
             if (response.success) {
-                // Set the fetched data as initial values
                 form.setFieldsValue(response.data);
                 setClientData(response.data);
             } else {
@@ -172,7 +171,6 @@ const ViewClientPage = () => {
                     </div>
                 </Col>
             </Row>
-            {/* No need for the Update button in view mode */}
         </Card>
     );
 };

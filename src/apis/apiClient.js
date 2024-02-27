@@ -19,11 +19,9 @@ axiosInstance.interceptors.request.use(
     } else {
       config.headers.Authorization = "Bearer Token";
     }
-    // Do something else before request is sent if needed
     return config;
   },
   (error) => {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
@@ -32,7 +30,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (res) => {
     if (res.config.url.includes("/logout")) {
-      // Handle logout response
       if (res.data && res.data.success === "true") {
         return res.data;
       } else {
@@ -55,7 +52,7 @@ axiosInstance.interceptors.response.use(
     //   throw new Error(message || "sys.api.apiRequestFailed");
     // }
 
-    return res.data; // Return response data for successful deletion without throwing an error
+    return res.data;
   },
   (error) => {
     const { response, message } = error || {};
@@ -66,7 +63,6 @@ axiosInstance.interceptors.response.use(
       throw new Error(error);
     }
     Message.error(errMsg);
-    // Reject the Promise with the original error
     return Promise.reject(error);
   }
 );

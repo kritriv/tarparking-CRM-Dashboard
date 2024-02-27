@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, Form, Input, Select, Button, notification } from "antd";
-import { UserServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const CreateUserPage = () => {
@@ -16,7 +16,7 @@ const CreateUserPage = () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
-                UserServicesAPI.createUser(values)
+                APIService.UserApi.createResource(values)
                     .then(() => {
                         notification.success({
                             message: "Success",

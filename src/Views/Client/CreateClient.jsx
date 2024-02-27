@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, Form, Input, Switch, Button, notification, Row, Col, InputNumber } from "antd";
-import { ClientServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
 
@@ -22,7 +22,7 @@ const CreateClientPage = () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
-                ClientServicesAPI.createClient(values)
+                APIService.ClientApi.createResource(values)
                     .then(() => {
                         notification.success({
                             message: "Success",

@@ -3,7 +3,7 @@ import { Space, Button, Card } from "antd";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
-import { CompanyServicesAPI } from "../../apis"
+import { APIService } from "../../apis"
 import { useNavigate } from "react-router-dom";
 
 import TableComponent from "../../components/Table";
@@ -50,7 +50,7 @@ const CompanyPage = () => {
     try {
       setLoading(true);
       setError(false);
-      const response = await CompanyServicesAPI.listCompany(page, pageSize);
+      const response = await APIService.CompanyApi.listResource(page, pageSize);
       setCompanyData(response.data);
       setTotalCompany(response.total);
       setCurrentPage(page);

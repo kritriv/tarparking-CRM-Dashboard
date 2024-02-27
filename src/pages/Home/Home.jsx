@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { Flex, Space } from "antd";
-import { UserServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 
 import CardComponent from "../../components/Card";
 
@@ -16,7 +16,7 @@ const Home = () => {
     try {
       setLoading(true);
       setError(false);
-      const response = await UserServicesAPI.listUser(page, pageSize);
+      const response = await APIService.UserApi.listResource(page, pageSize);
       setUserData(response.data);
       setTotalUsers(response.total);
       setCurrentPage(page);

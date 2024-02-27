@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Form, Input, Select, Button, notification, Space } from "antd";
-import { UserServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const EditUserPage = () => {
@@ -23,7 +23,7 @@ const EditUserPage = () => {
     const fetchUserData = async (id) => {
         try {
             setLoading(true);
-            const response = await UserServicesAPI.readUser(id);
+            const response = await APIService.UserApi.readResource(id);
 
             if (response.success) {
                 setUserData(response.data);
@@ -50,7 +50,7 @@ const EditUserPage = () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
-                UserServicesAPI.updateUser(id, values)
+                APIService.UserApi.updateResource(id, values)
                     .then(() => {
                         notification.success({
                             message: "Success",

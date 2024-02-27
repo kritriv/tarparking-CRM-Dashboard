@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Form, Input, Switch, Button, notification, Row, Col } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
-import { CompanyServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
@@ -26,7 +26,7 @@ const EditCompanyPage = () => {
     const fetchCompanyData = async (id) => {
         try {
             setLoading(true);
-            const response = await CompanyServicesAPI.readCompany(id);
+            const response = await APIService.CompanyApi.readResource(id);
 
             if (response.success) {
                 form.setFieldsValue(response.data);
@@ -56,7 +56,7 @@ const EditCompanyPage = () => {
             console.log(formData);
             form.validateFields().then((values) => {
                 setLoading(true);
-                CompanyServicesAPI.updateCompany(id, values)
+                APIService.CompanyApi.updateResource(id, values)
                     .then(() => {
                         notification.success({
                             message: "Success",

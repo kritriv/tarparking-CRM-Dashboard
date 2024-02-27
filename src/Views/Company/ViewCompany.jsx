@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Form, Input, Switch, Button, notification, Row, Col } from "antd";
-import { CompanyServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
@@ -25,10 +25,9 @@ const ViewCompanyPage = () => {
     const fetchCompanyData = async (id) => {
         try {
             setLoading(true);
-            const response = await CompanyServicesAPI.readCompany(id);
+            const response = await APIService.CompanyApi.readResource(id);
 
             if (response.success) {
-                // Set the fetched data as initial values
                 form.setFieldsValue(response.data);
                 setCompanyData(response.data);
             } else {

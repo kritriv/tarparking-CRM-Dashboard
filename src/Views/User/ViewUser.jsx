@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Form, Input, Select, Button, notification } from "antd";
-import { UserServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const ViewUserPage = () => {
@@ -23,7 +23,7 @@ const ViewUserPage = () => {
     const fetchUserData = async (id) => {
         try {
             setLoading(true);
-            const response = await UserServicesAPI.readUser(id);
+            const response = await APIService.UserApi.readResource(id);
 
             if (response.success) {
                 setUserData(response.data);

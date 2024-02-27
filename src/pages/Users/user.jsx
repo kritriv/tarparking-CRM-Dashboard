@@ -3,7 +3,7 @@ import { Space, Button, Card } from "antd";
 import { BiEditAlt } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
-import { UserServicesAPI } from "../../apis"
+import { APIService } from "../../apis"
 import { useNavigate } from "react-router-dom";
 
 import TableComponent from "../../components/Table";
@@ -50,7 +50,7 @@ const UserPage = () => {
         try {
             setLoading(true);
             setError(false);
-            const response = await UserServicesAPI.listUser(page, pageSize);
+            const response = await APIService.UserApi.listResource(page, pageSize);
             setUserData(response.data);
             setTotalUsers(response.total);
             setCurrentPage(page);

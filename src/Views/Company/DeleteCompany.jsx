@@ -1,10 +1,10 @@
 import { Modal, Button, notification } from "antd";
-import { CompanyServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 
 const DeleteCompanyModal = ({ visible, onCancel, record, fetchCompanyData, currentPage }) => {
     const handleDelete = async () => {
         try {
-            const response = await CompanyServicesAPI.deleteCompany(record.id);
+            const response = await APIService.CompanyApi.deleteResource(record.id);
 
             if (response && response.success) {
                 notification.success({

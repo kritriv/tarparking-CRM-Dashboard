@@ -1,34 +1,34 @@
 import { Modal, Button, notification } from "antd";
 import { APIService } from "../../apis";
 
-const DeleteUserModal = ({ visible, onCancel, record, fetchUserData, currentPage }) => {
+const DeleteCategoryModal = ({ visible, onCancel, record, fetchCategoryData, currentPage }) => {
     const handleDelete = async () => {
         try {
-            const response = await APIService.UserApi.deleteResource(record.id);
+            const response = await APIService.CategoryApi.deleteResource(record.id);
 
             if (response && response.success) {
                 notification.success({
-                    message: 'User Deleted',
-                    description: `${record.email} has been deleted successfully.`,
+                    message: 'Category Details Deleted',
+                    description: `${record.name} has been deleted successfully.`,
                 });
-                fetchUserData(currentPage);
+                fetchCategoryData(currentPage);
                 onCancel();
             } else {
                 notification.error({
                     message: 'Error',
-                    description: response.message || 'Failed to delete user.',
+                    description: response.message || 'Failed to delete category.',
                 });
             }
         } catch (error) {
             notification.error({
                 message: 'Error',
-                description: 'Failed to delete user. Please try again later.',
+                description: 'Failed to delete category. Please try again later.',
             });
         }
     };
     return (
         <Modal
-            title="Delete User"
+            title="Delete Category"
             open={visible}
             onCancel={onCancel}
             footer={[
@@ -36,10 +36,10 @@ const DeleteUserModal = ({ visible, onCancel, record, fetchUserData, currentPage
                 <Button key="delete" type="primary" danger onClick={handleDelete}>Delete</Button>,
             ]}
         >
-            {/* <p>Are you sure you want to delete user <b>{UserEmail} ?</b></p> */}
-            <p>Are you sure you want to delete this user ?</p>
+            {/* <p>Are you sure you want to delete category <b>{CategoryEmail} ?</b></p> */}
+            <p>Are you sure you want to delete this category ?</p>
         </Modal>
     );
 };
 
-export default DeleteUserModal;
+export default DeleteCategoryModal;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, Form, Input, Switch, Button, notification, Row, Col, InputNumber } from "antd";
-import { ClientServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
 
@@ -26,7 +26,7 @@ const EditClientPage = () => {
     const fetchClientData = async (id) => {
         try {
             setLoading(true);
-            const response = await ClientServicesAPI.readClient(id);
+            const response = await APIService.ClientApi.readResource(id);
 
             if (response.success) {
                 form.setFieldsValue(response.data);
@@ -54,7 +54,7 @@ const EditClientPage = () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
-                ClientServicesAPI.updateClient(id, values)
+                APIService.ClientApi.updateResource(id, values)
                     .then(() => {
                         notification.success({
                             message: "Success",
@@ -199,7 +199,6 @@ const EditClientPage = () => {
                     </div>
                 </Col>
             </Row>
-            {/* No need for the Update button in view mode */}
         </Card>
     );
 };

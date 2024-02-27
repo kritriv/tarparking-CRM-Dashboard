@@ -1,10 +1,10 @@
 import { Modal, Button, notification } from "antd";
-import { ClientServicesAPI } from "../../apis";
+import { APIService } from "../../apis";
 
 const DeleteClientModal = ({ visible, onCancel, record, fetchClientData, currentPage }) => {
     const handleDelete = async () => {
         try {
-            const response = await ClientServicesAPI.deleteClient(record.id);
+            const response = await APIService.ClientApi.deleteResource(record.id);
 
             if (response && response.success) {
                 notification.success({

@@ -8,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
-import DeleteUserModal from "../../Views/User/DeleteUser";
+import DeleteCategoryModal from "../../Views/Category/DeleteCategory";
 
-const AdminPage = () => {
+const CategoryPage = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [userData, setUserData] = useState([]);
-    const [totalUsers, setTotalUsers] = useState(0);
+    const [CategoryData, setCategoryData] = useState([]);
+    const [totalCategory, setTotalCategory] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentPageSize, setCurrentPageSize] = useState(10);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -23,15 +23,14 @@ const AdminPage = () => {
     const navigate = useNavigate();
 
     const handleEdit = (record) => {
-        navigate(`edit-admin/${record.id}`);
+        navigate(`edit-Category/${record.id}`);
     };
 
     const handleView = (record) => {
-        navigate(`/admins/${record.id}`);
+        navigate(`/category/${record.id}`);
     };
-
     const handleCreate = () => {
-        navigate(`/admins/create`);
+        navigate(`/category/create`);
     };
 
     const handleDelete = (record) => {
@@ -44,16 +43,16 @@ const AdminPage = () => {
     };
 
     useEffect(() => {
-        fetchUserData(currentPage, currentPageSize);
+        fetchCategoryData(currentPage, currentPageSize);
     }, [currentPage, currentPageSize]);
 
-    const fetchUserData = async (page = 1, pageSize = 10) => {
+    const fetchCategoryData = async (page = 1, pageSize = 10) => {
         try {
             setLoading(true);
             setError(false);
-            const response = await APIService.UserApi.listResource(page, pageSize);
-            setUserData(response.data);
-            setTotalUsers(response.total);
+            const response = await APIService.CategoryApi.listResource(page, pageSize);
+            setCategoryData(response.data);
+            setTotalCategory(response.total);
             setCurrentPage(page);
             setCurrentPageSize(pageSize);
             setLoading(false);
@@ -64,23 +63,22 @@ const AdminPage = () => {
         }
     };
 
-    const userTableData =
-        userData &&
-        userData
-            .filter((item) => item.role === 'ADMIN' || item.role === 'SUPERADMIN')
-            .map((item) => ({
-                key: item.id,
-                id: item.id,
-                username: item.username,
-                name: item.name,
-                email: item.email,
-                role: item.role,
-            }));
+    const CategoryTableData =
+        CategoryData &&
+        CategoryData.map((item) => ({
+            key: item.id,
+            id: item.id,
+            status: item.status,
+            createdby: item.createdby,
+            name: item.name,
+            description: item.description,
+            products: item.products.length,
+        }));
 
     const handlePageChange = (page, pageSize) => {
         setCurrentPage(page);
         setCurrentPageSize(pageSize);
-        fetchUserData(page, pageSize);
+        fetchCategoryData(page, pageSize);
     };
 
     const onChange = (pagination, filters, sorter, extra) => {
@@ -94,35 +92,32 @@ const AdminPage = () => {
             sorter: (a, b) => a.id.localeCompare(b.id),
         },
         {
+            title: "Category Status",
+            dataIndex: "status",
+            sorter: (a, b) => a.status.localeCompare(b.status),
+            render: (status) => (
+                <span>{status ? "Active" : "Inactive"}</span>
+            ),
+        },
+        {
+            title: "Created By",
+            dataIndex: "createdby",
+            sorter: (a, b) => a.createdby.localeCompare(b.createdby),
+        },
+        {
             title: "Name",
             dataIndex: "name",
             sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
-            title: "Username",
-            dataIndex: "username",
-            sorter: (a, b) => a.username.localeCompare(b.username),
+            title: "Description",
+            dataIndex: "description",
+            sorter: (a, b) => a.description.localeCompare(b.description),
         },
         {
-            title: "Email",
-            dataIndex: "email",
-            sorter: (a, b) => a.email.localeCompare(b.email),
-        },
-        {
-            title: "Role",
-            dataIndex: "role",
-            filters: [
-                {
-                    text: "Admin",
-                    value: "ADMIN",
-                },
-                {
-                    text: "Super Admin",
-                    value: "SUPERADMIN",
-                },
-            ],
-            onFilter: (value, record) => record.role === value,
-            filterSearch: true,
+            title: "No of Products",
+            dataIndex: "products",
+            sorter: (a, b) => a.products.localeCompare(b.products),
         },
         {
             title: "Actions",
@@ -138,32 +133,32 @@ const AdminPage = () => {
     ];
 
     return (
-        <Card title="Users List" extra={<Button onClick={() => handleCreate()}>Create New Admin</Button>} style={{ padding: 20, margin: 10 }}>
+        <Card title="Category List" extra={<Button onClick={() => handleCreate()}>Create New Category</Button>} style={{ padding: 20, margin: 10 }}>
             <Space direction="vertical" style={{ display: "flex" }} wrap>
                 <TableComponent
                     pagination={false}
                     style={{ margin: "30px" }}
                     columns={columns}
-                    data={userTableData}
+                    data={CategoryTableData}
                     onChange={onChange}
                 />
                 <PaginationComponent
                     showQuickJumper
                     showSizeChanger
                     onPageChange={handlePageChange}
-                    total={totalUsers}
+                    total={totalCategory}
                     currentPage={currentPage}
                 />
             </Space>
-            <DeleteUserModal
+            <DeleteCategoryModal
                 visible={deleteModalVisible}
                 onCancel={handleDeleteModalCancel}
                 record={deleteRecord}
-                fetchUserData={fetchUserData}
+                fetchCategoryData={fetchCategoryData}
                 currentPage={currentPage}
             />
         </Card>
     );
 };
 
-export default AdminPage;
+export default CategoryPage;
