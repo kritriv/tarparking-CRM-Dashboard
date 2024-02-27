@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card, Tag } from "antd";
-import { BiEditAlt } from "react-icons/bi";
+import { Space, Button, Card, Tag, Input, Spin } from "antd";
+import { BiEditAlt, BiRefresh } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
 import { APIService } from "../../apis"
@@ -11,6 +11,8 @@ import PaginationComponent from "../../components/Pagination";
 import DeleteCompanyModal from "../../Views/Company/DeleteCompany";
 
 const CompanyPage = () => {
+  const [searchText, setSearchText] = useState("");
+  const [filteredCompanyData, setFilteredCompanyData] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [CompanyData, setCompanyData] = useState([]);
@@ -40,6 +42,25 @@ const CompanyPage = () => {
 
   const handleDeleteModalCancel = () => {
     setDeleteModalVisible(false);
+  };
+
+  const handleSearch = () => {
+    const filteredData = CompanyData.filter((item) => {
+      const itemName = item.name || '';
+      return itemName
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+    });
+    setCompanyData(filteredData);
+  };
+
+  const handleRefresh = () => {
+    setLoading(true);
+    setSearchText("");
+
+    fetchCompanyData().finally(() => {
+      setLoading(false);
+    });
   };
 
   useEffect(() => {
@@ -139,20 +160,32 @@ const CompanyPage = () => {
         <Space>
           <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
           <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
-          <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red"/></Button>
+          <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red" /></Button>
         </Space>
       ),
     },
   ];
 
   return (
-    <Card title="Company List" extra={<Button onClick={() => handleCreate()}>Create New Company</Button>} style={{ padding: 20, margin: 10 }}>
+    <Card title="Company List" extra={
+      <Space>
+        {loading && <Spin size="large" />}
+        <Button onClick={() => handleCreate()} type="primary">Create Company Info</Button>
+        <Input
+          placeholder="Search by name"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          onPressEnter={handleSearch}
+        />
+        <Button icon={<BiRefresh />} onClick={handleRefresh} />
+      </Space>
+    } style={{ padding: 20, margin: 10 }}>
       <Space direction="vertical" style={{ display: "flex" }} wrap>
         <TableComponent
           pagination={false}
           style={{ margin: "30px" }}
           columns={columns}
-          data={CompanyTableData}
+          data={filteredCompanyData.length > 0 ? filteredCompanyData : CompanyTableData}
           onChange={onChange}
         />
         <PaginationComponent

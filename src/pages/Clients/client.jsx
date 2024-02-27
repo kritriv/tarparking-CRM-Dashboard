@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card, Tag } from "antd";
-import { BiEditAlt } from "react-icons/bi";
+import { Space, Button, Card, Tag, Input, Spin } from "antd";
+import { BiEditAlt, BiRefresh } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
 import { APIService } from "../../apis"
@@ -11,6 +11,8 @@ import PaginationComponent from "../../components/Pagination";
 import DeleteClientModal from "../../Views/Client/DeleteClient";
 
 const ClientPage = () => {
+  const [searchText, setSearchText] = useState("");
+  const [filteredClientData, setFilteredClientData] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [ClientData, setClientData] = useState([]);
@@ -40,6 +42,25 @@ const ClientPage = () => {
 
   const handleDeleteModalCancel = () => {
     setDeleteModalVisible(false);
+  };
+
+  const handleSearch = () => {
+    const filteredData = ClientData.filter((item) => {
+      const itemName = item.name || '';
+      return itemName
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+    });
+    setClientData(filteredData);
+  };
+
+  const handleRefresh = () => {
+    setLoading(true);
+    setSearchText("");
+
+    fetchClientData().finally(() => {
+      setLoading(false);
+    });
   };
 
   useEffect(() => {
@@ -102,12 +123,12 @@ const ClientPage = () => {
       render: (_, { status }) => {
         let color = 'green';
         let text = 'Active';
-  
+
         if (status === false || status === 'false') {
           color = 'red';
           text = 'Inactive';
         }
-  
+
         return (
           <Tag color={color} key={status}>
             {text}
@@ -157,20 +178,32 @@ const ClientPage = () => {
         <Space>
           <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
           <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
-          <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red"/></Button>
+          <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red" /></Button>
         </Space>
       ),
     },
   ];
 
   return (
-    <Card title="Client List" extra={<Button onClick={() => handleCreate()}>Create New Client</Button>} style={{ padding: 20, margin: 10 }}>
+    <Card title="Client List" extra={
+      <Space>
+        {loading && <Spin size="large" />}
+        <Button onClick={() => handleCreate()} type="primary">Create Client</Button>
+        <Input
+          placeholder="Search by name"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          onPressEnter={handleSearch}
+        />
+        <Button icon={<BiRefresh />} onClick={handleRefresh} />
+      </Space>
+    } style={{ padding: 20, margin: 10 }}>
       <Space direction="vertical" style={{ display: "flex" }} wrap>
         <TableComponent
           pagination={false}
           style={{ margin: "30px" }}
           columns={columns}
-          data={ClientTableData}
+          data={filteredClientData.length > 0 ? filteredClientData : ClientTableData}
           onChange={onChange}
         />
         <PaginationComponent

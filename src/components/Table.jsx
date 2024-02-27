@@ -21,6 +21,9 @@ const TableComponent = ({
       columns={columns}
       dataSource={data}
       onChange={onChange}
+      scroll={{ x: 'max-content' }}
+      responsive={true}
+      size="small"
     />
   );
 };

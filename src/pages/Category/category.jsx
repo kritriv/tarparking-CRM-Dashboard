@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card, Tag } from "antd";
-import { BiEditAlt } from "react-icons/bi";
+import { Space, Button, Card, Tag, Input, Spin } from "antd";
+import { BiEditAlt, BiRefresh } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
 import { APIService } from "../../apis"
@@ -11,6 +11,8 @@ import PaginationComponent from "../../components/Pagination";
 import DeleteCategoryModal from "../../Views/Category/DeleteCategory";
 
 const CategoryPage = () => {
+    const [searchText, setSearchText] = useState("");
+    const [filteredCategoryData, setFilteredCategoryData] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [CategoryData, setCategoryData] = useState([]);
@@ -40,6 +42,25 @@ const CategoryPage = () => {
 
     const handleDeleteModalCancel = () => {
         setDeleteModalVisible(false);
+    };
+
+    const handleSearch = () => {
+        const filteredData = CategoryData.filter((item) => {
+            const itemName = item.name || '';
+            return itemName
+                .toLowerCase()
+                .includes(searchText.toLowerCase());
+        });
+        setCategoryData(filteredData);
+    };
+
+    const handleRefresh = () => {
+        setLoading(true);
+        setSearchText("");
+
+        fetchCategoryData().finally(() => {
+            setLoading(false);
+        });
     };
 
     useEffect(() => {
@@ -94,7 +115,6 @@ const CategoryPage = () => {
         {
             title: "Category Status",
             dataIndex: "status",
-            sorter: (a, b) => a.status.localeCompare(b.status),
             align: 'center',
             render: (_, { status }) => {
                 let color = 'green';
@@ -103,7 +123,7 @@ const CategoryPage = () => {
                 if (status === false || status === 'false') {
                     color = 'red';
                     text = 'Inactive';
-                  }
+                }
 
                 return (
                     <Tag color={color} text={text} key={status}>
@@ -130,7 +150,6 @@ const CategoryPage = () => {
         {
             title: "No of Products",
             dataIndex: "products",
-            sorter: (a, b) => a.products.localeCompare(b.products),
         },
         {
             title: "Actions",
@@ -139,20 +158,32 @@ const CategoryPage = () => {
                 <Space>
                     <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
                     <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
-                    <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red"/></Button>
+                    <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red" /></Button>
                 </Space>
             ),
         },
     ];
 
     return (
-        <Card title="Category List" extra={<Button onClick={() => handleCreate()}>Create New Category</Button>} style={{ padding: 20, margin: 10 }}>
+        <Card title="Category List" extra={
+            <Space>
+                {loading && <Spin size="large" />}
+                <Button onClick={() => handleCreate()} type="primary">Create Category</Button>
+                <Input
+                    placeholder="Search by name"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    onPressEnter={handleSearch}
+                />
+                <Button icon={<BiRefresh />} onClick={handleRefresh} />
+            </Space>
+        } style={{ padding: 20, margin: 10 }}>
             <Space direction="vertical" style={{ display: "flex" }} wrap>
                 <TableComponent
                     pagination={false}
                     style={{ margin: "30px" }}
                     columns={columns}
-                    data={CategoryTableData}
+                    data={filteredCategoryData.length > 0 ? filteredCategoryData : CategoryTableData}
                     onChange={onChange}
                 />
                 <PaginationComponent
