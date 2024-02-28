@@ -1,0 +1,49 @@
+import Home from "../pages/Home/Home";
+import AdminsPage from "../pages/Users/admin";
+import UserPage from "../pages/Users/user";
+import ViewUser from "../Views/User/ViewUser";
+import CreateUser from "../Views/User/CreateUser";
+import EditUser from "../Views/User/EditUser";
+import ClientPage from "../pages/Clients/client";
+import ViewClient from "../Views/Client/ViewClient";
+import CreateClient from "../Views/Client/CreateClient";
+import EditClient from "../Views/Client/EditClient";
+import CompanyPage from "../pages/Company/company";
+import CreateCompany from "../Views/Company/CreateCompany";
+import EditCompany from "../Views/Company/EditCompany";
+import ViewCompany from "../Views/Company/ViewCompany";
+import CategoryPage from "../pages/Category/category";
+import CreateCategory from "../Views/Category/CreateCategory";
+import EditCategory from "../Views/Category/EditCategory";
+import ViewCategory from "../Views/Category/ViewCategory";
+
+const routes = [
+    { path: '/', element: <Home /> },
+
+    { path: '/admins', element: <AdminsPage /> },
+    { path: '/admins/:id', element: <ViewUser /> },
+    { path: '/admins/create', element: <CreateUser /> },
+    { path: '/admins/edit-admin/:id', element: <EditUser /> },
+
+    { path: '/users', element: <UserPage /> },
+    { path: '/users/:id', element: <ViewUser /> },
+    { path: '/users/create', element: <CreateUser /> },
+    { path: '/users/edit-user/:id', element: <EditUser /> },
+
+    { path: '/company', element: <CompanyPage /> },
+    { path: '/company/:id', element: <ViewCompany /> },
+    { path: '/company/create', element: <CreateCompany /> },
+    { path: '/company/edit-company/:id', element: <EditCompany /> },
+
+    { path: '/clients', element: <ClientPage /> },
+    { path: '/clients/:id', element: <ViewClient /> },
+    { path: '/clients/create', element: <CreateClient /> },
+    { path: '/clients/edit-client/:id', element: <EditClient /> },
+
+    { path: '/category', element: <CategoryPage /> },
+    { path: '/category/:id', element: <ViewCategory /> },
+    { path: '/category/create', element: <CreateCategory /> },
+    { path: '/category/edit-category/:id', element: <EditCategory /> },
+];
+
+export default routes;
