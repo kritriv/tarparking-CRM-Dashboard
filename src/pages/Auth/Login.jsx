@@ -1,4 +1,4 @@
-import { Layout, Typography, Flex } from "antd";
+import { Row, Typography, Col } from "antd";
 import Color from "color";
 import { Navigate } from "react-router-dom";
 
@@ -22,28 +22,39 @@ function Login() {
   const bg = `linear-gradient(${gradientBg}, ${gradientBg}) center center / cover no-repeat,url(${Overlay2})`;
 
   return (
-    <Layout style={{ height: "100vh", width: "100vw" }}>
-      <Flex direction="row" style={{ height: "100%", width: "100%" }}>
-        <Flex
-          justify="center"
-          align="center"
-          style={{ background: bg, flex: 2 }}
-        >
-          <div style={{ textAlign: "center" }}>
-            <Title style={{ display: "block" }}>
-             Admin Dashboard
-            </Title>
-            <img src={DashboardImg} style={{ maxWidth: "100%" }} alt="" />
-            <Title level={5} style={{ display: "block" }}>
-              Quotation Management System
-            </Title>
-          </div>
-        </Flex>
-        <Flex justify="center" align="center" style={{ flex: 1 }}>
-          <LoginForm />
-        </Flex>
-      </Flex>
-    </Layout>
+    <Row justify="center" align="middle" style={{ height: "100vh" }}>
+      <Col
+        xs={{ span: 0, order: 2 }}
+        sm={{ span: 0, order: 2 }}
+        md={{ span: 24 }}
+        lg={{ span: 14, offset: 0 }}
+        xl={{ span: 14, offset: 0 }}
+        xxl={{ span: 14, offset: 0 }}
+      >
+        <div style={{ textAlign: "center", background: bg, padding: "15rem 0" }}>
+          <Title style={{ display: "block" }}>
+            Admin Dashboard
+          </Title>
+          <Title level={5} style={{ display: "block" }}>
+            Tar Parking CRM (Quotation Management System)
+          </Title>
+          <img src={DashboardImg} style={{ maxWidth: "100%" }} alt="" />
+        </div>
+      </Col>
+
+      <Col
+        xs={{ span: 24, order: 1 }}
+        sm={{ span: 24, order: 1 }}
+        md={{ span: 14, order: 2 }}
+        lg={{ span: 10 }}
+        xl={{ span: 10 }}
+        xxl={{ span: 10 }}
+        style={{ textAlign: "center", padding: "10rem 5rem" }}
+      >
+        <LoginForm />
+      </Col>
+    </Row>
   );
 }
+
 export default Login;

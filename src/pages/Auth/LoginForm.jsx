@@ -14,7 +14,6 @@ import {
   Space,
   Tag,
 } from "antd";
-import { AiFillGithub, AiFillGoogleCircle, AiFillWechat } from "react-icons/ai";
 import { LuCopy, LuCopyCheck } from "react-icons/lu";
 import { DEFAULT_USER } from "../../mock/assets";
 import { useSignIn, useUserInfo } from "../../store/userStore";
@@ -179,19 +178,6 @@ function LoginForm() {
             </Button>
           </Col>
         </Row>
-
-        {/* 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            fontSize: "1.5rem",
-          }}
-        >
-          <AiFillGithub />
-          <AiFillWechat />
-          <AiFillGoogleCircle />
-        </div> */}
       </Form>
     </div>
   );
