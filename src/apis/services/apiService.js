@@ -29,7 +29,8 @@ const generateResourceApi = (entity) => {
     };
 };
 
-export const CompanyApi = generateResourceApi('Company');
-export const CategoryApi = generateResourceApi('Category');
-export const ClientApi = generateResourceApi('Client');
 export const UserApi = generateResourceApi('User');
+export const CompanyApi = generateResourceApi('Company');
+export const ClientApi = generateResourceApi('Client');
+export const CategoryApi = generateResourceApi('Category');
+export const ProductApi = generateResourceApi('Product');

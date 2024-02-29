@@ -16,6 +16,10 @@ import CategoryPage from "../pages/Category/category";
 import CreateCategory from "../Views/Category/CreateCategory";
 import EditCategory from "../Views/Category/EditCategory";
 import ViewCategory from "../Views/Category/ViewCategory";
+import ProductPage from "../pages/Product/product";
+import CreateProduct from "../Views/Product/CreateProduct";
+import EditProduct from "../Views/Product/EditProduct";
+import ViewProduct from "../Views/Product/ViewProduct";
 
 const routes = [
     { path: '/', element: <Home /> },
@@ -44,6 +48,11 @@ const routes = [
     { path: '/category/:id', element: <ViewCategory /> },
     { path: '/category/create', element: <CreateCategory /> },
     { path: '/category/edit-category/:id', element: <EditCategory /> },
+
+    { path: '/products', element: <ProductPage /> },
+    { path: '/products/:id', element: <ViewProduct /> },
+    { path: '/products/create', element: <CreateProduct /> },
+    { path: '/products/edit-product/:id', element: <EditProduct /> },
 ];
 
 export default routes;
