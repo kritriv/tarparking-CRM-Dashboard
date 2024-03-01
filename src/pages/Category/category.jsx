@@ -90,7 +90,7 @@ const CategoryPage = () => {
             key: item.id,
             id: item.id,
             status: item.status,
-            createdby: item.createdby,
+            createdby: item.createdby.username,
             name: item.name,
             description: item.description,
             products: item.products.length,

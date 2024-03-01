@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Card, Form, Input, Switch, Button, notification, Row, Col } from "antd";
+import { useState, useEffect } from "react";
+import { Card, Form, Input, Switch, Button, notification, Row, Col, Select } from "antd";
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
@@ -11,12 +11,23 @@ const CreateProductPage = () => {
     const createby = userInfo.userID;
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
+    const [categories, setCategories] = useState([]);
 
     const navigate = useNavigate();
 
     const handleBack = () => {
         navigate(`/products`);
     };
+
+    useEffect(() => {
+        APIService.CategoryApi.listResource()
+            .then((response) => {
+                setCategories(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching categories:", error);
+            });
+    }, []);
 
     const handleCreateProduct = async () => {
         try {
@@ -80,7 +91,13 @@ const CreateProductPage = () => {
                                             { required: true, message: "Select Category Name" },
                                         ]}
                                     >
-                                        <Input placeholder="Enter Product name" />
+                                        <Select placeholder="Select Category">
+                                            {categories.map((category) => (
+                                                <Select.Option key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>

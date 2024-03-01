@@ -90,11 +90,11 @@ const ProductPage = () => {
       key: item.id,
       id: item.id,
       status: item.status,
-      createdby: item.createdby,
+      createdby: item.createdby.username,
       name: item.name,
-      category: item.category,
+      category: item.category.name,
       description: item.description,
-      sub_products: item.subproducts.length,
+      sub_products: Array.isArray(item.sub_products) ? item.sub_products.length : 0,
     }));
 
   const handlePageChange = (page, pageSize) => {

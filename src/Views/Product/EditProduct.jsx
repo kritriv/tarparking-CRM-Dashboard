@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Card, Form, Input, Switch, Button, notification, Row, Col } from "antd";
+import { Card, Form, Input, Switch, Button, notification, Row, Col, Select } from "antd";
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
@@ -14,6 +14,7 @@ const EditProductPage = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [productData, setProductData] = useState(null);
+    const [categories, setCategories] = useState([]);
 
     const navigate = useNavigate();
 
@@ -22,6 +23,7 @@ const EditProductPage = () => {
     };
 
     useEffect(() => {
+        fetchCategories();
         fetchProductData(id);
     }, [id]);
 
@@ -30,24 +32,40 @@ const EditProductPage = () => {
             setLoading(true);
             const response = await APIService.ProductApi.readResource(id);
             if (response.success) {
-                form.setFieldsValue(response.data);
+                form.setFieldsValue({
+                    ...response.data,
+                    category: response.data.category.name,
+                });
                 setProductData(response.data);
             } else {
-                console.error("Error fetching Comapany data:", response.message);
+                console.error("Error fetching Company data:", response.message);
                 notification.error({
                     message: "Error",
-                    description: "Failed to fetch Comapany details.",
+                    description: "Failed to fetch Company details.",
                 });
             }
 
             setLoading(false);
         } catch (error) {
             setLoading(false);
-            console.error("Error fetching Comapany data:", error);
+            console.error("Error fetching Company data:", error);
             notification.error({
                 message: "Error",
-                description: "Failed to fetch Comapany details. Please try again later.",
+                description: "Failed to fetch Company details. Please try again later.",
             });
+        }
+    };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await APIService.CategoryApi.listResource();
+            if (response.success) {
+                setCategories(response.data);
+            } else {
+                console.error("Error fetching categories:", response.message);
+            }
+        } catch (error) {
+            console.error("Error fetching categories:", error);
         }
     };
 
@@ -114,7 +132,13 @@ const EditProductPage = () => {
                                             { required: true, message: "Select Category Name" },
                                         ]}
                                     >
-                                        <Input placeholder="Enter Product name" />
+                                        <Select placeholder="Select Category">
+                                            {categories.map((category) => (
+                                                <Select.Option key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>

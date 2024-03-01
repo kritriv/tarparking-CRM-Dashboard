@@ -31,7 +31,10 @@ const ViewProductPage = () => {
             const response = await APIService.ProductApi.readResource(id);
 
             if (response.success) {
-                form.setFieldsValue(response.data);
+                form.setFieldsValue({
+                    ...response.data,
+                    category: response.data.category ? response.data.category.name : undefined,
+                });
                 setProductData(response.data);
             } else {
                 console.error("Error fetching user data:", response.message);
@@ -84,7 +87,7 @@ const ViewProductPage = () => {
                                             { required: true, message: "Select Category Name" },
                                         ]}
                                     >
-                                        <Input placeholder="Enter Product name" />
+                                        <Input placeholder="Category name" />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
