@@ -20,6 +20,7 @@ import ProductPage from "../pages/Product/product";
 import CreateProduct from "../Views/Product/CreateProduct";
 import EditProduct from "../Views/Product/EditProduct";
 import ViewProduct from "../Views/Product/ViewProduct";
+import SubProductPage from "../pages/SubProduct/subProduct";
 
 const routes = [
     { path: '/', element: <Home /> },
@@ -53,6 +54,11 @@ const routes = [
     { path: '/products/:id', element: <ViewProduct /> },
     { path: '/products/create', element: <CreateProduct /> },
     { path: '/products/edit-product/:id', element: <EditProduct /> },
+    
+    { path: '/sub-products', element: <SubProductPage /> },
+    // { path: '/products/:id', element: <ViewProduct /> },
+    // { path: '/products/create', element: <CreateProduct /> },
+    // { path: '/products/edit-product/:id', element: <EditProduct /> },
 ];
 
 export default routes;

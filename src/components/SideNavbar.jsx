@@ -32,7 +32,7 @@ const sidebarMenuItems = [
     children: [
       { key: "sub1_option1", label: "Category", path: "/category" },
       { key: "sub1_option2", label: "Product", path: "/products" },
-      { key: "sub1_option3", label: "Sub Product", path: "/sub-product/list/update" },
+      { key: "sub1_option3", label: "Sub Product", path: "/sub-products" },
     ],
   },
   {

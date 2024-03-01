@@ -8,15 +8,15 @@ import { useNavigate } from "react-router-dom";
 
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
-import DeleteCategoryModal from "../../Views/Category/DeleteCategory";
+import DeleteSubProductModal from "../../Views/SubProduct/DeleteSubProduct";
 
-const CategoryPage = () => {
+const SubProductPage = () => {
     const [searchText, setSearchText] = useState("");
-    const [filteredCategoryData, setFilteredCategoryData] = useState([]);
+    const [filteredSubProductData, setFilteredSubProductData] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [CategoryData, setCategoryData] = useState([]);
-    const [totalCategory, setTotalCategory] = useState(0);
+    const [SubProductData, setSubProductData] = useState([]);
+    const [totalSubProduct, setTotalSubProduct] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentPageSize, setCurrentPageSize] = useState(10);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -25,14 +25,14 @@ const CategoryPage = () => {
     const navigate = useNavigate();
 
     const handleEdit = (record) => {
-        navigate(`edit-Category/${record.id}`);
+        navigate(`edit-sub-product/${record.id}`);
     };
 
     const handleView = (record) => {
-        navigate(`/category/${record.id}`);
+        navigate(`/sub-products/${record.id}`);
     };
     const handleCreate = () => {
-        navigate(`/category/create`);
+        navigate(`/sub-products/create`);
     };
 
     const handleDelete = (record) => {
@@ -45,35 +45,35 @@ const CategoryPage = () => {
     };
 
     const handleSearch = () => {
-        const filteredData = CategoryData.filter((item) => {
+        const filteredData = SubProductData.filter((item) => {
             const itemName = item.name || '';
             return itemName
                 .toLowerCase()
                 .includes(searchText.toLowerCase());
         });
-        setCategoryData(filteredData);
+        setSubProductData(filteredData);
     };
 
     const handleRefresh = () => {
         setLoading(true);
         setSearchText("");
 
-        fetchCategoryData().finally(() => {
+        fetchSubProductData().finally(() => {
             setLoading(false);
         });
     };
 
     useEffect(() => {
-        fetchCategoryData(currentPage, currentPageSize);
+        fetchSubProductData(currentPage, currentPageSize);
     }, [currentPage, currentPageSize]);
 
-    const fetchCategoryData = async (page = 1, pageSize = 10) => {
+    const fetchSubProductData = async (page = 1, pageSize = 10) => {
         try {
             setLoading(true);
             setError(false);
-            const response = await APIService.CategoryApi.listResource(page, pageSize);
-            setCategoryData(response.data);
-            setTotalCategory(response.total);
+            const response = await APIService.SubProductApi.listResource(page, pageSize);
+            setSubProductData(response.data);
+            setTotalSubProduct(response.total);
             setCurrentPage(page);
             setCurrentPageSize(pageSize);
             setLoading(false);
@@ -84,22 +84,24 @@ const CategoryPage = () => {
         }
     };
 
-    const CategoryTableData =
-        CategoryData &&
-        CategoryData.map((item) => ({
+    const SubProductTableData =
+        SubProductData &&
+        SubProductData.map((item) => ({
             key: item.id,
             id: item.id,
             status: item.status,
             createdby: item.createdby.username,
             name: item.name,
-            description: item.description,
-            products: item.products.length,
+            model_no: item.model_no,
+            hsn: item.hsn,
+            category: item.category.name,
+            product: item.product.name,
         }));
 
     const handlePageChange = (page, pageSize) => {
         setCurrentPage(page);
         setCurrentPageSize(pageSize);
-        fetchCategoryData(page, pageSize);
+        fetchSubProductData(page, pageSize);
     };
 
     const onChange = (pagination, filters, sorter, extra) => {
@@ -113,7 +115,7 @@ const CategoryPage = () => {
             sorter: (a, b) => a.id.localeCompare(b.id),
         },
         {
-            title: "Category Status",
+            title: "Status",
             dataIndex: "status",
             align: 'center',
             filters: [
@@ -150,19 +152,29 @@ const CategoryPage = () => {
             sorter: (a, b) => a.createdby.localeCompare(b.createdby),
         },
         {
-            title: "Name",
+            title: "Sub Product Name",
             dataIndex: "name",
             sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
-            title: "Description",
-            dataIndex: "description",
-            sorter: (a, b) => a.description.localeCompare(b.description),
+            title: "Model No",
+            dataIndex: "model_no",
+            sorter: (a, b) => a.model_no.localeCompare(b.model_no),
         },
         {
-            title: "No of Products",
-            dataIndex: "products",
-            align: 'center',
+            title: "HSN No",
+            dataIndex: "hsn",
+            sorter: (a, b) => a.hsn.localeCompare(b.hsn),
+        },
+        {
+            title: "Category",
+            dataIndex: "category",
+            sorter: (a, b) => a.category.localeCompare(b.category),
+        },
+        {
+            title: "Main Product",
+            dataIndex: "product",
+            sorter: (a, b) => a.product.localeCompare(b.product),
         },
         {
             title: "Actions",
@@ -178,10 +190,10 @@ const CategoryPage = () => {
     ];
 
     return (
-        <Card title="Category List" extra={
+        <Card title="Sub Product List" extra={
             <Space>
                 {loading && <Spin size="large" />}
-                <Button onClick={() => handleCreate()} type="primary">Add Category</Button>
+                <Button onClick={() => handleCreate()} type="primary">Add Sub Product</Button>
                 <Input
                     placeholder="Search by name"
                     value={searchText}
@@ -196,26 +208,26 @@ const CategoryPage = () => {
                     pagination={false}
                     style={{ margin: "30px" }}
                     columns={columns}
-                    data={filteredCategoryData.length > 0 ? filteredCategoryData : CategoryTableData}
+                    data={filteredSubProductData.length > 0 ? filteredSubProductData : SubProductTableData}
                     onChange={onChange}
                 />
                 <PaginationComponent
                     showQuickJumper
                     showSizeChanger
                     onPageChange={handlePageChange}
-                    total={totalCategory}
+                    total={totalSubProduct}
                     currentPage={currentPage}
                 />
             </Space>
-            <DeleteCategoryModal
+            <DeleteSubProductModal
                 visible={deleteModalVisible}
                 onCancel={handleDeleteModalCancel}
                 record={deleteRecord}
-                fetchCategoryData={fetchCategoryData}
+                fetchSubProductData={fetchSubProductData}
                 currentPage={currentPage}
             />
         </Card>
     );
 };
 
-export default CategoryPage;
+export default SubProductPage;

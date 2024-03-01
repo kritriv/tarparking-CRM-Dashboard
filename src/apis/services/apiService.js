@@ -34,3 +34,4 @@ export const CompanyApi = generateResourceApi('Company');
 export const ClientApi = generateResourceApi('Client');
 export const CategoryApi = generateResourceApi('Category');
 export const ProductApi = generateResourceApi('Product');
+export const SubProductApi = generateResourceApi('SubProduct');

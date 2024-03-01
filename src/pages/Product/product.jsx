@@ -114,7 +114,7 @@ const ProductPage = () => {
       sorter: (a, b) => a.id.localeCompare(b.id),
     },
     {
-      title: "Product Status",
+      title: "Status",
       dataIndex: "status",
       align: 'center',
       filters: [
@@ -163,6 +163,7 @@ const ProductPage = () => {
     {
       title: "No of Sub Products",
       dataIndex: "sub_products",
+      align: 'center',
     },
     {
       title: "Description",
