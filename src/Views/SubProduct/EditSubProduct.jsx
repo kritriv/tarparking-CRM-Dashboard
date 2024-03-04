@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Card, Form, Input, Switch, Button, notification, Row, Col, Select, InputNumber } from "antd";
 import { APIService } from "../../apis";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
 
 const { TextArea } = Input;
 
-const CreateSubProductPage = () => {
+const EditSubProductPage = () => {
+    const { id } = useParams();
     const userInfo = useUserInfo();
-    const createby = userInfo.userID;
+    const editBy = userInfo.userID;
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [subProductData, setSubProductData] = useState(null);
 
     const navigate = useNavigate();
 
@@ -22,67 +25,113 @@ const CreateSubProductPage = () => {
     };
 
     useEffect(() => {
-        APIService.CategoryApi.listResource()
-            .then((response) => {
-                setCategories(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching categories:", error);
-            });
-    }, []);
+        fetchCategories();
+        fetchSubProductData(id);
+    }, [id]);
 
-    useEffect(() => {
-        if (selectedCategory && selectedCategory.products && selectedCategory.products.length > 0) {
-            let categoryId = `category=${selectedCategory.id}`;
-            APIService.ProductApi.listResource(undefined, undefined, undefined, categoryId)
-                .then((response) => {
-                    setProducts(response.data);
-                })
-                .catch((error) => {
-                    console.error("Error fetching Products:", error);
+    const fetchSubProductData = async (id) => {
+        try {
+            setLoading(true);
+            const response = await APIService.SubProductApi.readResource(id);
+            if (response.success) {
+                form.setFieldsValue({
+                    ...response.data,
+                    category: response.data.product.category.id,
+                    product: response.data.product.id,
                 });
-        }
-    }, [selectedCategory]);
+                setSelectedCategory(response.data.product.category);
+                setProducts([response.data.product]);
+                setSubProductData(response.data);
+            } else {
+                console.error("Error fetching Sub Product data:", response.message);
+                notification.error({
+                    message: "Error",
+                    description: "Failed to fetch Sub Product details.",
+                });
+            }
 
-    const handleCreateSubProduct = async () => {
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            console.error("Error fetching Sub Product data:", error);
+            notification.error({
+                message: "Error",
+                description: "Failed to fetch Sub Product details. Please try again later.",
+            });
+        }
+    };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await APIService.CategoryApi.listResource();
+            if (response.success) {
+                setCategories(response.data);
+            } else {
+                console.error("Error fetching categories:", response.message);
+            }
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+        }
+    };
+
+    const handleEditSubProduct = async () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
-                APIService.SubProductApi.createResource(values)
+                APIService.SubProductApi.updateResource(id, values)
                     .then(() => {
                         notification.success({
                             message: "Success",
-                            description: "Sub Product successfully Created.",
+                            description: "Sub Product details updated successfully.",
                         });
                         navigate(`/sub-products`);
                     })
                     .catch((error) => {
-                        console.log(error);
+                        console.error("Error updating Sub Product details:", error);
                         notification.error({
                             message: "Error",
-                            description: "Failed to create Sub Product. Please try again later.",
+                            description: "Failed to update Sub Product details. Please try again later.",
                         });
                     })
                     .finally(() => setLoading(false));
             });
         } catch (error) {
-            console.log(error);
+            console.error("Error updating Sub Product details:", error);
             notification.error({
                 message: "Error",
-                description: "Failed to create Sub Product. Please try again later",
+                description: "Failed to update Sub Product details. Please try again later.",
             });
             setLoading(false);
         }
     };
 
-    const handleCategoryChange = (value) => {
-        const selectedCategory = categories.find((category) => category.id === value);
-        setSelectedCategory(selectedCategory);
+    const handleCategoryChange = async (value) => {
+        try {
+            const selectedCategory = categories.find((category) => category.id === value);
+            setSelectedCategory(selectedCategory);
+
+            if (selectedCategory && selectedCategory.products && selectedCategory.products.length > 0) {
+                let categoryId = `category=${selectedCategory.id}`;
+                const response = await APIService.ProductApi.listResource(undefined, undefined, undefined, categoryId);
+
+                if (response.success) {
+                    setProducts(response.data);
+                } else {
+                    console.error("Error fetching Products:", response.message);
+                }
+            } else {
+                setProducts([]);
+            }
+
+            form.setFieldsValue({ product: undefined });
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
     };
 
     return (
         <Card
-            title="Create Sub Product"
+            title="Edit Sub Product"
             extra={<Button onClick={() => handleBack()}>Go Back to List</Button>}
             style={{ padding: 50, margin: 10 }}
         >
@@ -90,7 +139,7 @@ const CreateSubProductPage = () => {
                 <Col span={18}>
                     <div>
                         <h2>Sub Product Information</h2>
-                        <Form form={form} layout="vertical"
+                        <Form form={form} layout="vertical" initialValues={subProductData}
                             onValuesChange={(changedValues, allValues) => {
                                 const { basic_rate, installation_charges } = allValues.price;
                                 form.setFieldsValue({
@@ -109,12 +158,11 @@ const CreateSubProductPage = () => {
                                 </Col>
                                 <Col span={7}>
                                     <Form.Item
-                                        name="createdby"
-                                        label="CreatedBy (You)"
-                                        rules={[{ required: true, message: "Please enter CreatedBy Id" }]}
-                                        initialValue={createby}
+                                        name="editBy"
+                                        label="EditBy (You)"
+                                        initialValue={editBy}
                                     >
-                                        <Input placeholder="Enter CreatedBy Id" disabled />
+                                        <Input placeholder="Enter EditBy Id" disabled />
                                     </Form.Item>
                                 </Col>
                                 <Col span={7}>
@@ -210,13 +258,12 @@ const CreateSubProductPage = () => {
                 </Col>
             </Row>
             <Form.Item>
-                <Button type="primary" onClick={handleCreateSubProduct} loading={loading}>
-                    Create Sub Product
+                <Button type="primary" onClick={handleEditSubProduct} loading={loading}>
+                    Update Sub Product
                 </Button>
             </Form.Item>
         </Card>
-
     );
 };
 
-export default CreateSubProductPage;
+export default EditSubProductPage;
