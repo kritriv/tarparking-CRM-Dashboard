@@ -21,6 +21,7 @@ import CreateProduct from "../Views/Product/CreateProduct";
 import EditProduct from "../Views/Product/EditProduct";
 import ViewProduct from "../Views/Product/ViewProduct";
 import SubProductPage from "../pages/SubProduct/subProduct";
+import CreateSubProduct from "../Views/SubProduct/CreateSubProduct";
 
 const routes = [
     { path: '/', element: <Home /> },
@@ -57,7 +58,7 @@ const routes = [
     
     { path: '/sub-products', element: <SubProductPage /> },
     // { path: '/products/:id', element: <ViewProduct /> },
-    // { path: '/products/create', element: <CreateProduct /> },
+    { path: '/sub-products/create', element: <CreateSubProduct /> },
     // { path: '/products/edit-product/:id', element: <EditProduct /> },
 ];
 

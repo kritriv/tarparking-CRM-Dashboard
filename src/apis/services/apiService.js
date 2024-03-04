@@ -15,7 +15,23 @@ const generateResourceApi = (entity) => {
     const apiConfig = createApi(entity);
 
     const createResource = (data) => apiClient.post({ url: apiConfig.Create, data });
-    const listResource = (page, size) => apiClient.get({ url: `${apiConfig.List}?page=${page}&size=${size}` });
+    const listResource = (page, size, query, category) => {
+        let url = apiConfig.List;
+
+        if (page !== undefined && size !== undefined) {
+            url += `?page=${page}&size=${size}`;
+        }
+
+        if (query) {
+            url += `&query=${query}`;
+        }
+
+        if (category) {
+            url += `?${category}`;
+        }
+
+        return apiClient.get({ url });
+    };
     const readResource = (id) => apiClient.get({ url: `${apiConfig.Read}/${id}` });
     const deleteResource = (id) => apiClient.delete({ url: `${apiConfig.Delete}/${id}` });
     const updateResource = (id, data) => apiClient.put({ url: `${apiConfig.Update}/${id}`, data });

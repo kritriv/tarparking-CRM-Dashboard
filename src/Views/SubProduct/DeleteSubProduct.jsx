@@ -1,7 +1,7 @@
 import { Modal, Button, notification } from "antd";
 import { APIService } from "../../apis";
 
-const DeleteSubProductModal = ({ visible, onCancel, record, fetchProductData, currentPage }) => {
+const DeleteSubProductModal = ({ visible, onCancel, record, fetchSubProductData, currentPage }) => {
     const handleDelete = async () => {
         try {
             const response = await APIService.SubProductApi.deleteResource(record.id);
@@ -11,7 +11,7 @@ const DeleteSubProductModal = ({ visible, onCancel, record, fetchProductData, cu
                     message: 'Sub Product Details Deleted',
                     description: `${record.name} has been deleted successfully.`,
                 });
-                fetchProductData(currentPage);
+                fetchSubProductData(currentPage);
                 onCancel();
             } else {
                 notification.error({
