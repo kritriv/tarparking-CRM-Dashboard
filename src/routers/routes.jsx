@@ -23,6 +23,7 @@ import ViewProduct from "../Views/Product/ViewProduct";
 import SubProductPage from "../pages/SubProduct/subProduct";
 import CreateSubProduct from "../Views/SubProduct/CreateSubProduct";
 import EditSubProduct from "../Views/SubProduct/EditSubProduct";
+import ViewSubProduct from "../Views/SubProduct/ViewSubProduct";
 
 const routes = [
     { path: '/', element: <Home /> },
@@ -58,7 +59,7 @@ const routes = [
     { path: '/products/edit-product/:id', element: <EditProduct /> },
 
     { path: '/sub-products', element: <SubProductPage /> },
-    // { path: '/products/:id', element: <ViewProduct /> },
+    { path: '/sub-products/:id', element: <ViewSubProduct /> },
     { path: '/sub-products/create', element: <CreateSubProduct /> },
     { path: '/sub-products/edit-sub-product/:id', element: <EditSubProduct /> },
 ];
