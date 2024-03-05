@@ -37,7 +37,7 @@ const DeleteTncModal = ({ visible, onCancel, record, fetchTncData, currentPage }
             ]}
         >
             {/* <p>Are you sure you want to delete Tnc <b>{TncEmail} ?</b></p> */}
-            <p>Are you sure you want to delete this Tnc ?</p>
+            <p>Are you sure you want to delete this <b>Term & Condition</b> ?</p>
         </Modal>
     );
 };

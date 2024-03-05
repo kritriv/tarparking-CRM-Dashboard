@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
-import DeleteTncModal from "../../Views/Term-Condition/DeleteCompany";
+import DeleteTncModal from "../../Views/Term-Condition/DeleteTnc";
 
 const TncPage = () => {
     const [searchText, setSearchText] = useState("");
@@ -118,12 +118,12 @@ const TncPage = () => {
         {
             title: "Prices",
             dataIndex: "prices",
-            width: 250,
+            width: 300,
         },
         {
             title: "Packing Forwarding",
             dataIndex: "packing_forwarding",
-            width: 250,
+            width: 300,
         },
         {
             title: "Actions",
@@ -139,7 +139,7 @@ const TncPage = () => {
     ];
 
     return (
-        <Card title="Tnc List" extra={
+        <Card title="Term & Conditions" extra={
             <Space>
                 {loading && <Spin size="large" />}
                 <Button onClick={() => handleCreate()} type="primary">Add Tnc</Button>
