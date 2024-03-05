@@ -8,6 +8,7 @@ const createApi = (entity) => {
         Read: `/api/v1/${entity.toLowerCase()}`,
         Delete: `/api/v1/${entity.toLowerCase()}`,
         Update: `/api/v1/${entity.toLowerCase()}`,
+        Upload: `/api/v1/${entity.toLowerCase()}/upload-image`,
     };
 };
 
@@ -35,6 +36,7 @@ const generateResourceApi = (entity) => {
     const readResource = (id) => apiClient.get({ url: `${apiConfig.Read}/${id}` });
     const deleteResource = (id) => apiClient.delete({ url: `${apiConfig.Delete}/${id}` });
     const updateResource = (id, data) => apiClient.put({ url: `${apiConfig.Update}/${id}`, data });
+    const uploadImage = (id, image) => apiClient.put({ url: `${apiConfig.Upload}/${id}`, image });
 
     return {
         createResource,
@@ -42,6 +44,7 @@ const generateResourceApi = (entity) => {
         readResource,
         deleteResource,
         updateResource,
+        uploadImage
     };
 };
 

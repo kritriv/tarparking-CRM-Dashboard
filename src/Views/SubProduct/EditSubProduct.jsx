@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Card, Form, Input, Switch, Button, notification, Row, Col, Select, InputNumber } from "antd";
+import { Card, Form, Input, Switch, Button, notification, Row, Col, Select, InputNumber, message, Upload } from "antd";
 import { APIService } from "../../apis";
 import { useParams } from "react-router-dom";
+import { InboxOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
-
+const { Dragger } = Upload;
 const { TextArea } = Input;
 
 const EditSubProductPage = () => {
@@ -17,11 +18,33 @@ const EditSubProductPage = () => {
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [subProductData, setSubProductData] = useState(null);
+    const [imageURL, setImageURL] = useState(null); 
 
     const navigate = useNavigate();
 
     const handleBack = () => {
         navigate(`/sub-products`);
+    };
+
+    const props = {
+        name: 'file',
+        multiple: false,
+        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+        onChange(info) {
+            const { status } = info.file;
+            if (status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully.`);
+
+                const imageName = info.file.name;
+                const imageUrl = `https://tarparking.com/crm/uploads/${imageName}`;
+
+                form.setFieldsValue({ image: imageUrl });
+                setImageURL(imageUrl);
+            } else if (status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        }
+
     };
 
     useEffect(() => {
@@ -253,8 +276,27 @@ const EditSubProductPage = () => {
                             >
                                 <TextArea placeholder="Enter description..." autoSize={{ minRows: 3, maxRows: 6 }} />
                             </Form.Item>
+                            <Form.Item
+                                name="image"
+                                label="Image URL"
+                                rules={[{ required: true, message: "Please upload an image" }]}
+                            >
+                                <Input placeholder="Image URL" readOnly value={imageURL} />
+                            </Form.Item>
                         </Form>
                     </div>
+                </Col>
+                <Col span={6}>
+                    <Dragger {...props}>
+                        <p className="ant-upload-drag-icon">
+                            <InboxOutlined />
+                        </p>
+                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                        <p className="ant-upload-hint">
+                            Support for a single or bulk upload. Strictly prohibited from uploading company data or other
+                            banned files.
+                        </p>
+                    </Dragger>
                 </Col>
             </Row>
             <Form.Item>

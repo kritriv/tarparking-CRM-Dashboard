@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Card, Form, Input, Switch, Button, notification, Row, Col, Select, InputNumber } from "antd";
+import { Card, Form, Input, Switch, Button, notification, Row, Col, Select, InputNumber, message, Upload } from "antd";
+import { InboxOutlined } from '@ant-design/icons';
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
-
+const { Dragger } = Upload;
 const { TextArea } = Input;
 
 const CreateSubProductPage = () => {
@@ -14,6 +15,7 @@ const CreateSubProductPage = () => {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [imageURL, setImageURL] = useState(null); 
 
     const navigate = useNavigate();
 
@@ -21,34 +23,35 @@ const CreateSubProductPage = () => {
         navigate(`/sub-products`);
     };
 
-    useEffect(() => {
-        APIService.CategoryApi.listResource()
-            .then((response) => {
-                setCategories(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching categories:", error);
-            });
-    }, []);
+    const props = {
+        name: 'file',
+        multiple: false,
+        action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+        onChange(info) {
+            const { status } = info.file;
+            if (status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully.`);
 
-    useEffect(() => {
-        if (selectedCategory && selectedCategory.products && selectedCategory.products.length > 0) {
-            let categoryId = `category=${selectedCategory.id}`;
-            APIService.ProductApi.listResource(undefined, undefined, undefined, categoryId)
-                .then((response) => {
-                    setProducts(response.data);
-                })
-                .catch((error) => {
-                    console.error("Error fetching Products:", error);
-                });
+                const imageName = info.file.name;
+                const imageUrl = `https://tarparking.com/crm/uploads/${imageName}`;
+
+                form.setFieldsValue({ image: imageUrl });
+                setImageURL(imageUrl);
+            } else if (status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
         }
-    }, [selectedCategory]);
+
+    };
 
     const handleCreateSubProduct = async () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
-                APIService.SubProductApi.createResource(values)
+                // Include the imageURL in the payload
+                const payload = { ...values, image: imageURL };
+
+                APIService.SubProductApi.createResource(payload)
                     .then(() => {
                         notification.success({
                             message: "Success",
@@ -80,13 +83,36 @@ const CreateSubProductPage = () => {
         setSelectedCategory(selectedCategory);
     };
 
+    useEffect(() => {
+        APIService.CategoryApi.listResource()
+            .then((response) => {
+                setCategories(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching categories:", error);
+            });
+    }, []);
+
+    useEffect(() => {
+        if (selectedCategory && selectedCategory.products && selectedCategory.products.length > 0) {
+            let categoryId = `category=${selectedCategory.id}`;
+            APIService.ProductApi.listResource(undefined, undefined, undefined, categoryId)
+                .then((response) => {
+                    setProducts(response.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Products:", error);
+                });
+        }
+    }, [selectedCategory]);
+
     return (
         <Card
             title="Create Sub Product"
             extra={<Button onClick={() => handleBack()}>Go Back to List</Button>}
             style={{ padding: 50, margin: 10 }}
         >
-            <Row gutter={16}>
+            <Row gutter={100}>
                 <Col span={18}>
                     <div>
                         <h2>Sub Product Information</h2>
@@ -205,8 +231,27 @@ const CreateSubProductPage = () => {
                             >
                                 <TextArea placeholder="Enter description..." autoSize={{ minRows: 3, maxRows: 6 }} />
                             </Form.Item>
+                            <Form.Item
+                                name="image"
+                                label="Image URL"
+                                rules={[{ required: true, message: "Please upload an image" }]}
+                            >
+                                <Input placeholder="Image URL" readOnly value={imageURL} />
+                            </Form.Item>
                         </Form>
                     </div>
+                </Col>
+                <Col span={6}>
+                    <Dragger {...props}>
+                        <p className="ant-upload-drag-icon">
+                            <InboxOutlined />
+                        </p>
+                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                        <p className="ant-upload-hint">
+                            Support for a single or bulk upload. Strictly prohibited from uploading company data or other
+                            banned files.
+                        </p>
+                    </Dragger>
                 </Col>
             </Row>
             <Form.Item>

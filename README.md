@@ -19,3 +19,5 @@ Currently, two official plugins are available:
     npm install msw --save-dev
 <!-- use msw service worker -->
     npx msw init ./public
+
+    https://chat.openai.com/c/e2fb05e6-9fb7-4cc2-8870-57d4f2323bce
