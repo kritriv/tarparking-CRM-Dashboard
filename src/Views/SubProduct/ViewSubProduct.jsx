@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Card, Form, Input, InputNumber, Switch, Button, notification, Row, Col } from "antd";
+import { Card, Form, Input, Switch, Button, notification, Row, Col, InputNumber, Modal } from "antd";
 import { APIService } from "../../apis";
+import { EyeOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
 
@@ -14,11 +15,21 @@ const ViewProductPage = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [subProductData, setsubProductData] = useState(null);
+    const [imageURL, setImageURL] = useState(null);
+    const [viewImageVisible, setViewImageVisible] = useState(false);
 
     const navigate = useNavigate();
 
     const handleBack = () => {
         navigate(`/sub-products`);
+    };
+
+    const handleViewImage = () => {
+        setViewImageVisible(true);
+    };
+
+    const handleViewImageCancel = () => {
+        setViewImageVisible(false);
     };
 
     useEffect(() => {
@@ -37,6 +48,7 @@ const ViewProductPage = () => {
                     product: response.data.product ? response.data.product.name : undefined,
                 });
                 setsubProductData(response.data);
+                setImageURL(response.data.image);
             } else {
                 console.error("Error fetching user data:", response.message);
                 notification.error({
@@ -160,6 +172,31 @@ const ViewProductPage = () => {
                             </Form.Item>
                         </Form>
                     </div>
+                </Col>
+                <Col span={6}>
+                    <Row>
+                        <div style={{ marginBottom: 16 }}>
+                            <label>Image Preview</label>
+                            <br />
+                            {imageURL && (
+                                <>
+                                    <img src={imageURL} alt="Preview" style={{ maxWidth: '100%', maxHeight: 300 }} />
+                                    <div style={{ marginTop: 8 }}>
+                                        <Button type="link" onClick={handleViewImage}><EyeOutlined size={18} /></Button>
+
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </Row>
+                    <Modal
+                        open={viewImageVisible}
+                        title="View Image"
+                        onCancel={handleViewImageCancel}
+                        footer={null}
+                    >
+                        <img src={imageURL} alt="Preview" style={{ maxWidth: '100%', maxHeight: 400 }} />
+                    </Modal>
                 </Col>
             </Row>
             <Form.Item>
