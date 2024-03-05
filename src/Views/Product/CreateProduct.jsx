@@ -39,7 +39,7 @@ const CreateProductPage = () => {
                             message: "Success",
                             description: "Product successfully Created.",
                         });
-                        navigate(`/products`);
+                        navigate(`/sub-products/create`);
                     })
                     .catch((error) => {
                         notification.error({

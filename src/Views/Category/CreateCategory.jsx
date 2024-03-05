@@ -28,7 +28,7 @@ const CreateCategoryPage = () => {
                             message: "Success",
                             description: "Category successfully Created.",
                         });
-                        navigate(`/Category`);
+                        navigate(`/products/create`);
                     })
                     .catch((error) => {
                         notification.error({
