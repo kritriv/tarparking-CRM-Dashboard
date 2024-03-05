@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Card, Form, Input, Switch, Button, notification, Row, Col, Select, InputNumber, message, Upload } from "antd";
-import { InboxOutlined } from '@ant-design/icons';
+import { Card, Form, Input, Switch, Button, notification, Row, Col, Select, InputNumber, message, Upload, Modal } from "antd";
+import { InboxOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
@@ -15,25 +15,49 @@ const CreateSubProductPage = () => {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    const [imageURL, setImageURL] = useState(null); 
-
+    const [imageURL, setImageURL] = useState(null);
+    const [viewImageVisible, setViewImageVisible] = useState(false);
     const navigate = useNavigate();
 
     const handleBack = () => {
         navigate(`/sub-products`);
     };
 
+    const handleViewImage = () => {
+        setViewImageVisible(true);
+    };
+
+    const handleViewImageCancel = () => {
+        setViewImageVisible(false);
+    };
+
+
+    const handleRemoveImage = () => {
+        form.setFieldsValue({ image: null });
+        setImageURL(null);
+    };
     const props = {
         name: 'file',
         multiple: false,
         action: 'https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188',
+        showUploadList: {
+            showPreviewIcon: true,
+            showRemoveIcon: true,
+        },
+        previewFile(file) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            return new Promise((resolve) => {
+                reader.onloadend = () => resolve(reader.result);
+            });
+        },
         onChange(info) {
             const { status } = info.file;
             if (status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully.`);
 
                 const imageName = info.file.name;
-                const imageUrl = `https://tarparking.com/crm/uploads/${imageName}`;
+                const imageUrl = `https://tarparking.com/crm/uploads/images/${imageName}`;
 
                 form.setFieldsValue({ image: imageUrl });
                 setImageURL(imageUrl);
@@ -242,16 +266,42 @@ const CreateSubProductPage = () => {
                     </div>
                 </Col>
                 <Col span={6}>
-                    <Dragger {...props}>
-                        <p className="ant-upload-drag-icon">
-                            <InboxOutlined />
-                        </p>
-                        <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                        <p className="ant-upload-hint">
-                            Support for a single or bulk upload. Strictly prohibited from uploading company data or other
-                            banned files.
-                        </p>
-                    </Dragger>
+                    <Row>
+                        <div style={{ marginBottom: 16 }}>
+                            <label>Image Preview</label>
+                            <br />
+                            {imageURL && (
+                                <>
+                                    <img src={imageURL} alt="Preview" style={{ maxWidth: '100%', maxHeight: 300 }} />
+                                    <div style={{ marginTop: 8 }}>
+                                        <Button type="link" onClick={handleViewImage}><EyeOutlined size={18} /></Button>
+                                        <Button type="link" onClick={handleRemoveImage}><DeleteOutlined size={18}  color="red"  /></Button>
+
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </Row>
+                    <Row>
+                        <Dragger {...props}>
+                            <p className="ant-upload-drag-icon">
+                                <InboxOutlined />
+                            </p>
+                            <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                            <p className="ant-upload-hint">
+                                Support for a single or bulk upload. Strictly prohibited from uploading company data or other
+                                banned files.
+                            </p>
+                        </Dragger>
+                    </Row>
+                    <Modal
+                        open={viewImageVisible}
+                        title="View Image"
+                        onCancel={handleViewImageCancel}
+                        footer={null}
+                    >
+                        <img src={imageURL} alt="Preview" style={{ maxWidth: '100%', maxHeight: 400 }} />
+                    </Modal>
                 </Col>
             </Row>
             <Form.Item>
