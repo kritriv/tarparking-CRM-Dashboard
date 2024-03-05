@@ -50,6 +50,7 @@ const sidebarMenuItems = [
     label: "Settings",
     children: [
       { key: "sub3_option1", label: "Company Setting", path: "/company" },
+      { key: "sub3_option2", label: "Term & Condition", path: "/term-conditions" },
     ],
   },
 ];

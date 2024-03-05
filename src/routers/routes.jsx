@@ -25,6 +25,8 @@ import CreateSubProduct from "../Views/SubProduct/CreateSubProduct";
 import EditSubProduct from "../Views/SubProduct/EditSubProduct";
 import ViewSubProduct from "../Views/SubProduct/ViewSubProduct";
 
+import TncPage from "../pages/Term-Condition/term-condition";
+
 const routes = [
     { path: '/', element: <Home /> },
 
@@ -62,6 +64,8 @@ const routes = [
     { path: '/sub-products/:id', element: <ViewSubProduct /> },
     { path: '/sub-products/create', element: <CreateSubProduct /> },
     { path: '/sub-products/edit-sub-product/:id', element: <EditSubProduct /> },
+
+    { path: '/term-conditions', element: <TncPage /> },
 ];
 
 export default routes;
