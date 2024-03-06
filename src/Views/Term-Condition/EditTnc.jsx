@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Card, Form, Input, Select, Button, notification, Row, Col, Divider } from "antd";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { Card, Form, Input, Button, notification, Row, Col, Divider } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
-const CreateTncPage = () => {
+const EditTncPage = () => {
+    const { id } = useParams();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [categories, setCategories] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [products, setProducts] = useState([]);
-    const [subproducts, setSubProducts] = useState([]);
+    const [tncData, setTncData] = useState(null);
 
     const navigate = useNavigate();
 
@@ -21,82 +19,74 @@ const CreateTncPage = () => {
         navigate(`/term-conditions`);
     };
 
-    const handleCategoryChange = (value) => {
-        const selectedCategory = categories.find((category) => category.id === value);
-        setSelectedCategory(selectedCategory);
-    };
-    const handleProductChange = (value) => {
-        const selectedProduct = products.find((product) => product.id === value);
-        setSelectedProduct(selectedProduct);
-    };
-
     useEffect(() => {
-        APIService.CategoryApi.listResource()
-            .then((response) => {
-                setCategories(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching categories:", error);
+        fetchTncData(id);
+    }, [id]);
+
+    const fetchTncData = async (id) => {
+        try {
+            setLoading(true);
+            const response = await APIService.TncApi.readResource(id);
+
+            if (response.success) {
+                form.setFieldsValue({
+                    ...response.data,
+                    sub_product: response.data.sub_product.name,
+                });
+                setTncData(response.data);
+            } else {
+                console.error("Error fetching tnc data:", response.message);
+                notification.error({
+                    message: "Error",
+                    description: "Failed to fetch tnc details.",
+                });
+            }
+
+            setLoading(false);
+        } catch (error) {
+            setLoading(false);
+            console.error("Error fetching tnc data:", error);
+            notification.error({
+                message: "Error",
+                description: "Failed to fetch tnc details. Please try again later.",
             });
-    }, []);
-
-    useEffect(() => {
-        if (selectedCategory && selectedCategory.products && selectedCategory.products.length > 0) {
-            let categoryId = `category=${selectedCategory.id}`;
-            APIService.ProductApi.listResource(undefined, undefined, undefined, categoryId)
-                .then((response) => {
-                    setProducts(response.data);
-                })
-                .catch((error) => {
-                    console.error("Error fetching Products:", error);
-                });
         }
-    }, [selectedCategory]);
+    };
 
-    useEffect(() => {
-        if (selectedProduct && selectedProduct.sub_products) {
-            let productId = `product=${selectedProduct.id}`;
-            APIService.SubProductApi.listResource(undefined, undefined, undefined, productId)
-                .then((response) => {
-                    setSubProducts(response.data);
-                })
-                .catch((error) => {
-                    console.error("Error fetching Sub Products:", error);
-                });
-        }
-    }, [selectedProduct]);
-
-    const handleCreateTnc = async () => {
+    const handleEditTnc = async () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
-                APIService.TncApi.createResource(values)
+                values.sub_product = tncData.sub_product.id;
+                APIService.TncApi.updateResource(id, values)
                     .then(() => {
                         notification.success({
                             message: "Success",
-                            description: "Tnc Info successfully Created.",
+                            description: "Tnc details updated successfully.",
                         });
                         navigate(`/term-conditions`);
                     })
                     .catch((error) => {
+                        console.error("Error updating Tnc details:", error);
                         notification.error({
                             message: "Error",
-                            description: "Failed to create Tnc Info. Please try again later.",
+                            description: "Failed to update Tnc details. Please try again later.",
                         });
                     })
                     .finally(() => setLoading(false));
             });
         } catch (error) {
+            console.error("Error updating Tnc details:", error);
             notification.error({
                 message: "Error",
-                description: "Failed to Tnc Info. Please try again later",
+                description: "Failed to update Tnc details. Please try again later.",
             });
             setLoading(false);
         }
     };
 
     return (
-        <Card title="Create Tnc Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
+        <Card title="Edit Tnc Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
             <Row gutter={150}>
                 <Col span={12}>
                     <div>
@@ -104,36 +94,8 @@ const CreateTncPage = () => {
                         <Form form={form} layout="vertical">
                             <Row gutter={16}>
                                 <Col span={12}>
-                                    <Form.Item name="category" label="Category Name" rules={[{ required: true, message: "Select Category Name" }]}>
-                                        <Select placeholder="Select Category" onChange={handleCategoryChange}>
-                                            {categories.map((category) => (
-                                                <Select.Option key={category.id} value={category.id}>
-                                                    {category.name}
-                                                </Select.Option>
-                                            ))}
-                                        </Select>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item name="product" label="Product Name" rules={[{ required: true, message: "Select Product Name" }]}>
-                                        <Select placeholder="Select Product" onChange={handleProductChange}>
-                                            {products.map((product) => (
-                                                <Select.Option key={product.id} value={product.id}>
-                                                    {product.name}
-                                                </Select.Option>
-                                            ))}
-                                        </Select>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
                                     <Form.Item name="sub_product" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
-                                        <Select placeholder="Select Sub Product">
-                                            {subproducts.map((subproduct) => (
-                                                <Select.Option key={subproduct.id} value={subproduct.id}>
-                                                    {subproduct.name}
-                                                </Select.Option>
-                                            ))}
-                                        </Select>
+                                        <Input readOnly />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -154,7 +116,7 @@ const CreateTncPage = () => {
                                                                     { required: true, message: 'Please enter Payment Terms' },
                                                                 ]}
                                                             >
-                                                                <TextArea placeholder="Enter Payment Terms" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                                <TextArea placeholder="Enter Payment Terms" autoSize={{ minRows: 1, maxRows: 12 }} />
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={6}>
@@ -198,7 +160,7 @@ const CreateTncPage = () => {
                                                                     { required: true, message: 'Please enter Client Responsibilities' },
                                                                 ]}
                                                             >
-                                                                <TextArea placeholder="Enter Client Responsibilities" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                                <TextArea placeholder="Enter Client Responsibilities" autoSize={{ minRows: 1, maxRows: 12 }} />
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={6}>
@@ -242,7 +204,7 @@ const CreateTncPage = () => {
                                                                     { required: true, message: 'Please enter Installation Process' },
                                                                 ]}
                                                             >
-                                                                <TextArea placeholder="Enter Installation Process" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                                <TextArea placeholder="Enter Installation Process" autoSize={{ minRows: 1, maxRows: 12 }} />
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={6}>
@@ -267,6 +229,11 @@ const CreateTncPage = () => {
                                             </>
                                         )}
                                     </Form.List>
+                                    <Form.Item>
+                                        <Button type="primary" onClick={handleEditTnc} loading={loading}>
+                                            Update
+                                        </Button>
+                                    </Form.Item>
                                 </Col>
                             </Row>
                         </Form>
@@ -284,63 +251,63 @@ const CreateTncPage = () => {
                                         label="Prices"
                                         rules={[{ required: true, message: "Please enter prices" }]}
                                     >
-                                        <TextArea placeholder="Enter prices Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                        <TextArea placeholder="Enter prices Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
                                     <Form.Item
                                         name="packing_forwarding"
                                         label="Packing Forwarding"
                                         rules={[{ required: true, message: "Please enter Packing Forwarding" }]}
                                     >
-                                        <TextArea placeholder="Enter Packing Forwarding Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                        <TextArea placeholder="Enter Packing Forwarding Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
                                     <Form.Item
                                         name="material_delivery"
                                         label="Material Delivery"
                                         rules={[{ required: true, message: "Please enter Material Delivery" }]}
                                     >
-                                        <TextArea placeholder="Enter Material Delivery Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                        <TextArea placeholder="Enter Material Delivery Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
                                     <Form.Item
                                         name="operation"
                                         label="Operation"
                                         rules={[{ required: true, message: "Please enter Operation" }]}
                                     >
-                                        <TextArea placeholder="Enter Operation Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                        <TextArea placeholder="Enter Operation Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
                                     <Form.Item
                                         name="force_majeure"
                                         label="Force Majeure"
                                         rules={[{ required: true, message: "Please enter Force Majeure" }]}
                                     >
-                                        <TextArea placeholder="Enter Force Majeure Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                        <TextArea placeholder="Enter Force Majeure Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
                                     <Form.Item
                                         name="warranty"
                                         label="Warranty"
                                         rules={[{ required: true, message: "Please enter Warranty" }]}
                                     >
-                                        <TextArea placeholder="Enter Warranty Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                        <TextArea placeholder="Enter Warranty Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
                                     <Form.Item
                                         name="termination"
                                         label="Termination"
                                         rules={[{ required: true, message: "Please enter Termination" }]}
                                     >
-                                        <TextArea placeholder="Enter Termination Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                        <TextArea placeholder="Enter Termination Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
                                     <Form.Item
                                         name="jurisdiction"
                                         label="Jurisdiction"
                                         rules={[{ required: true, message: "Please enter Jurisdiction" }]}
                                     >
-                                        <TextArea placeholder="Enter Jurisdiction Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                        <TextArea placeholder="Enter Jurisdiction Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
                                     <Form.Item
                                         name="validity"
                                         label="Validity"
                                         rules={[{ required: true, message: "Please enter Validity" }]}
                                     >
-                                        <TextArea placeholder="Enter Validity Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                        <TextArea placeholder="Enter Validity Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
 
                                 </Form>
@@ -349,13 +316,8 @@ const CreateTncPage = () => {
                     </Row>
                 </Col>
             </Row>
-            <Form.Item>
-                <Button type="primary" onClick={handleCreateTnc} loading={loading}>
-                    Create Tnc
-                </Button>
-            </Form.Item>
         </Card>
     );
 };
 
-export default CreateTncPage;
+export default EditTncPage;

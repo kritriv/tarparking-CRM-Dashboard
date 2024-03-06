@@ -25,7 +25,7 @@ const TncPage = () => {
     const navigate = useNavigate();
 
     const handleEdit = (record) => {
-        navigate(`edit-term-conditions/${record.id}`);
+        navigate(`edit-tnc/${record.id}`);
     };
 
     const handleView = (record) => {
