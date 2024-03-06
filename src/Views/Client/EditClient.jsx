@@ -173,7 +173,7 @@ const EditClientPage = () => {
                                         name={["address", "pincode"]}
                                         label="Pincode"
                                     >
-                                        <InputNumber placeholder="Enter Pincode" />
+                                        <InputNumber placeholder="Enter Pincode" style={{ width: '100%' }}/>
                                     </Form.Item>
                                 </Col>
                             </Row>

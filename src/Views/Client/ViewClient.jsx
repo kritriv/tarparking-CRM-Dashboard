@@ -145,7 +145,7 @@ const ViewClientPage = () => {
                                         name={["address", "pincode"]}
                                         label="Pincode"
                                     >
-                                        <InputNumber placeholder="Enter Pincode" readOnly />
+                                        <InputNumber placeholder="Enter Pincode" readOnly style={{ width: '100%' }}/>
                                     </Form.Item>
                                 </Col>
                             </Row>

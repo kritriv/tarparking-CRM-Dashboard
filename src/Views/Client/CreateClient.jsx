@@ -156,7 +156,7 @@ const CreateClientPage = () => {
                                         rules={[{ required: true, message: "Please enter Pincode" },
                                         { type: "number", message: "Please enter a valid Pincode" },]}
                                     >
-                                        <InputNumber placeholder="Enter Pincode" />
+                                        <InputNumber placeholder="Enter Pincode" style={{ width: '100%' }}/>
                                     </Form.Item>
 
                                 </Col>

@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Card, Form, Input, Select, Button, notification, Space } from "antd";
+import { Card, Form, Input, Select, Button, notification } from "antd";
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
+import { useUserInfo, useSignOut } from "../../store/userStore";
 
-const EditUserPage = () => {
-    const { id } = useParams();
+const ProfilePage = () => {
+    const userInfo = useUserInfo();
+    const signOut = useSignOut();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [userData, setUserData] = useState(null);
@@ -14,18 +15,17 @@ const EditUserPage = () => {
     const navigate = useNavigate();
 
     const handleBack = () => {
-        navigate(`/users`);
+        navigate(`/`);
     };
 
     useEffect(() => {
-        fetchUserData(id);
-    }, [id]);
+        fetchUserData(userInfo.userID);
+    }, [userInfo.userID]);
 
     const fetchUserData = async (id) => {
         try {
             setLoading(true);
             const response = await APIService.UserApi.readResource(id);
-
             if (response.success) {
                 setUserData(response.data);
             } else {
@@ -46,6 +46,7 @@ const EditUserPage = () => {
             });
         }
     };
+
     const handleEditUser = async () => {
         try {
             form.validateFields().then((values) => {
@@ -53,13 +54,17 @@ const EditUserPage = () => {
                 if (newPassword) {
                     values.password = newPassword;
                 }
-                APIService.UserApi.updateResource(id, values)
+                APIService.UserApi.updateResource(userInfo.userID, values)
                     .then(() => {
                         notification.success({
                             message: "Success",
-                            description: `User details updated successfully.`,
+                            description: `${userInfo.userFullName} details updated successfully.`,
                         });
-                        navigate(`/users`);
+                        signOut();
+                        notification.success({
+                            message: "Success",
+                            description: `Re-login Required after update profile info`,
+                        });
                     })
                     .catch((error) => {
                         console.error("Error updating user details:", error);
@@ -81,7 +86,7 @@ const EditUserPage = () => {
     };
 
     return (
-        <Card title="Edit User" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 30, margin: 10 }}>
+        <Card title="Your Profile" extra={<Button onClick={() => handleBack()}>Back to Home</Button>} style={{ padding: 30, margin: 10 }}>
             <div>
                 {userData && (
                     <Form form={form} layout="vertical" initialValues={userData}>
@@ -137,7 +142,7 @@ const EditUserPage = () => {
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" onClick={handleEditUser} loading={loading}>
-                                Update
+                                Update Profile
                             </Button>
                         </Form.Item>
                     </Form>
@@ -147,4 +152,4 @@ const EditUserPage = () => {
     );
 };
 
-export default EditUserPage;
+export default ProfilePage;

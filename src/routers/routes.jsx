@@ -1,4 +1,5 @@
 import Home from "../pages/Home/Home";
+import AdminProfile from "../pages/Profile/profile";
 import AdminsPage from "../pages/Users/admin";
 import UserPage from "../pages/Users/user";
 import ViewUser from "../Views/User/ViewUser";
@@ -37,6 +38,8 @@ import ViewSpecification from "../Views/Specification/ViewSpecification";
 
 const routes = [
     { path: '/', element: <Home /> },
+
+    { path: '/profile', element: <AdminProfile /> },
 
     { path: '/admins', element: <AdminsPage /> },
     { path: '/admins/:id', element: <ViewUser /> },

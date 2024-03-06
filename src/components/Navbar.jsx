@@ -76,7 +76,7 @@ const Navbar = ({ collapsed, toggleCollapse }) => {
     },
     {
       label: (
-        <span style={{ fontStyle: "italic", fontWeight: "bold" }}>
+        <span >
           <Space>
             <ImProfile />
             Profile
@@ -91,7 +91,7 @@ const Navbar = ({ collapsed, toggleCollapse }) => {
     },
     {
       label: (
-        <span style={{ fontStyle: "italic", fontWeight: "bold" }}>
+        <span >
           <Space>
             <RiLogoutCircleRLine />
             Logout
