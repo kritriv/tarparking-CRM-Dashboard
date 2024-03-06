@@ -32,6 +32,8 @@ import ViewTnc from "../Views/Term-Condition/ViewTnc";
 
 import SpecificationPage from "../pages/Specification/specification";
 import CreateSpecification from "../Views/Specification/CreateSpecification";
+import EditSpecification from "../Views/Specification/EditSpecification";
+import ViewSpecification from "../Views/Specification/ViewSpecification";
 
 const routes = [
     { path: '/', element: <Home /> },
@@ -70,14 +72,16 @@ const routes = [
     { path: '/sub-products/:id', element: <ViewSubProduct /> },
     { path: '/sub-products/create', element: <CreateSubProduct /> },
     { path: '/sub-products/edit-sub-product/:id', element: <EditSubProduct /> },
-    
+
     { path: '/term-conditions', element: <TncPage /> },
     { path: '/term-conditions/:id', element: <ViewTnc /> },
     { path: '/term-conditions/create', element: <CreateTnc /> },
     { path: '/term-conditions/edit-tnc/:id', element: <EditTnc /> },
     
     { path: '/specifications', element: <SpecificationPage /> },
+    { path: '/specifications/:id', element: <ViewSpecification /> },
     { path: '/specifications/create', element: <CreateSpecification /> },
+    { path: '/specifications/edit-specification/:id', element: <EditSpecification /> },
 ];
 
 export default routes;
