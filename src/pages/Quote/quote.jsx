@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card, Tag, Input, Spin } from "antd";
+import { Space, Button, Card, Tag, Input, Spin, notification } from "antd";
 import { BiEditAlt, BiRefresh } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
+import { FaFilePdf } from "react-icons/fa6";
 import { APIService } from "../../apis"
 import { useNavigate } from "react-router-dom";
 
@@ -34,6 +35,14 @@ const QuotePage = () => {
   const handleCreate = () => {
     navigate(`/quotes/create`);
   };
+  const handleViewPDF = (record) => {
+    notification.info({
+      message: "View PDF",
+      description: "PDF functionality is not implemented yet.",
+      duration: 3,
+    });
+    // navigate(`/quotes/pdf/${record.id}`);
+  };
 
   const handleDelete = (record) => {
     setDeleteRecord(record);
@@ -46,7 +55,7 @@ const QuotePage = () => {
 
   const handleSearch = () => {
     const filteredData = QuoteData.filter((item) => {
-      const itemName = item.name || '';
+      const itemName = item.client.name || '';
       return itemName
         .toLowerCase()
         .includes(searchText.toLowerCase());
@@ -197,9 +206,11 @@ const QuotePage = () => {
     {
       title: "Actions",
       dataIndex: "",
+      align: 'center',
       render: (_, record) => (
         <Space>
-          <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
+          {/* <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button> */}
+          <Button type="link" onClick={() => handleViewPDF(record)}><FaFilePdf size={18} color="red" /></Button>
           <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
           <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red" /></Button>
         </Space>
@@ -213,7 +224,7 @@ const QuotePage = () => {
         {loading && <Spin size="large" />}
         <Button onClick={() => handleCreate()} type="primary">Add Quote</Button>
         <Input
-          placeholder="Search by name"
+          placeholder="Search by Client Name"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           onPressEnter={handleSearch}
