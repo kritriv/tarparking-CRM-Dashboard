@@ -56,3 +56,4 @@ export const ProductApi = generateResourceApi('Product');
 export const SubProductApi = generateResourceApi('SubProduct');
 export const TncApi = generateResourceApi('Tnc');
 export const SpecificationApi = generateResourceApi('Specification');
+export const QuoteApi = generateResourceApi('quote2');

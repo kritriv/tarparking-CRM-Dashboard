@@ -36,6 +36,8 @@ import CreateSpecification from "../Views/Specification/CreateSpecification";
 import EditSpecification from "../Views/Specification/EditSpecification";
 import ViewSpecification from "../Views/Specification/ViewSpecification";
 
+import QuotePage from "../pages/Quote/quote";
+
 const routes = [
     { path: '/', element: <Home /> },
 
@@ -85,6 +87,8 @@ const routes = [
     { path: '/specifications/:id', element: <ViewSpecification /> },
     { path: '/specifications/create', element: <CreateSpecification /> },
     { path: '/specifications/edit-specification/:id', element: <EditSpecification /> },
+
+    { path: '/quotes', element: <QuotePage /> },
 ];
 
 export default routes;

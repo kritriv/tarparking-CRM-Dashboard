@@ -3,6 +3,7 @@ import {
   AiOutlineDashboard,
 } from "react-icons/ai";
 import { RiCustomerService2Line } from "react-icons/ri";
+import { TbFileInvoice } from "react-icons/tb";
 import { FaTags, FaUsersGear } from "react-icons/fa6";
 import { IoSettingsOutline } from "react-icons/io5";
 import reactLogo from "../assets/tarparking.svg";
@@ -35,6 +36,12 @@ const sidebarMenuItems = [
       { key: "sub1_option3", label: "Sub Product", path: "/sub-products" },
       { key: "sub1_option4", label: "Specification", path: "/specifications" },
     ],
+  },
+  {
+    key: "3",
+    icon: <TbFileInvoice />,
+    label: "Quotation",
+    path: "/quotes",
   },
   {
     key: "sub2",
