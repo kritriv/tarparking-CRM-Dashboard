@@ -8,15 +8,15 @@ import { useNavigate } from "react-router-dom";
 
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
-import DeleteTncModal from "../../Views/Term-Condition/DeleteTnc";
+import DeleteSpecificationModal from "../../Views//Specification/DeleteSpecification";
 
-const TncPage = () => {
+const SpecificationPage = () => {
     const [searchText, setSearchText] = useState("");
-    const [filteredTncData, setFilteredTncData] = useState([]);
+    const [filteredSpecificationData, setFilteredSpecificationData] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [TncData, setTncData] = useState([]);
-    const [totalTnc, setTotalTnc] = useState(0);
+    const [SpecificationData, setSpecificationData] = useState([]);
+    const [totalSpecification, setTotalSpecification] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentPageSize, setCurrentPageSize] = useState(10);
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -25,14 +25,14 @@ const TncPage = () => {
     const navigate = useNavigate();
 
     const handleEdit = (record) => {
-        navigate(`edit-tnc/${record.id}`);
+        navigate(`edit-specification/${record.id}`);
     };
 
     const handleView = (record) => {
-        navigate(`/term-conditions/${record.id}`);
+        navigate(`/specifications/${record.id}`);
     };
     const handleCreate = () => {
-        navigate(`/term-conditions/create`);
+        navigate(`/specifications/create`);
     };
 
     const handleDelete = (record) => {
@@ -45,35 +45,35 @@ const TncPage = () => {
     };
 
     const handleSearch = () => {
-        const filteredData = TncData.filter((item) => {
+        const filteredData = SpecificationData.filter((item) => {
             const itemName = item.sub_product.name || '';
             return itemName
                 .toLowerCase()
                 .includes(searchText.toLowerCase());
         });
-        setTncData(filteredData);
+        setSpecificationData(filteredData);
     };
 
     const handleRefresh = () => {
         setLoading(true);
         setSearchText("");
 
-        fetchTncData().finally(() => {
+        fetchSpecificationData().finally(() => {
             setLoading(false);
         });
     };
 
     useEffect(() => {
-        fetchTncData(currentPage, currentPageSize);
+        fetchSpecificationData(currentPage, currentPageSize);
     }, [currentPage, currentPageSize]);
 
-    const fetchTncData = async (page = 1, pageSize = 10) => {
+    const fetchSpecificationData = async (page = 1, pageSize = 10) => {
         try {
             setLoading(true);
             setError(false);
-            const response = await APIService.TncApi.listResource(page, pageSize);
-            setTncData(response.data);
-            setTotalTnc(response.total);
+            const response = await APIService.SpecificationApi.listResource(page, pageSize);
+            setSpecificationData(response.data);
+            setTotalSpecification(response.total);
             setCurrentPage(page);
             setCurrentPageSize(pageSize);
             setLoading(false);
@@ -84,20 +84,21 @@ const TncPage = () => {
         }
     };
 
-    const TncTableData =
-        TncData &&
-        TncData.map((item) => ({
+    const SpecificationTableData =
+        SpecificationData &&
+        SpecificationData.map((item) => ({
             key: item.id,
             id: item.id,
             sub_product: item.sub_product.name,
-            prices: item.prices,
-            packing_forwarding: item.packing_forwarding
+            system_module: item.system_module,
+            system_area: item.system_area,
+            car_size: item.car_size
         }));
 
     const handlePageChange = (page, pageSize) => {
         setCurrentPage(page);
         setCurrentPageSize(pageSize);
-        fetchTncData(page, pageSize);
+        fetchSpecificationData(page, pageSize);
     };
 
     const onChange = (pagination, filters, sorter, extra) => {
@@ -116,14 +117,16 @@ const TncPage = () => {
             sorter: (a, b) => a.sub_product.localeCompare(b.sub_product),
         },
         {
-            title: "Prices",
-            dataIndex: "prices",
-            width: 300,
+            title: "System Module",
+            dataIndex: "system_module",
         },
         {
-            title: "Packing Forwarding",
-            dataIndex: "packing_forwarding",
-            width: 300,
+            title: "System Area",
+            dataIndex: "system_area",
+        },
+        {
+            title: "Car Size",
+            dataIndex: "car_size",
         },
         {
             title: "Actions",
@@ -139,10 +142,10 @@ const TncPage = () => {
     ];
 
     return (
-        <Card title="Term & Conditions" extra={
+        <Card title="Specification List" extra={
             <Space>
                 {loading && <Spin size="large" />}
-                <Button onClick={() => handleCreate()} type="primary">Add Tnc</Button>
+                <Button onClick={() => handleCreate()} type="primary">Add Specification</Button>
                 <Input
                     placeholder="Search by Sub Product"
                     value={searchText}
@@ -157,26 +160,26 @@ const TncPage = () => {
                     pagination={false}
                     style={{ margin: "30px" }}
                     columns={columns}
-                    data={filteredTncData.length > 0 ? filteredTncData : TncTableData}
+                    data={filteredSpecificationData.length > 0 ? filteredSpecificationData : SpecificationTableData}
                     onChange={onChange}
                 />
                 <PaginationComponent
                     showQuickJumper
                     showSizeChanger
                     onPageChange={handlePageChange}
-                    total={totalTnc}
+                    total={totalSpecification}
                     currentPage={currentPage}
                 />
             </Space>
-            <DeleteTncModal
+            <DeleteSpecificationModal
                 visible={deleteModalVisible}
                 onCancel={handleDeleteModalCancel}
                 record={deleteRecord}
-                fetchTncData={fetchTncData}
+                fetchSpecificationData={fetchSpecificationData}
                 currentPage={currentPage}
             />
         </Card>
     );
 };
 
-export default TncPage;
+export default SpecificationPage;
