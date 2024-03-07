@@ -14,6 +14,7 @@ const CreateQuotePage = () => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedSubProduct, setSelectedSubProduct] = useState(null);
     const [products, setProducts] = useState([]);
     const [clients, setClients] = useState([]);
     const [subproducts, setSubProducts] = useState([]);
@@ -32,6 +33,11 @@ const CreateQuotePage = () => {
     const handleProductChange = (value) => {
         const selectedProduct = products.find((product) => product.id === value);
         setSelectedProduct(selectedProduct);
+    };
+    const handleSubProductChange = (value) => {
+        const selectedSubProduct = subproducts.find((subproduct) => subproduct.id === value);
+        setSelectedSubProduct(selectedSubProduct);
+        console.log(selectedSubProduct)
     };
 
     useEffect(() => {
@@ -148,7 +154,7 @@ const CreateQuotePage = () => {
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item name="sub_product" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
-                                        <Select placeholder="Select Sub Product">
+                                        <Select placeholder="Select Sub Product" onChange={handleSubProductChange}>
                                             {subproducts.map((subproduct) => (
                                                 <Select.Option key={subproduct.id} value={subproduct.id}>
                                                     {subproduct.name}
@@ -159,7 +165,15 @@ const CreateQuotePage = () => {
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item name="client" label="Client" rules={[{ required: true, message: "Select Client" }]}>
-                                        <Select placeholder="Select Client">
+                                        <Select
+                                            showSearch
+                                            placeholder="Select Client"
+                                            optionFilterProp="children"
+                                            filterOption={(input, option) =>
+                                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                            }
+                                            // mode="multiple"
+                                        >
                                             {clients.map((client) => (
                                                 <Select.Option key={client.id} value={client.id}>
                                                     {client.name}
@@ -214,6 +228,7 @@ const CreateQuotePage = () => {
                             <Form.Item
                                 name="back_image"
                                 label="Back Image URL"
+                                initialValue={"https://tarparking.com/crm/uploads/images"}
                                 rules={[{ required: true, message: "Please upload an image" }]}
                             >
                                 <Input placeholder="Image Back URL" readOnly value={imageURL} />
