@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Form, Input, Select, Button, notification, Row, Col, Steps } from "antd";
+import { Card, Form, Input, Select, Button, notification, Row, Col, Steps, InputNumber } from "antd";
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
@@ -52,6 +52,7 @@ const CreateQuotePage = () => {
     const handleSubProductChange = (value) => {
         const selectedSubProduct = subproducts.find((subproduct) => subproduct.id === value);
         setSelectedSubProduct(selectedSubProduct);
+        console.log(selectedSubProduct)
     };
 
     useEffect(() => {
@@ -138,14 +139,14 @@ const CreateQuotePage = () => {
 
     return (
         <Card title="Create Quotation" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={16}>
+            <Row gutter={10}>
                 <Col span={8}>
                     <Row gutter={16}>
                         <Col span={24}>
                             <Steps direction="vertical" current={currentStep}>
                                 <Step title="Product Selection" description="Select category, product, and sub-product" />
                                 <Step title="Quote Information" description="Enter quote details" />
-                                <Step title="Product Details" description="Enter Product details" />
+                                <Step title="Product Info & Price" description="Enter Product details & Price" />
                                 {/* <Step title="Finished" description="Complete all process" /> */}
                             </Steps>
                             <div style={{ marginTop: "20px" }}>
@@ -182,7 +183,7 @@ const CreateQuotePage = () => {
                     <div>
                         <Form form={form} layout="vertical" >
                             {currentStep === 0 && (
-                                <Row gutter={16}>
+                                <Row gutter={50}>
                                     <Col span={12}>
                                         <Form.Item
                                             name="createdby"
@@ -301,54 +302,99 @@ const CreateQuotePage = () => {
                                 </Row>
                             )}
                             {currentStep === 2 && (
-                                <Row gutter={16}>
-                                    <Col span={18}>
-                                        <div>
-                                            <Row gutter={30}>
-                                                <Col span={12}>
-                                                    <Form.Item
-                                                        name={["item", "productName"]}
-                                                        label="Product Name"
-                                                        initialValue={selectedSubProduct.name}
-                                                        rules={[{ required: true, message: "Please enter Sub Product name" }]}
-                                                    >
-                                                        <Input placeholder="Enter Sub Product name" />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col span={12}>
-                                                    <Form.Item
-                                                        name={["item", "model_no"]}
-                                                        label="Model No"
-                                                        initialValue={selectedSubProduct.model_no}
-                                                        rules={[{ required: true, message: "Please enter Model No" }]}
-                                                    >
-                                                        <Input placeholder="Enter Model No" />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col span={12}>
-                                                    <Form.Item
-                                                        name={["item", "hsn"]}
-                                                        label="HSN No"
-                                                        initialValue={selectedSubProduct.hsn}
-                                                        rules={[{ required: true, message: "Please enter HSN No" }]}
-                                                    >
-                                                        <Input placeholder="Enter HSN No" />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col span={12}>
-                                                    <Form.Item
-                                                        name={["item", "image"]}
-                                                        label="Product Image URL"
-                                                        initialValue={selectedSubProduct.image}
-                                                        rules={[{ required: true, message: "Please enter Basic rate" }]}
-                                                    >
-                                                        <TextArea placeholder="Product Image URL" readOnly style={{ width: '100%' }} />
-                                                    </Form.Item>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    </Col>
-                                </Row>
+                                <>
+                                    <div>
+                                        <h2>Product Information</h2>
+                                        <Row gutter={50}>
+                                            <Col span={22}>
+                                                <div>
+                                                    <Row gutter={30}>
+                                                        <Col span={12}>
+                                                            <Form.Item
+                                                                name={["item", "categoryName"]}
+                                                                label="Category Name"
+                                                                initialValue={selectedSubProduct && selectedSubProduct.category ? selectedSubProduct.category.name : ''}
+                                                                rules={[{ required: true, message: "Please enter SCategory name" }]}
+                                                            >
+                                                                <Input placeholder="Enter Category name" readOnly />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={12}>
+                                                            <Form.Item
+                                                                name={["item", "mainProduct"]}
+                                                                label="Main Product"
+                                                                initialValue={selectedSubProduct && selectedSubProduct.product ? selectedSubProduct.product.name : ''}
+                                                                rules={[{ required: true, message: "Please enter Main Product" }]}
+                                                            >
+                                                                <Input placeholder="Enter Main Product" readOnly />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={12}>
+                                                            <Form.Item
+                                                                name={["item", "productName"]}
+                                                                label="Product Name"
+                                                                initialValue={selectedSubProduct && selectedSubProduct.name ? selectedSubProduct.name : ''}
+                                                                rules={[{ required: true, message: "Please enter Sub Product name" }]}
+                                                            >
+                                                                <Input placeholder="Enter Sub Product name" readOnly />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={12}>
+                                                            <Form.Item
+                                                                name={["item", "model_no"]}
+                                                                label="Model No"
+                                                                initialValue={selectedSubProduct && selectedSubProduct.model_no ? selectedSubProduct.model_no : ''}
+                                                                rules={[{ required: true, message: "Please enter Model No" }]}
+                                                            >
+                                                                <Input placeholder="Enter Model No" readOnly />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={12}>
+                                                            <Form.Item
+                                                                name={["item", "hsn"]}
+                                                                label="HSN No"
+                                                                initialValue={selectedSubProduct && selectedSubProduct.hsn ? selectedSubProduct.hsn : ''}
+                                                                rules={[{ required: true, message: "Please enter HSN No" }]}
+                                                            >
+                                                                <Input placeholder="Enter HSN No" readOnly />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={12}>
+                                                            <Form.Item
+                                                                name={["item", "image"]}
+                                                                label="Product Image URL"
+                                                                initialValue={selectedSubProduct && selectedSubProduct.image ? selectedSubProduct.image : ''}
+                                                                rules={[{ required: true, message: "Please enter Basic rate" }]}
+                                                            >
+                                                                <TextArea placeholder="Product Image URL" readOnly style={{ width: '100%' }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                    <div>
+                                        <h2>Price Details</h2>
+                                        <Row gutter={50}>
+                                            <Col span={22}>
+                                                <div>
+                                                    <Row gutter={30}>
+                                                        <Col span={8}>
+                                                            <Form.Item
+                                                                name={["quote_price", "quantity"]}
+                                                                label="Enter Quantity "
+                                                                rules={[{ required: true, message: "Please Enter Quantity" }]}
+                                                            >
+                                                                <InputNumber placeholder="Enter Quantity"  style={{ width: '100%' }}/>
+                                                            </Form.Item>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </>
                             )}
                         </Form>
                     </div>
