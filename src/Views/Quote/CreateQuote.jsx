@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Form, Input, Select, Button, notification, Row, Col, Divider, Steps } from "antd";
+import { Card, Form, Input, Select, Button, notification, Row, Col, Steps } from "antd";
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
@@ -28,12 +28,11 @@ const CreateQuotePage = () => {
     const handleBack = () => {
         navigate(`/quotes`);
     };
-
     const handleNext = async () => {
-        const values = await form.getFieldValue();
+        const values = await form.validateFields();
+        setCurrentStep((prevStep) => prevStep + 1);
         const mergedValues = { ...allStepValues, ...values };
         setAllStepValues(mergedValues);
-        setCurrentStep((prevStep) => prevStep + 1);
     };
 
     const handlePrev = () => {
@@ -109,9 +108,13 @@ const CreateQuotePage = () => {
         try {
             setLoading(true);
 
-            // Use the merged values from all steps
-            const mergedValues = { ...allStepValues };
-            // Create quote
+            // Extract the 'item' field from form values
+            const itemFieldValue = form.getFieldValue(['item']);
+
+            // Ensure the 'item' field is already an object (not a string)
+            const itemObject = typeof itemFieldValue === 'object' ? itemFieldValue : JSON.parse(itemFieldValue);
+
+            const mergedValues = { ...allStepValues, item: itemObject };
             await APIService.QuoteApi.createResource(mergedValues);
 
             notification.success({
@@ -121,6 +124,7 @@ const CreateQuotePage = () => {
 
             navigate(`/quotes`);
         } catch (error) {
+            console.log(error);
             notification.error({
                 message: "Error",
                 description: "Failed to create Quote Info. Please try again later",
@@ -129,6 +133,7 @@ const CreateQuotePage = () => {
             setLoading(false);
         }
     };
+
 
 
     return (
@@ -141,6 +146,7 @@ const CreateQuotePage = () => {
                                 <Step title="Product Selection" description="Select category, product, and sub-product" />
                                 <Step title="Quote Information" description="Enter quote details" />
                                 <Step title="Product Details" description="Enter Product details" />
+                                {/* <Step title="Finished" description="Complete all process" /> */}
                             </Steps>
                             <div style={{ marginTop: "20px" }}>
                                 {currentStep === 0 && (
@@ -291,6 +297,56 @@ const CreateQuotePage = () => {
                                         >
                                             <TextArea placeholder="Enter remark" autoSize={{ minRows: 2, maxRows: 6 }} />
                                         </Form.Item>
+                                    </Col>
+                                </Row>
+                            )}
+                            {currentStep === 2 && (
+                                <Row gutter={16}>
+                                    <Col span={18}>
+                                        <div>
+                                            <Row gutter={30}>
+                                                <Col span={12}>
+                                                    <Form.Item
+                                                        name={["item", "productName"]}
+                                                        label="Product Name"
+                                                        initialValue={selectedSubProduct.name}
+                                                        rules={[{ required: true, message: "Please enter Sub Product name" }]}
+                                                    >
+                                                        <Input placeholder="Enter Sub Product name" />
+                                                    </Form.Item>
+                                                </Col>
+                                                <Col span={12}>
+                                                    <Form.Item
+                                                        name={["item", "model_no"]}
+                                                        label="Model No"
+                                                        initialValue={selectedSubProduct.model_no}
+                                                        rules={[{ required: true, message: "Please enter Model No" }]}
+                                                    >
+                                                        <Input placeholder="Enter Model No" />
+                                                    </Form.Item>
+                                                </Col>
+                                                <Col span={12}>
+                                                    <Form.Item
+                                                        name={["item", "hsn"]}
+                                                        label="HSN No"
+                                                        initialValue={selectedSubProduct.hsn}
+                                                        rules={[{ required: true, message: "Please enter HSN No" }]}
+                                                    >
+                                                        <Input placeholder="Enter HSN No" />
+                                                    </Form.Item>
+                                                </Col>
+                                                <Col span={12}>
+                                                    <Form.Item
+                                                        name={["item", "image"]}
+                                                        label="Product Image URL"
+                                                        initialValue={selectedSubProduct.image}
+                                                        rules={[{ required: true, message: "Please enter Basic rate" }]}
+                                                    >
+                                                        <TextArea placeholder="Product Image URL" readOnly style={{ width: '100%' }} />
+                                                    </Form.Item>
+                                                </Col>
+                                            </Row>
+                                        </div>
                                     </Col>
                                 </Row>
                             )}
