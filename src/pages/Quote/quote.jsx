@@ -98,12 +98,13 @@ const QuotePage = () => {
     QuoteData &&
     QuoteData.map((item) => ({
       key: item.id,
+      ref: item.refno,
       id: item.id,
       status: item.status,
       createdby: item.createdby.username,
       client: item.client.name,
       clientCompany: item.client.company,
-      item: JSON.parse(item.item).product,
+      item: JSON.parse(item.item).id,
       quotePrice: `₹ ${item.quote_price.total_price}`,
     }));
 
@@ -119,9 +120,9 @@ const QuotePage = () => {
 
   const columns = [
     {
-      title: "Quote ID",
-      dataIndex: "id",
-      sorter: (a, b) => a.id.localeCompare(b.id),
+      title: "Quote Ref ID",
+      dataIndex: "ref",
+      sorter: (a, b) => a.ref.localeCompare(b.ref),
     },
     {
       title: "Quote Status",

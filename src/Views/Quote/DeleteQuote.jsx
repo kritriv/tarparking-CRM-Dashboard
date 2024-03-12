@@ -9,7 +9,7 @@ const DeleteQuoteModal = ({ visible, onCancel, record, fetchQuoteData, currentPa
             if (response && response.success) {
                 notification.success({
                     message: 'Quote Deleted',
-                    description: `${record.username} has been deleted successfully.`,
+                    description: `${record.ref} has been deleted successfully.`,
                 });
                 fetchQuoteData(currentPage);
                 onCancel();

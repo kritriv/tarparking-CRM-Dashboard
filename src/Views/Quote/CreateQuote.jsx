@@ -21,6 +21,7 @@ const CreateQuotePage = () => {
     const [subproducts, setSubProducts] = useState([]);
     const [imageURL, setImageURL] = useState(null);
     const [currentStep, setCurrentStep] = useState(0);
+    const [allStepValues, setAllStepValues] = useState({});
 
     const navigate = useNavigate();
 
@@ -28,7 +29,10 @@ const CreateQuotePage = () => {
         navigate(`/quotes`);
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
+        const values = await form.getFieldValue();
+        const mergedValues = { ...allStepValues, ...values };
+        setAllStepValues(mergedValues);
         setCurrentStep((prevStep) => prevStep + 1);
     };
 
@@ -103,26 +107,19 @@ const CreateQuotePage = () => {
 
     const handleCreateQuote = async () => {
         try {
-            form.validateFields().then(async (values) => {
-                setLoading(true);
+            setLoading(true);
 
-                // Merge values from both steps
-                const mergedValues = {
-                    ...values,
+            // Use the merged values from all steps
+            const mergedValues = { ...allStepValues };
+            // Create quote
+            await APIService.QuoteApi.createResource(mergedValues);
 
-                };
-                console.log(mergedValues)
-
-                // Create quote
-                await APIService.QuoteApi.createResource(mergedValues);
-
-                notification.success({
-                    message: "Success",
-                    description: "Quote Info successfully Created.",
-                });
-
-                navigate(`/quotes`);
+            notification.success({
+                message: "Success",
+                description: "Quote Info successfully Created.",
             });
+
+            navigate(`/quotes`);
         } catch (error) {
             notification.error({
                 message: "Error",
@@ -132,6 +129,7 @@ const CreateQuotePage = () => {
             setLoading(false);
         }
     };
+
 
     return (
         <Card title="Create Quotation" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
@@ -156,9 +154,9 @@ const CreateQuotePage = () => {
                                     </Button>
                                 )}
                                 {currentStep === 1 && (
-                                     <Button type="primary" onClick={handleNext}>
-                                     Next
-                                 </Button>
+                                    <Button type="primary" onClick={handleNext}>
+                                        Next
+                                    </Button>
                                 )}
                                 {currentStep === 2 && (
                                     <Button style={{ marginRight: "10px" }} onClick={handlePrev}>
@@ -212,7 +210,7 @@ const CreateQuotePage = () => {
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item name="sub_product" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
+                                        <Form.Item name={["item", "id"]} label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
                                             <Select placeholder="Select Sub Product" onChange={handleSubProductChange}>
                                                 {subproducts.map((subproduct) => (
                                                     <Select.Option key={subproduct.id} value={subproduct.id}>
