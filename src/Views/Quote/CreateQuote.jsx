@@ -52,7 +52,6 @@ const CreateQuotePage = () => {
     const handleSubProductChange = (value) => {
         const selectedSubProduct = subproducts.find((subproduct) => subproduct.id === value);
         setSelectedSubProduct(selectedSubProduct);
-        console.log(selectedSubProduct)
     };
 
     useEffect(() => {
@@ -109,13 +108,12 @@ const CreateQuotePage = () => {
         try {
             setLoading(true);
 
-            // Extract the 'item' field from form values
             const itemFieldValue = form.getFieldValue(['item']);
+            const priceFieldValue = form.getFieldValue(['quote_price']);
 
-            // Ensure the 'item' field is already an object (not a string)
             const itemObject = typeof itemFieldValue === 'object' ? itemFieldValue : JSON.parse(itemFieldValue);
 
-            const mergedValues = { ...allStepValues, item: itemObject };
+            const mergedValues = { ...allStepValues, item: itemObject, quote_price: priceFieldValue };
             await APIService.QuoteApi.createResource(mergedValues);
 
             notification.success({
@@ -384,9 +382,84 @@ const CreateQuotePage = () => {
                                                             <Form.Item
                                                                 name={["quote_price", "quantity"]}
                                                                 label="Enter Quantity "
+                                                                initialValue={1}
                                                                 rules={[{ required: true, message: "Please Enter Quantity" }]}
                                                             >
-                                                                <InputNumber placeholder="Enter Quantity"  style={{ width: '100%' }}/>
+                                                                <InputNumber placeholder="Enter Quantity" style={{ width: '100%' }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={8}>
+                                                            <Form.Item
+                                                                name={["quote_price", "basic_rate"]}
+                                                                label="Basic rate"
+                                                                initialValue={selectedSubProduct && selectedSubProduct.price ? selectedSubProduct.price.basic_rate : ''}
+                                                                rules={[{ required: true, message: "Please Enter Basic rate" }]}
+                                                            >
+                                                                <InputNumber placeholder="Enter Basic rate" style={{ width: '100%' }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={8}>
+                                                            <Form.Item
+                                                                name={["quote_price", "installation_charges"]}
+                                                                label="Installation Charges"
+                                                                initialValue={selectedSubProduct && selectedSubProduct.price ? selectedSubProduct.price.installation_charges : ''}
+                                                                rules={[{ required: true, message: "Please Enter Installation" }]}
+                                                            >
+                                                                <InputNumber placeholder="Enter Installation" style={{ width: '100%' }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={8}>
+                                                            <Form.Item
+                                                                name={["quote_price", "freight_cost"]}
+                                                                label="freight Cost"
+                                                                initialValue={0}
+                                                            >
+                                                                <InputNumber placeholder="Enter freight Cost" style={{ width: '100%' }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={8}>
+                                                            <Form.Item
+                                                                name={["quote_price", "unloading_cost"]}
+                                                                label="Unloading Cost"
+                                                                initialValue={0}
+                                                            >
+                                                                <InputNumber placeholder="Enter unloading Cost" style={{ width: '100%' }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={8}>
+                                                            <Form.Item
+                                                                name={["quote_price", "transport_charge"]}
+                                                                label="Transport Charges"
+                                                                initialValue={0}
+                                                            >
+                                                                <InputNumber placeholder="Enter Transport Charges" style={{ width: '100%' }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={8}>
+                                                            <Form.Item
+                                                                name={["quote_price", "discount"]}
+                                                                label="Other Discount"
+                                                                initialValue={0}
+                                                            >
+                                                                <InputNumber placeholder="Enter Discount" style={{ width: '100%' }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={8}>
+                                                            <Form.Item
+                                                                name={["quote_price", "tax_rate"]}
+                                                                label="Tax Rate (GST)"
+                                                                initialValue={18}
+                                                                rules={[{ required: true, message: "Please Enter Tax Rate (GST)" }]}
+                                                            >
+                                                                <InputNumber placeholder="Enter Tax Rate" style={{ width: '100%' }} />
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col span={8}>
+                                                            <Form.Item
+                                                                name={["quote_price", "total_price"]}
+                                                                label="Total Value"
+                                                            >
+                                                                <InputNumber placeholder="Enter Total Value" style={{ width: '100%' }} readOnly/>
                                                             </Form.Item>
                                                         </Col>
                                                     </Row>
