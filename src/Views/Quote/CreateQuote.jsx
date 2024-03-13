@@ -145,35 +145,32 @@ const CreateQuotePage = () => {
                                 <Step title="Product Selection" description="Select category, product, and sub-product" />
                                 <Step title="Quote Information" description="Enter quote details" />
                                 <Step title="Product Info & Price" description="Enter Product details & Price" />
-                                {/* <Step title="Finished" description="Complete all process" /> */}
+                                <Step title="Specifications" description="Enter Product Specifications" />
                             </Steps>
                             <div style={{ marginTop: "20px" }}>
-                                {currentStep === 0 && (
-                                    <Button type="primary" onClick={handleNext}>
-                                        Next
-                                    </Button>
-                                )}
-                                {currentStep === 1 && (
-                                    <Button style={{ marginRight: "10px" }} onClick={handlePrev}>
-                                        Previous
-                                    </Button>
-                                )}
-                                {currentStep === 1 && (
-                                    <Button type="primary" onClick={handleNext}>
-                                        Next
-                                    </Button>
-                                )}
-                                {currentStep === 2 && (
-                                    <Button style={{ marginRight: "10px" }} onClick={handlePrev}>
-                                        Previous
-                                    </Button>
-                                )}
-                                {currentStep === 2 && (
-                                    <Button type="primary" onClick={handleCreateQuote} loading={loading}>
-                                        Create Quote
-                                    </Button>
-                                )}
+                                {[
+                                    { step: 0, buttons: [<Button key="step0" type="primary" onClick={handleNext}>Next</Button>] },
+                                    {
+                                        step: 1, buttons: [
+                                            <Button key="step1_prev" style={{ marginRight: "10px" }} onClick={handlePrev}>Previous</Button>,
+                                            <Button key="step1_next" type="primary" onClick={handleNext}>Next</Button>
+                                        ]
+                                    },
+                                    {
+                                        step: 2, buttons: [
+                                            <Button key="step2_prev" style={{ marginRight: "10px" }} onClick={handlePrev}>Previous</Button>,
+                                            <Button key="step2_next" type="primary" onClick={handleNext}>Next</Button>
+                                        ]
+                                    },
+                                    {
+                                        step: 3, buttons: [
+                                            <Button key="step3_prev" style={{ marginRight: "10px" }} onClick={handlePrev}>Previous</Button>,
+                                            <Button key="step3_create" type="primary" onClick={handleCreateQuote} loading={loading}>Create Quote</Button>
+                                        ]
+                                    }
+                                ].find(item => item.step === currentStep)?.buttons}
                             </div>
+
                         </Col>
                     </Row>
                 </Col>
