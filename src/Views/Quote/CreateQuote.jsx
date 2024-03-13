@@ -179,7 +179,25 @@ const CreateQuotePage = () => {
                 </Col>
                 <Col span={16}>
                     <div>
-                        <Form form={form} layout="vertical" >
+                        <Form
+                            form={form}
+                            layout="vertical"
+                            onValuesChange={(changedValues, allValues) => {
+                                if (currentStep === 2) {
+                                    const { basic_rate, installation_charges, discount, freight_cost, unloading_cost, transport_charge, tax_rate, quantity } = allValues.quote_price;
+                                    const item_sub_total = (basic_rate + installation_charges) * quantity;
+                                    const taxtotal = ((item_sub_total * tax_rate) / 100);
+                                    const total_price = item_sub_total + taxtotal + freight_cost + unloading_cost + transport_charge - discount;
+                                    form.setFieldsValue({
+                                        quote_price: {
+                                            ...allValues.quote_price,
+                                            total_price: total_price,
+                                        },
+                                    });
+                                }
+                            }}
+                            initialValues={{ quote_price: { total_price: 0 } }}
+                        >
                             {currentStep === 0 && (
                                 <Row gutter={50}>
                                     <Col span={12}>
@@ -459,7 +477,7 @@ const CreateQuotePage = () => {
                                                                 name={["quote_price", "total_price"]}
                                                                 label="Total Value"
                                                             >
-                                                                <InputNumber placeholder="Enter Total Value" style={{ width: '100%' }} readOnly/>
+                                                                <InputNumber placeholder="Enter Total Value" style={{ width: '100%' }} readOnly />
                                                             </Form.Item>
                                                         </Col>
                                                     </Row>
