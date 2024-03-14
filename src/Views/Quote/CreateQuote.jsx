@@ -4,6 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
+import { ifElse } from "ramda";
 
 const { TextArea } = Input;
 const { Step } = Steps;
@@ -53,7 +54,19 @@ const CreateQuotePage = () => {
 
     const handleSubProductChange = (value) => {
         const selectedSubProduct = subproducts.find((subproduct) => subproduct.id === value);
-        setSelectedSubProduct(selectedSubProduct);
+        if (!selectedSubProduct.specifications) {
+            notification.error({
+                message: "Error",
+                description: "Add its Specifications first!",
+            });
+        } else if (!selectedSubProduct.tnc) {
+            notification.error({
+                message: "Error",
+                description: "Add its Terms & Conditions first!",
+            });
+        } else {
+            setSelectedSubProduct(selectedSubProduct);
+        }
     };
 
     useEffect(() => {
