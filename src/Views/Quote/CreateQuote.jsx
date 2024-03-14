@@ -16,11 +16,13 @@ const CreateQuotePage = () => {
     const [loading, setLoading] = useState(false);
     const [categories, setCategories] = useState([]);
     const [specifications, setSpecifications] = useState([]);
+    const [tnc, setTnc] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedSubProduct, setSelectedSubProduct] = useState(null);
     const [products, setProducts] = useState([]);
     const [clients, setClients] = useState([]);
+    const [ourCompany, setOurCompany] = useState([]);
     const [subproducts, setSubProducts] = useState([]);
     const [imageURL, setImageURL] = useState(null);
     const [currentStep, setCurrentStep] = useState(0);
@@ -70,21 +72,28 @@ const CreateQuotePage = () => {
     };
 
     useEffect(() => {
-        // Fetch categories
-        APIService.CategoryApi.listResource()
-            .then((response) => {
-                setCategories(response.data);
-            })
-            .catch((error) => {
-                console.error("Error fetching categories:", error);
-            });
-    }, []);
-
-    useEffect(() => {
         // Fetch clients
         APIService.ClientApi.listResource()
             .then((response) => {
                 setClients(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching Client:", error);
+            });
+
+        // Fetch ourCompany
+        APIService.CompanyApi.listResource()
+            .then((response) => {
+                setOurCompany(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching Company Indo:", error);
+            });
+
+        // Fetch categories
+        APIService.CategoryApi.listResource()
+            .then((response) => {
+                setCategories(response.data);
             })
             .catch((error) => {
                 console.error("Error fetching categories:", error);
@@ -130,6 +139,17 @@ const CreateQuotePage = () => {
                 .catch((error) => {
                     console.error("Error fetching Specification:", error);
                 });
+
+        }
+        if (selectedSubProduct && selectedSubProduct.tnc) {
+            const tncId = selectedSubProduct.tnc;
+            APIService.TncApi.readResource(tncId)
+                .then((response) => {
+                    setTnc(response.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Tnc:", error);
+                });
         }
     }, [selectedSubProduct]);
 
@@ -138,16 +158,17 @@ const CreateQuotePage = () => {
             setLoading(true);
 
             const itemFieldValue = form.getFieldValue(['item']);
+            const tncFieldValue = form.getFieldValue(['tnc']);
             const priceFieldValue = form.getFieldValue(['quote_price']);
 
             const itemObject = typeof itemFieldValue === 'object' ? itemFieldValue : JSON.parse(itemFieldValue);
-
+            const tncObject = typeof tncFieldValue === 'object' ? tncFieldValue : JSON.parse(tncFieldValue);
             const mergedItemObject = {
                 ...itemObject,
                 specifications: form.getFieldValue(['specifications']),
             };
 
-            const mergedValues = { ...allStepValues, item: mergedItemObject, quote_price: priceFieldValue };
+            const mergedValues = { ...allStepValues, item: mergedItemObject, tnc: tncObject, quote_price: priceFieldValue };
             console.log(mergedValues)
             await APIService.QuoteApi.createResource(mergedValues);
 
@@ -179,6 +200,7 @@ const CreateQuotePage = () => {
                                 <Step title="Quote Information" description="Enter quote details" />
                                 <Step title="Product Info & Price" description="Enter Product details & Price" />
                                 <Step title="Specifications" description="Enter Product Specifications" />
+                                <Step title="Terms & Conditions" description="Enter Quote Terms & Conditions" />
                             </Steps>
                             <div style={{ marginTop: "10px" }}>
                                 {[
@@ -197,13 +219,18 @@ const CreateQuotePage = () => {
                                     },
                                     {
                                         step: 3, buttons: [
-                                            <Button key="step3_prev" style={{ marginRight: "10px" }} onClick={handlePrev}>Previous</Button>,
-                                            <Button key="step3_create" type="primary" onClick={handleCreateQuote} loading={loading}>Create Quote</Button>
+                                            <Button key="step2_prev" style={{ marginRight: "10px" }} onClick={handlePrev}>Previous</Button>,
+                                            <Button key="step2_next" type="primary" onClick={handleNext}>Next</Button>
+                                        ]
+                                    },
+                                    {
+                                        step: 4, buttons: [
+                                            <Button key="step4_prev" style={{ marginRight: "10px" }} onClick={handlePrev}>Previous</Button>,
+                                            <Button key="step4_create" type="primary" onClick={handleCreateQuote} loading={loading}>Create Quote</Button>
                                         ]
                                     }
                                 ].find(item => item.step === currentStep)?.buttons}
                             </div>
-
                         </Col>
                     </Row>
                 </Col>
@@ -286,6 +313,24 @@ const CreateQuotePage = () => {
                                                 {clients.map((client) => (
                                                     <Select.Option key={client.id} value={client.id}>
                                                         {client.name}
+                                                    </Select.Option>
+                                                ))}
+                                            </Select>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item name="ourCompany" label="Our Company" rules={[{ required: true, message: "Select Our Company" }]}>
+                                            <Select
+                                                showSearch
+                                                placeholder="Select Our Company"
+                                                optionFilterProp="children"
+                                                filterOption={(input, option) =>
+                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                            >
+                                                {ourCompany.map((company) => (
+                                                    <Select.Option key={company.id} value={company.id}>
+                                                        {company.name}
                                                     </Select.Option>
                                                 ))}
                                             </Select>
@@ -772,6 +817,231 @@ const CreateQuotePage = () => {
                                         </Col>
                                     </Row>
                                     {/* </Form> */}
+                                </>
+                            )}
+                            {currentStep === 4 && (
+                                <>
+                                    <h2>Terms & Conditions</h2>
+                                    <Divider />
+                                    <Row gutter={50}>
+                                        <Col span={12}>
+                                            <div>
+                                                <Row gutter={10}>
+                                                    <Col span={24}>
+                                                        <Form.List name={["tnc", "payment_terms"]} initialValue={tnc && tnc.payment_terms ? tnc.payment_terms : ['']}>
+                                                            {(fields, { add, remove }) => (
+                                                                <>
+                                                                    {fields.map(({ key, name, ...restField }) => (
+                                                                        <Row gutter={16} key={key}>
+                                                                            <Col span={18}>
+                                                                                <Form.Item
+                                                                                    {...restField}
+                                                                                    name={name}
+                                                                                    label={`Payment Terms #${key + 1}`}
+                                                                                    rules={[
+                                                                                        { required: true, message: 'Please enter Payment Terms' },
+                                                                                    ]}
+                                                                                >
+                                                                                    <TextArea placeholder="Enter Payment Terms" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                                                </Form.Item>
+                                                                            </Col>
+                                                                            <Col span={6}>
+                                                                                <Button
+                                                                                    type="danger"
+                                                                                    onClick={() => {
+                                                                                        if (fields.length > 1) {
+                                                                                            remove(name);
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    Remove
+                                                                                </Button>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    ))}
+                                                                    <Form.Item>
+                                                                        <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                                                                            Add Term
+                                                                        </Button>
+                                                                    </Form.Item>
+                                                                </>
+                                                            )}
+                                                        </Form.List>
+                                                    </Col>
+                                                </Row>
+                                                <Divider />
+                                                <Row gutter={10}>
+                                                    <h4>Client Responsibility</h4>
+                                                    <Col span={24}>
+                                                        <Form.List name={["tnc", "client_responsibilities"]} initialValue={tnc && tnc.client_responsibilities ? tnc.client_responsibilities : ['']}>
+                                                            {(fields, { add, remove }) => (
+                                                                <>
+                                                                    {fields.map(({ key, name, ...restField }) => (
+                                                                        <Row gutter={16} key={key}>
+                                                                            <Col span={18}>
+                                                                                <Form.Item
+                                                                                    {...restField}
+                                                                                    name={name}
+                                                                                    label={`Client Responsibility #${key + 1}`}
+                                                                                    rules={[
+                                                                                        { required: true, message: 'Please enter Client Responsibilities' },
+                                                                                    ]}
+                                                                                >
+                                                                                    <TextArea placeholder="Enter Client Responsibilities" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                                                </Form.Item>
+                                                                            </Col>
+                                                                            <Col span={6}>
+                                                                                <Button
+                                                                                    type="danger"
+                                                                                    onClick={() => {
+                                                                                        if (fields.length > 1) {
+                                                                                            remove(name);
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    Remove
+                                                                                </Button>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    ))}
+                                                                    <Form.Item>
+                                                                        <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                                                                            Add Responsibility
+                                                                        </Button>
+                                                                    </Form.Item>
+                                                                </>
+                                                            )}
+                                                        </Form.List>
+                                                    </Col>
+                                                </Row>
+                                                <Divider />
+                                                <Row gutter={10}>
+                                                    <Col span={24}>
+                                                        <Form.List name={["tnc", "installation_process"]} initialValue={tnc && tnc.installation_process ? tnc.installation_process : ['']}>
+                                                            {(fields, { add, remove }) => (
+                                                                <>
+                                                                    {fields.map(({ key, name, ...restField }) => (
+                                                                        <Row gutter={16} key={key}>
+                                                                            <Col span={18}>
+                                                                                <Form.Item
+                                                                                    {...restField}
+                                                                                    name={name}
+                                                                                    label={`Installation Process #${key + 1}`}
+                                                                                    rules={[
+                                                                                        { required: true, message: 'Please enter Installation Process' },
+                                                                                    ]}
+                                                                                >
+                                                                                    <TextArea placeholder="Enter Installation Process" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                                                </Form.Item>
+                                                                            </Col>
+                                                                            <Col span={6}>
+                                                                                <Button
+                                                                                    type="danger"
+                                                                                    onClick={() => {
+                                                                                        if (fields.length > 1) {
+                                                                                            remove(name);
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    Remove
+                                                                                </Button>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    ))}
+                                                                    <Form.Item>
+                                                                        <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                                                                            Add Process
+                                                                        </Button>
+                                                                    </Form.Item>
+                                                                </>
+                                                            )}
+                                                        </Form.List>
+                                                    </Col>
+                                                </Row>
+                                            </div>
+                                        </Col>
+                                        <Col span={10}>
+                                            <Row gutter={16}>
+                                                <Col span={24}>
+                                                    <div>
+                                                        <Form.Item
+                                                            name={["tnc", "prices"]}
+                                                            label="Prices"
+                                                            initialValue={tnc?.prices || ''}
+                                                            rules={[{ required: true, message: "Please enter prices" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter prices Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["tnc", "packing_forwarding"]}
+                                                            label="Packing Forwarding"
+                                                            initialValue={tnc?.packing_forwarding || ''}
+                                                            rules={[{ required: true, message: "Please enter Packing Forwarding" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Packing Forwarding Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["tnc", "material_delivery"]}
+                                                            label="Material Delivery"
+                                                            initialValue={tnc?.material_delivery || ''}
+                                                            rules={[{ required: true, message: "Please enter Material Delivery" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Material Delivery Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["tnc", "operation"]}
+                                                            label="Operation"
+                                                            initialValue={tnc?.operation || ''}
+                                                            rules={[{ required: true, message: "Please enter Operation" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Operation Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["tnc", "force_majeure"]}
+                                                            label="Force Majeure"
+                                                            initialValue={tnc?.force_majeure || ''}
+                                                            rules={[{ required: true, message: "Please enter Force Majeure" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Force Majeure Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["tnc", "warranty"]}
+                                                            label="Warranty"
+                                                            initialValue={tnc?.warranty || ''}
+                                                            rules={[{ required: true, message: "Please enter Warranty" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Warranty Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["tnc", "termination"]}
+                                                            label="Termination"
+                                                            initialValue={tnc?.termination || ''}
+                                                            rules={[{ required: true, message: "Please enter Termination" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Termination Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["tnc", "jurisdiction"]}
+                                                            label="Jurisdiction"
+                                                            initialValue={tnc?.jurisdiction || ''}
+                                                            rules={[{ required: true, message: "Please enter Jurisdiction" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Jurisdiction Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["tnc", "validity"]}
+                                                            label="Validity"
+                                                            initialValue={tnc?.validity || ''}
+                                                            rules={[{ required: true, message: "Please enter Validity" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Validity Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                    </div>
+
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    </Row>
                                 </>
                             )}
                         </Form>
