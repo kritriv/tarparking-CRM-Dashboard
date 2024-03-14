@@ -89,9 +89,9 @@ const TncPage = () => {
         TncData.map((item) => ({
             key: item.id,
             id: item.id,
-            sub_product: item.sub_product.name,
+            sub_product: item.sub_product?.name || '',
             prices: item.prices,
-            packing_forwarding: item.packing_forwarding
+            packing_forwarding: item?.packing_forwarding || ''
         }));
 
     const handlePageChange = (page, pageSize) => {

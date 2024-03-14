@@ -76,7 +76,7 @@ const CreateSpecificationPage = () => {
                             message: "Success",
                             description: "Specification Info successfully Created.",
                         });
-                        navigate(`/specifications`);
+                        navigate(`/term-conditions/create`);
                     })
                     .catch((error) => {
                         notification.error({

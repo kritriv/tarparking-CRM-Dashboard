@@ -81,7 +81,7 @@ const CreateSubProductPage = () => {
                             message: "Success",
                             description: "Sub Product successfully Created.",
                         });
-                        navigate(`/sub-products`);
+                        navigate(`/specifications/create`);
                     })
                     .catch((error) => {
                         console.log(error);
