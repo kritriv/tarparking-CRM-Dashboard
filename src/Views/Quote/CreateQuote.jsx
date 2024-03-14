@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Card, Form, Input, Select, Button, notification, Row, Col, Steps, InputNumber } from "antd";
+import { Card, Form, Input, Select, Button, notification, Row, Col, Steps, InputNumber, Divider } from "antd";
+import { PlusOutlined } from '@ant-design/icons';
 import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
@@ -13,6 +14,7 @@ const CreateQuotePage = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [categories, setCategories] = useState([]);
+    const [specifications, setSpecifications] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedSubProduct, setSelectedSubProduct] = useState(null);
@@ -104,6 +106,20 @@ const CreateQuotePage = () => {
         }
     }, [selectedProduct]);
 
+    useEffect(() => {
+        if (selectedSubProduct && selectedSubProduct.specifications) {
+            const specificationId = selectedSubProduct.specifications;
+
+            APIService.SpecificationApi.readResource(specificationId)
+                .then((response) => {
+                    setSpecifications(response.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Specification:", error);
+                });
+        }
+    }, [selectedSubProduct]);
+
     const handleCreateQuote = async () => {
         try {
             setLoading(true);
@@ -113,7 +129,13 @@ const CreateQuotePage = () => {
 
             const itemObject = typeof itemFieldValue === 'object' ? itemFieldValue : JSON.parse(itemFieldValue);
 
-            const mergedValues = { ...allStepValues, item: itemObject, quote_price: priceFieldValue };
+            const mergedItemObject = {
+                ...itemObject,
+                specifications: form.getFieldValue(['specifications']),
+            };
+
+            const mergedValues = { ...allStepValues, item: mergedItemObject, quote_price: priceFieldValue };
+            console.log(mergedValues)
             await APIService.QuoteApi.createResource(mergedValues);
 
             notification.success({
@@ -133,8 +155,6 @@ const CreateQuotePage = () => {
         }
     };
 
-
-
     return (
         <Card title="Create Quotation" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
             <Row gutter={10}>
@@ -147,7 +167,7 @@ const CreateQuotePage = () => {
                                 <Step title="Product Info & Price" description="Enter Product details & Price" />
                                 <Step title="Specifications" description="Enter Product Specifications" />
                             </Steps>
-                            <div style={{ marginTop: "20px" }}>
+                            <div style={{ marginTop: "10px" }}>
                                 {[
                                     { step: 0, buttons: [<Button key="step0" type="primary" onClick={handleNext}>Next</Button>] },
                                     {
@@ -284,7 +304,7 @@ const CreateQuotePage = () => {
                                         <Form.Item
                                             name="greeting"
                                             label="Quote Greeting"
-                                            initialValue="This has reference to telephonic discussion with you on13.01.2024 regarding your requirement of car Parking system. We are giving below the details of equipment along with techno-commercial offer."
+                                            initialValue="This has reference to telephonic discussion with you on13.01.1024 regarding your requirement of car Parking system. We are giving below the details of equipment along with techno-commercial offer."
                                             rules={[{ required: true, message: "Please enter Quote Greeting" }]}
                                         >
                                             <TextArea placeholder="Enter Quote Greeting" autoSize={{ minRows: 2, maxRows: 6 }} />
@@ -482,6 +502,263 @@ const CreateQuotePage = () => {
                                             </Col>
                                         </Row>
                                     </div>
+                                </>
+                            )}
+                            {currentStep === 3 && (
+                                <>
+                                    {/* <Form initialValues={specifications}> */}
+                                    <h2>Product Specifications</h2>
+                                    <Divider />
+                                    <Row gutter={50} >
+                                        <Col span={12}>
+                                            <div>
+                                                <Row gutter={16}>
+                                                    <Col span={12} >
+                                                        <Form.Item
+                                                            name={["specifications", "lifting_height", "top"]}
+                                                            label="Lifting Height Top"
+                                                            initialValue={specifications && specifications.lifting_height ? specifications.lifting_height.top : ''}
+                                                            rules={[{ required: true, message: "Please enter Lifting Height Top" }]}
+                                                        >
+                                                            <InputNumber placeholder="Enter Lifting Height Top" style={{ width: '100%' }} />
+                                                        </Form.Item>
+                                                    </Col>
+                                                    <Col span={12} >
+                                                        <Form.Item
+                                                            name={["specifications", "lifting_height", "ground"]}
+                                                            label="Lifting Height ground"
+                                                            initialValue={specifications && specifications.lifting_height ? specifications.lifting_height.ground : ''}
+                                                            rules={[{ required: true, message: "Please enter Lifting Height ground" }]}
+                                                        >
+                                                            <InputNumber placeholder="Enter Lifting Height ground" style={{ width: '100%' }} />
+                                                        </Form.Item>
+                                                    </Col>
+                                                </Row>
+                                                <Row gutter={16}>
+                                                    <Col span={12} >
+                                                        <Form.Item
+                                                            name={["specifications", "platform", "length"]}
+                                                            label="Platform length"
+                                                            initialValue={specifications && specifications.platform ? specifications.platform.length : ''}
+                                                            rules={[{ required: true, message: "Please enter Platform length" }]}
+                                                        >
+                                                            <InputNumber placeholder="Enter Platform length" style={{ width: '100%' }} />
+                                                        </Form.Item>
+                                                    </Col>
+                                                    <Col span={12} >
+                                                        <Form.Item
+                                                            name={["specifications", "platform", "width"]}
+                                                            label="Platform width"
+                                                            initialValue={specifications && specifications.platform ? specifications.platform.width : ''}
+                                                            rules={[{ required: true, message: "Please enter Platform width" }]}
+                                                        >
+                                                            <InputNumber placeholder="Enter Platform width" style={{ width: '100%' }} />
+                                                        </Form.Item>
+                                                    </Col>
+                                                </Row>
+                                                <Row gutter={16}>
+                                                    <Col span={12} >
+                                                        <Form.Item
+                                                            name={["specifications", "travelling_speed", "lifting"]}
+                                                            label="Travelling Speed Lifting"
+                                                            initialValue={specifications?.travelling_speed?.horizontal || ''}
+                                                            rules={[{ required: true, message: "Please enter Travelling Speed Lifting" }]}
+                                                        >
+                                                            <Input placeholder="Enter Travelling Speed Lifting" style={{ width: '100%' }} />
+                                                        </Form.Item>
+                                                    </Col>
+                                                    <Col span={12} >
+                                                        <Form.Item
+                                                            name={["specifications", "travelling_speed", "horizontal"]}
+                                                            label="Travelling Speed horizontal"
+                                                            initialValue={specifications && specifications.travelling_speed ? specifications.travelling_speed.horizontal : ''}
+                                                            rules={[{ required: true, message: "Please enter Travelling Speed horizontal" }]}
+                                                        >
+                                                            <Input placeholder="Enter Travelling Speed horizontal" style={{ width: '100%' }} />
+                                                        </Form.Item>
+                                                    </Col>
+                                                </Row>
+                                                <Divider />
+                                                <Row gutter={10}>
+                                                    <Col span={24}>
+                                                        {/* Safety Fields */}
+                                                        <Form.List name={["specifications", "safety"]} initialValue={specifications && specifications.safety ? specifications.safety : ['']}>
+                                                            {(fields, { add, remove }) => (
+                                                                <>
+                                                                    {fields.map(({ key, name, ...restField }) => (
+                                                                        <Row gutter={16} key={key}>
+                                                                            <Col span={18}>
+                                                                                <Form.Item
+                                                                                    {...restField}
+                                                                                    name={name}
+                                                                                    label={`Safety #${key + 1}`}
+                                                                                    rules={[
+                                                                                        { required: true, message: 'Please enter Safety' },
+                                                                                    ]}
+                                                                                >
+                                                                                    <TextArea placeholder="Enter Safety" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                                                </Form.Item>
+                                                                            </Col>
+                                                                            <Col span={6}>
+                                                                                <Button
+                                                                                    type="danger"
+                                                                                    onClick={() => {
+                                                                                        if (fields.length > 1) {
+                                                                                            remove(name);
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    Remove
+                                                                                </Button>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    ))}
+                                                                    <Form.Item>
+                                                                        <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                                                                            Add Safety
+                                                                        </Button>
+                                                                    </Form.Item>
+                                                                </>
+                                                            )}
+                                                        </Form.List>
+                                                    </Col>
+                                                </Row>
+                                                <Divider />
+                                                <Row gutter={10}>
+                                                    <Col span={24}>
+                                                        <Form.List name={["specifications", "features"]} initialValue={specifications && specifications.features ? specifications.features : ['']}>
+                                                            {(fields, { add, remove }) => (
+                                                                <>
+                                                                    {fields.map(({ key, name, ...restField }) => (
+                                                                        <Row gutter={16} key={key}>
+                                                                            <Col span={18}>
+                                                                                <Form.Item
+                                                                                    {...restField}
+                                                                                    name={name}
+                                                                                    label={`Feature #${key + 1}`}
+                                                                                    rules={[
+                                                                                        { required: true, message: 'Please enter Feature' },
+                                                                                    ]}
+                                                                                >
+                                                                                    <TextArea placeholder="Enter Feature" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                                                </Form.Item>
+                                                                            </Col>
+                                                                            <Col span={6}>
+                                                                                <Button
+                                                                                    type="danger"
+                                                                                    onClick={() => {
+                                                                                        if (fields.length > 1) {
+                                                                                            remove(name);
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    Remove
+                                                                                </Button>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    ))}
+                                                                    <Form.Item>
+                                                                        <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
+                                                                            Add Feature
+                                                                        </Button>
+                                                                    </Form.Item>
+                                                                </>
+                                                            )}
+                                                        </Form.List>
+                                                    </Col>
+                                                </Row>
+                                            </div>
+                                        </Col>
+                                        <Col span={10}>
+                                            <Row gutter={16}>
+                                                <Col span={24} >
+                                                    <div >
+                                                        <Form.Item
+                                                            name={["specifications", "system_module"]}
+                                                            label="System Module"
+                                                            initialValue={specifications && specifications.system_module ? specifications.system_module : ''}
+                                                            rules={[{ required: true, message: "Please enter System Module" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter System Module Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["specifications", "system_area"]}
+                                                            label="System Area"
+                                                            initialValue={specifications && specifications.system_area ? specifications.system_area : ''}
+                                                            rules={[{ required: true, message: "Please enter System Area" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter System Area Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["specifications", "car_size"]}
+                                                            label="Car Size"
+                                                            initialValue={specifications && specifications.car_size ? specifications.car_size : ''}
+                                                            rules={[{ required: true, message: "Please enter Car Size" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Car Size Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["specifications", "lifting_capacity"]}
+                                                            label="Lifting Capacity"
+                                                            initialValue={specifications && specifications.lifting_capacity ? specifications.lifting_capacity : ''}
+                                                            rules={[{ required: true, message: "Please enter Lifting Capacity" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Lifting Capacity Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["specifications", "power"]}
+                                                            label="Power"
+                                                            initialValue={specifications && specifications.power ? specifications.power : ''}
+                                                            rules={[{ required: true, message: "Please enter Power" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Power Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["specifications", "driving_unit"]}
+                                                            label="Driving Unit"
+                                                            initialValue={specifications && specifications.driving_unit ? specifications.driving_unit : ''}
+                                                            rules={[{ required: true, message: "Please enter Driving Unit" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Driving Unit Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["specifications", "material_delivery"]}
+                                                            label="Material Delivery"
+                                                            initialValue={specifications && specifications.material_delivery ? specifications.material_delivery : ''}
+                                                            rules={[{ required: true, message: "Please enter Material Delivery" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Material Delivery Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["specifications", "installation"]}
+                                                            label="Installation"
+                                                            initialValue={specifications && specifications.installation ? specifications.installation : ''}
+                                                            rules={[{ required: true, message: "Please enter Installation" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Installation Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["specifications", "amc"]}
+                                                            label="AMC"
+                                                            initialValue={specifications && specifications.amc ? specifications.amc : ''}
+                                                            rules={[{ required: true, message: "Please enter AMC" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter AMC Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            name={["specifications", "material_quality"]}
+                                                            label="Material Quality"
+                                                            initialValue={specifications && specifications.material_quality ? specifications.material_quality : ''}
+                                                            rules={[{ required: true, message: "Please enter Material Quality" }]}
+                                                        >
+                                                            <TextArea placeholder="Enter Material Quality Info" autoSize={{ minRows: 1, maxRows: 6 }} />
+                                                        </Form.Item>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    </Row>
+                                    {/* </Form> */}
                                 </>
                             )}
                         </Form>
