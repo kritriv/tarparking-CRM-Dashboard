@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Space, Button, Card, Tag, Input, Spin, notification } from "antd";
 import { BiEditAlt, BiRefresh } from "react-icons/bi";
-import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
 import { APIService } from "../../apis"
@@ -29,19 +28,17 @@ const QuotePage = () => {
     navigate(`edit-Quote/${record.id}`);
   };
 
-  const handleView = (record) => {
-    navigate(`/quotes/${record.id}`);
-  };
   const handleCreate = () => {
     navigate(`/quotes/create`);
   };
+
   const handleViewPDF = (record) => {
+    // navigate(`/quotes/pdf/${record.id}`);
     notification.info({
       message: "View PDF",
       description: "PDF functionality is not implemented yet.",
       duration: 3,
     });
-    // navigate(`/quotes/pdf/${record.id}`);
   };
 
   const handleDelete = (record) => {
