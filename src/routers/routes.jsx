@@ -38,6 +38,7 @@ import ViewSpecification from "../Views/Specification/ViewSpecification";
 
 import QuotePage from "../pages/Quote/quote";
 import CreateQuote from "../Views/Quote/CreateQuote";
+import EditQuote from "../Views/Quote/EditQuote";
 
 const routes = [
     { path: '/', element: <Home /> },
@@ -83,14 +84,15 @@ const routes = [
     { path: '/term-conditions/:id', element: <ViewTnc /> },
     { path: '/term-conditions/create', element: <CreateTnc /> },
     { path: '/term-conditions/edit-tnc/:id', element: <EditTnc /> },
-    
+
     { path: '/specifications', element: <SpecificationPage /> },
     { path: '/specifications/:id', element: <ViewSpecification /> },
     { path: '/specifications/create', element: <CreateSpecification /> },
     { path: '/specifications/edit-specification/:id', element: <EditSpecification /> },
-    
+
     { path: '/quotes', element: <QuotePage /> },
-    { path: '/Quotes/create', element: <CreateQuote /> },
+    { path: '/quotes/create', element: <CreateQuote /> },
+    { path: '/quotes/edit-quote/:id', element: <EditQuote /> },
 ];
 
 export default routes;
