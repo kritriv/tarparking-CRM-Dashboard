@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Card, Form, Input, Select, Button, notification, Row, Col, Steps, InputNumber, Divider } from "antd";
-import { APIService } from "../../apis";
 import { PlusOutlined } from '@ant-design/icons';
-import { useParams } from "react-router-dom";
+import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
 
 const { TextArea } = Input;
 const { Step } = Steps;
 
-const EditQuotePage = () => {
-    const { id } = useParams();
+const ViewPdf = () => {
     const userInfo = useUserInfo();
-    const editBy = userInfo.userID;
+    const createby = userInfo.userID;
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [quoteData, setQuoteData] = useState(null);
-    const [imageURL, setImageURL] = useState(null);
+    const [categories, setCategories] = useState([]);
     const [specifications, setSpecifications] = useState([]);
     const [tnc, setTnc] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedSubProduct, setSelectedSubProduct] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [clients, setClients] = useState([]);
+    const [ourCompany, setOurCompany] = useState([]);
+    const [subproducts, setSubProducts] = useState([]);
+    const [imageURL, setImageURL] = useState(null);
     const [currentStep, setCurrentStep] = useState(0);
     const [allStepValues, setAllStepValues] = useState({});
 
@@ -39,88 +43,147 @@ const EditQuotePage = () => {
         setCurrentStep((prevStep) => prevStep - 1);
     };
 
-    const fetchQuoteData = async (id) => {
-        try {
-            setLoading(true);
-            const response = await APIService.QuoteApi.readResource(id);
-            if (response.success) {
-                form.setFieldsValue({
-                    ...response.data,
-                    item: JSON.parse(response.data.item),
-                    specifications: JSON.parse(response.data.item).specifications,
-                    tnc: JSON.parse(response.data.tnc)
-                });
-                setQuoteData(response.data);
-                setSpecifications(JSON.parse(response.data.item).specifications)
+    const handleCategoryChange = (value) => {
+        const selectedCategory = categories.find((category) => category.id === value);
+        setSelectedCategory(selectedCategory);
+    };
 
-            } else {
-                console.error("Error fetching Quote data:", response.message);
-                notification.error({
-                    message: "Error",
-                    description: "Failed to fetch Quote details.",
-                });
-            }
+    const handleProductChange = (value) => {
+        const selectedProduct = products.find((product) => product.id === value);
+        setSelectedProduct(selectedProduct);
+    };
 
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
-            console.error("Error fetching Quote data:", error);
+    const handleSubProductChange = (value) => {
+        const selectedSubProduct = subproducts.find((subproduct) => subproduct.id === value);
+        if (!selectedSubProduct.specifications) {
             notification.error({
                 message: "Error",
-                description: "Failed to fetch Quote details. Please try again later.",
+                description: "Add its Specifications first!",
             });
+        } else if (!selectedSubProduct.tnc) {
+            notification.error({
+                message: "Error",
+                description: "Add its Terms & Conditions first!",
+            });
+        } else {
+            setSelectedSubProduct(selectedSubProduct);
         }
     };
+
     useEffect(() => {
-        fetchQuoteData(id);
-    }, [id]);
-
-    const handleEditQuote = async () => {
-        try {
-            form.validateFields().then((values) => {
-                setLoading(true);
-                const itemFieldValue = form.getFieldValue(['item']);
-                const tncFieldValue = form.getFieldValue(['tnc']);
-                const priceFieldValue = form.getFieldValue(['quote_price']);
-
-                const itemObject = typeof itemFieldValue === 'object' ? itemFieldValue : JSON.parse(itemFieldValue);
-                const tncObject = typeof tncFieldValue === 'object' ? tncFieldValue : JSON.parse(tncFieldValue);
-
-                const mergedItemObject = {
-                    ...itemObject,
-                    specifications: form.getFieldValue(['specifications']),
-                };
-
-                const mergedValues = { ...allStepValues, item: mergedItemObject, tnc: tncObject, quote_price: priceFieldValue };
-                delete mergedValues.specifications;
-                delete mergedValues.client;
-                delete mergedValues.editBy;
-                delete mergedValues.ourCompany;
-
-                console.log(mergedValues)
-                APIService.QuoteApi.updateResource(id, mergedValues)
-                    .then(() => {
-                        notification.success({
-                            message: "Success",
-                            description: "Quote details updated successfully.",
-                        });
-                        navigate(`/quotes`);
-                    })
-                    .catch((error) => {
-                        console.error("Error updating Quote details:", error);
-                        notification.error({
-                            message: "Error",
-                            description: "Failed to update Quote details. Please try again later.",
-                        });
-                    })
-                    .finally(() => setLoading(false));
+        // Fetch clients
+        APIService.ClientApi.listResource()
+            .then((response) => {
+                setClients(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching Client:", error);
             });
+
+        // Fetch ourCompany
+        APIService.CompanyApi.listResource()
+            .then((response) => {
+                setOurCompany(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching Company Indo:", error);
+            });
+
+        // Fetch categories
+        APIService.CategoryApi.listResource()
+            .then((response) => {
+                setCategories(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching categories:", error);
+            });
+    }, []);
+
+    useEffect(() => {
+        // Fetch products based on selected category
+        if (selectedCategory && selectedCategory.products && selectedCategory.products.length > 0) {
+            let categoryId = `category=${selectedCategory.id}`;
+            APIService.ProductApi.listResource(undefined, undefined, undefined, categoryId)
+                .then((response) => {
+                    setProducts(response.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Products:", error);
+                });
+        }
+    }, [selectedCategory]);
+
+    useEffect(() => {
+        // Fetch sub-products based on selected product
+        if (selectedProduct && selectedProduct.sub_products) {
+            let productId = `product=${selectedProduct.id}`;
+            APIService.SubProductApi.listResource(undefined, undefined, undefined, productId)
+                .then((response) => {
+                    setSubProducts(response.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Sub Products:", error);
+                });
+        }
+    }, [selectedProduct]);
+
+    useEffect(() => {
+        if (selectedSubProduct && selectedSubProduct.specifications) {
+            const specificationId = selectedSubProduct.specifications;
+
+            APIService.SpecificationApi.readResource(specificationId)
+                .then((response) => {
+                    setSpecifications(response.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Specification:", error);
+                });
+
+        }
+        if (selectedSubProduct && selectedSubProduct.tnc) {
+            const tncId = selectedSubProduct.tnc;
+            APIService.TncApi.readResource(tncId)
+                .then((response) => {
+                    setTnc(response.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Tnc:", error);
+                });
+        }
+    }, [selectedSubProduct]);
+
+    const handleCreateQuote = async () => {
+        try {
+            setLoading(true);
+
+            const itemFieldValue = form.getFieldValue(['item']);
+            const tncFieldValue = form.getFieldValue(['tnc']);
+            const priceFieldValue = form.getFieldValue(['quote_price']);
+
+            const itemObject = typeof itemFieldValue === 'object' ? itemFieldValue : JSON.parse(itemFieldValue);
+            const tncObject = typeof tncFieldValue === 'object' ? tncFieldValue : JSON.parse(tncFieldValue);
+            const mergedItemObject = {
+                ...itemObject,
+                specifications: form.getFieldValue(['specifications']),
+            };
+
+            const mergedValues = { ...allStepValues, item: mergedItemObject, tnc: tncObject, quote_price: priceFieldValue };
+            console.log(mergedValues)
+            await APIService.QuoteApi.createResource(mergedValues);
+
+            notification.success({
+                message: "Success",
+                description: "Quote Info successfully Created.",
+            });
+
+            navigate(`/quotes`);
         } catch (error) {
-            console.error("Error updating Quote details:", error);
+            console.log(error);
             notification.error({
                 message: "Error",
-                description: "Failed to update Quote details. Please try again later.",
+                description: "Failed to create Quote Info. Please try again later",
             });
+        } finally {
             setLoading(false);
         }
     };
@@ -162,7 +225,7 @@ const EditQuotePage = () => {
                                     {
                                         step: 4, buttons: [
                                             <Button key="step4_prev" style={{ marginRight: "10px" }} onClick={handlePrev}>Previous</Button>,
-                                            <Button key="step4_update" type="primary" onClick={handleEditQuote} loading={loading}>Update Quote</Button>
+                                            <Button key="step4_create" type="primary" onClick={handleCreateQuote} loading={loading}>Create Quote</Button>
                                         ]
                                     }
                                 ].find(item => item.step === currentStep)?.buttons}
@@ -189,62 +252,97 @@ const EditQuotePage = () => {
                                     });
                                 }
                             }}
-
+                            initialValues={{ quote_price: { total_price: 0 } }}
                         >
                             {currentStep === 0 && (
                                 <Row gutter={50}>
                                     <Col span={12}>
                                         <Form.Item
-                                            name="editBy"
-                                            label="EditBy (You)"
-                                            initialValue={editBy}
+                                            name="createdby"
+                                            label="CreatedBy (You)"
+                                            rules={[{ required: true, message: "Please CreatedBy Id" }]}
+                                            initialValue={createby}
                                         >
-                                            <Input placeholder="Enter EditBy Id" disabled />
+                                            <Input placeholder="Enter CreatedBy Id" readOnly />
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item name="status" label=" Quote Status" rules={[{ required: true, message: "Select Quote  Status" }]}>
-                                            <Select placeholder="Select Status">
-                                                <Select.Option value="pending">Pending</Select.Option>
-                                                <Select.Option value="send">Send</Select.Option>
-                                                <Select.Option value="accepted">Accepted</Select.Option>
-                                                <Select.Option value="cancelled">Cancelled</Select.Option>
-                                                <Select.Option value="on hold">On Hold</Select.Option>
+                                        <Form.Item name="category" label="Category Name" rules={[{ required: true, message: "Select Category Name" }]}>
+                                            <Select placeholder="Select Category" onChange={handleCategoryChange}>
+                                                {categories.map((category) => (
+                                                    <Select.Option key={category.id} value={category.id}>
+                                                        {category.name}
+                                                    </Select.Option>
+                                                ))}
                                             </Select>
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item name={["item", "categoryName"]} label="Category Name" rules={[{ required: true, message: "Select Category Name" }]}>
-                                            <Input readOnly />
+                                        <Form.Item name="product" label="Product Name" rules={[{ required: true, message: "Select Product Name" }]}>
+                                            <Select placeholder="Select Product" onChange={handleProductChange}>
+                                                {products.map((product) => (
+                                                    <Select.Option key={product.id} value={product.id}>
+                                                        {product.name}
+                                                    </Select.Option>
+                                                ))}
+                                            </Select>
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item name={["item", "mainProduct"]} label="Product Name" rules={[{ required: true, message: "Select Product Name" }]}>
-                                            <Input readOnly />
+                                        <Form.Item name={["item", "id"]} label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
+                                            <Select placeholder="Select Sub Product" onChange={handleSubProductChange}>
+                                                {subproducts.map((subproduct) => (
+                                                    <Select.Option key={subproduct.id} value={subproduct.id}>
+                                                        {subproduct.name}
+                                                    </Select.Option>
+                                                ))}
+                                            </Select>
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item name={["item", "productName"]} label="Sub Product Name" rules={[{ required: true, message: "SelectSub Product" }]}>
-                                            <Input readOnly />
+                                        <Form.Item name="client" label="Client" rules={[{ required: true, message: "Select Client" }]}>
+                                            <Select
+                                                showSearch
+                                                placeholder="Select Client"
+                                                optionFilterProp="children"
+                                                filterOption={(input, option) =>
+                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                            >
+                                                {clients.map((client) => (
+                                                    <Select.Option key={client.id} value={client.id}>
+                                                        {client.name}
+                                                    </Select.Option>
+                                                ))}
+                                            </Select>
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item name={["client", "name"]} label="Client" rules={[{ required: true, message: "Select Client" }]}>
-                                            <Input readOnly />
-                                        </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item name={["ourCompany", "name"]} label="Our Company" rules={[{ required: true, message: "Select Our Company" }]}>
-                                            <Input readOnly />
+                                        <Form.Item name="ourCompany" label="Our Company" rules={[{ required: true, message: "Select Our Company" }]}>
+                                            <Select
+                                                showSearch
+                                                placeholder="Select Our Company"
+                                                optionFilterProp="children"
+                                                filterOption={(input, option) =>
+                                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                                }
+                                            >
+                                                {ourCompany.map((company) => (
+                                                    <Select.Option key={company.id} value={company.id}>
+                                                        {company.name}
+                                                    </Select.Option>
+                                                ))}
+                                            </Select>
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
                                         <Form.Item
                                             name="refno"
                                             label="Ref No"
+                                            initialValue="SHAIL/Q/PUZZLE-2L/RYJO/23-24/1301/113/01/00"
                                             rules={[{ required: true, message: "Please enter Ref No" }]}
                                         >
-                                            <TextArea placeholder="Enter Ref No" autoSize={{ minRows: 1, maxRows: 2 }} readOnly />
+                                            <TextArea placeholder="Enter Ref No" autoSize={{ minRows: 1, maxRows: 2 }} />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -255,6 +353,7 @@ const EditQuotePage = () => {
                                         <Form.Item
                                             name="subject"
                                             label="Quote Subject"
+                                            initialValue="Quotation of 5 level puzzle car parking system for Puducherry"
                                             rules={[{ required: true, message: "Please enter Quote Subject" }]}
                                         >
                                             <TextArea placeholder="Enter Quote Subject" autoSize={{ minRows: 2, maxRows: 6 }} />
@@ -262,6 +361,7 @@ const EditQuotePage = () => {
                                         <Form.Item
                                             name="greeting"
                                             label="Quote Greeting"
+                                            initialValue="This has reference to telephonic discussion with you on13.01.1024 regarding your requirement of car Parking system. We are giving below the details of equipment along with techno-commercial offer."
                                             rules={[{ required: true, message: "Please enter Quote Greeting" }]}
                                         >
                                             <TextArea placeholder="Enter Quote Greeting" autoSize={{ minRows: 2, maxRows: 6 }} />
@@ -269,6 +369,7 @@ const EditQuotePage = () => {
                                         <Form.Item
                                             name="proposal_title"
                                             label="Quote Proposal title"
+                                            initialValue="Proposal for supply, installation, erection, testing & Commissionning of puzzel car parking system, model- shail02."
                                             rules={[{ required: true, message: "Please enter Quote Proposal title" }]}
                                         >
                                             <TextArea placeholder="Enter Quote Proposal title" autoSize={{ minRows: 2, maxRows: 6 }} />
@@ -276,6 +377,7 @@ const EditQuotePage = () => {
                                         <Form.Item
                                             name="back_image"
                                             label="Back Image URL"
+                                            initialValue={"https://tarparking.com/crm/uploads/images"}
                                             rules={[{ required: true, message: "Please upload an image" }]}
                                         >
                                             <Input placeholder="Image Back URL" readOnly value={imageURL} />
@@ -283,6 +385,7 @@ const EditQuotePage = () => {
                                         <Form.Item
                                             name="remark"
                                             label="Remark"
+                                            initialValue="Na"
                                         >
                                             <TextArea placeholder="Enter remark" autoSize={{ minRows: 2, maxRows: 6 }} />
                                         </Form.Item>
@@ -322,9 +425,9 @@ const EditQuotePage = () => {
                                                                 name={["item", "productName"]}
                                                                 label="Product Name"
                                                                 initialValue={selectedSubProduct && selectedSubProduct.name ? selectedSubProduct.name : ''}
-                                                                rules={[{ required: true, message: "Please enter Quote name" }]}
+                                                                rules={[{ required: true, message: "Please enter Sub Product name" }]}
                                                             >
-                                                                <Input placeholder="Enter Quote name" readOnly />
+                                                                <Input placeholder="Enter Sub Product name" readOnly />
                                                             </Form.Item>
                                                         </Col>
                                                         <Col span={12}>
@@ -949,4 +1052,4 @@ const EditQuotePage = () => {
     );
 };
 
-export default EditQuotePage;
+export default ViewPdf;

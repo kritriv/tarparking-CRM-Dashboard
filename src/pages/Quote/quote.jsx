@@ -143,8 +143,8 @@ const QuotePage = () => {
           value: "accepted",
         },
         {
-          text: "Sent",
-          value: "sent",
+          text: "Send",
+          value: "send",
         }
       ],
       onFilter: (value, record) => record.status === value,

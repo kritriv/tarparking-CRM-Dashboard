@@ -244,6 +244,7 @@ const CreateQuotePage = () => {
                                     const item_sub_total = (basic_rate + installation_charges) * quantity;
                                     const taxtotal = ((item_sub_total * tax_rate) / 100);
                                     const total_price = item_sub_total + taxtotal + freight_cost + unloading_cost + transport_charge - discount;
+                                    // console.log(item_sub_total)
                                     form.setFieldsValue({
                                         quote_price: {
                                             ...allValues.quote_price,
