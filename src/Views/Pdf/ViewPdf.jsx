@@ -61,10 +61,8 @@ const PDFViewer = () => {
                         }
 
                         .page2 table tr td {
-                            font-size: 12px
+                            font-size: 12px;
                         }
-
-                        ;
 
                         table {
                             font-family: arial, sans-serif;
