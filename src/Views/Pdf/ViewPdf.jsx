@@ -60,8 +60,11 @@ const PDFViewer = () => {
                             height: 100%
                         }
 
+                        .page2{
+                            padding: 14% 5%;
+                        }
                         .page2 table tr td {
-                            font-size: 12px;
+                            font-size: 14px;
                         }
 
                         table {
@@ -193,7 +196,6 @@ const PDFViewer = () => {
                             </tr>
                         </table>
                     </div>
-
                 </div>
             </body>
 
