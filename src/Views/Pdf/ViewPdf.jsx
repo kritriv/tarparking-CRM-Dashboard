@@ -7,6 +7,7 @@ const PDFViewer = () => {
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [pdfData, setPdfData] = useState(null);
+    const [itemData, setItemData] = useState(null);
 
     useEffect(() => {
         fetchPDFData();
@@ -17,6 +18,7 @@ const PDFViewer = () => {
             setLoading(true);
             const response = await APIService.QuoteApi.readResource(id);
             setPdfData(response.data);
+            setItemData(JSON.parse(response.data.item));
         } catch (error) {
             console.error("Error fetching PDF:", error);
             notification.error({
@@ -34,99 +36,63 @@ const PDFViewer = () => {
             const printWindow = window.open('', '_blank');
             const htmlContent = `
             <html>
-
-            <head>
-                <title>Print Quote</title>
-                <style>
-                    body {
-                        margin: 15% 5% 5% 5% !important;
-                        padding: 0;
-                        transform-origin: 0 0;
-                        background-image: url("https://www.tarparking.com/crm/uploads/images/quote_bg.png");
-                        background-repeat: no-repeat;
-                        background-size: cover;
-            
-                    }
-            
-                    table {
-                        font-family: arial, sans-serif;
-                        border-collapse: collapse;
-                        width: 100%;
-                    }
-            
-                    td,
-                    th {
-                        border: 1px solid #dddddd;
-                        text-align: left;
-                        padding: 8px;
-                    }
-            
-                    tr:nth-child(even) {
-                        background-color: #F7CAAC;
-                    }
-            
-                    @media print {
+                <head>
+                    <title>Print Quote</title>
+                    <style>
                         body {
-                            margin: 20% 5% 5% 5% !important;
-                            padding: 0;
+                            margin: 0 2% !important;
                             transform-origin: 0 0;
+                            height: 100%;
+
+                        }
+
+                        .pages {
+                            display: grid;
+                            grid-template-columns: 1fr;
+                            gap: 2.7rem;
+                        }
+
+                        .page {
+                            padding: 15% 5%;
                             background-image: url("https://www.tarparking.com/crm/uploads/images/quote_bg.png");
                             background-repeat: no-repeat;
-                            background-size: cover;
-            
+                            background-size: 100% 95%;
+                            height: 100%
                         }
-            
+
+                        .page2 table tr td {
+                            font-size: 12px
+                        }
+
+                        ;
+
                         table {
                             font-family: arial, sans-serif;
                             border-collapse: collapse;
                             width: 100%;
                         }
-            
+
                         td,
                         th {
                             border: 1px solid #dddddd;
                             text-align: left;
                             padding: 8px;
                         }
-            
-                        tr:nth-child(even) {
+
+                        tr:nth-child(odd) {
                             background-color: #F7CAAC;
                         }
-            
-                        p {
-                            line-height: 2rem;
+
+                        tr:nth-child(even) {
+                            background-color: #FBE5D5;
                         }
-            
-                        @page {
-                            margin: 0;
+
+                        body {
+                            font-family: Arial, sans-serif;
                         }
-            
-                        @media print {
-                            @page {
-                                size: auto;
-                                margin: 0;
-                            }
-            
-                            body {
-                                margin: 0;
-                            }
-            
-                            .page {
-                                margin: 0;
-                            }
-            
-                            .header {
-                                display: none;
-                            }
-                        }
-                    }
-            
-                    body {
-                        font-family: Arial, sans-serif;
-                    }
-                </style>
+                    </style>
             </head>
-            
+
             <body>
                 <div class="pages">
                     <div class="page">
@@ -155,8 +121,84 @@ const PDFViewer = () => {
                             </tr>
                         </table>
                     </div>
+                    <div class="page page2">
+                        <p><strong>System Specification:</strong></p>
+                        <table>
+                            <tr>
+                                <td><b>System module<b /></td>
+                                <td>${itemData.specifications.system_module}</td>
+                            </tr>
+                            <tr>
+                                <td><b>System area<b /></td>
+                                <td>${itemData.specifications.system_area}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Car size<b /></td>
+                                <td>${itemData.specifications.car_size}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Lifting capacity<b /></td>
+                                <td>${itemData.specifications.lifting_capacity} KG</td>
+                            </tr>
+                            <tr>
+                                <td><b>Lifting height (top)<b /></td>
+                                <td>${itemData.specifications.lifting_height.top} mm</td>
+                            </tr>
+                            <tr>
+                                <td><b>Lifting height (ground)<b /></td>
+                                <td>${itemData.specifications.lifting_height.ground} mm</td>
+                            </tr>
+                            <tr>
+                                <td><b>Platform length<b /></td>
+                                <td>${itemData.specifications.platform.length} mm</td>
+                            </tr>
+                            <tr>
+                                <td><b>Platform width<b /></td>
+                                <td>${itemData.specifications.platform.width} mm</td>
+                            </tr>
+                            <tr>
+                                <td><b>Power<b /></td>
+                                <td>${itemData.specifications.power}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Driving unit<b /></td>
+                                <td>${itemData.specifications.driving_unit}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Travelling speed<b /></td>
+                                <td>Lifting-${itemData.specifications.travelling_speed.lifting},
+                                    Horizontal-${itemData.specifications.travelling_speed.horizontal}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Safety <b /></td>
+                                <td>${itemData.specifications.safety[0]} <br><br> ${itemData.specifications.safety[1]}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Features <b /></td>
+                                <td>${itemData.specifications.features[0]} <br><br> ${itemData.specifications.features[1]}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Material Delivery<b /></td>
+                                <td>${itemData.specifications.material_delivery}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Installation<b /></td>
+                                <td>${itemData.specifications.installation}</td>
+                            </tr>
+                            <tr>
+                                <td><b>AMC<b /></td>
+                                <td>${itemData.specifications.amc}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Material Quality<b /></td>
+                                <td>${itemData.specifications.material_quality} </td>
+                            </tr>
+                        </table>
+                    </div>
+
                 </div>
             </body>
+
             </html>
             `;
             printWindow.document.open();
@@ -176,7 +218,7 @@ const PDFViewer = () => {
                         <div className="page">
                             <p><strong>Ref:</strong> {pdfData.refno}</p>
                             <strong> M/s {pdfData.client.company}</strong><p />
-                            {pdfData.client.address.street}, {pdfData.client.address.city}, { pdfData.client.address.state}
+                            {pdfData.client.address.street}, {pdfData.client.address.city}, {pdfData.client.address.state}
                             , {pdfData.client.address.country}-{pdfData.client.address.pincode} <br /> <br />
                             <strong>Site:</strong> {pdfData.client.address.site}<br /> <br />
                             <p><strong>KindAttn:-</strong> Mr/Mrs {pdfData.client.name}</p>
@@ -185,7 +227,7 @@ const PDFViewer = () => {
                             <p>Dear Sir/Madam,</p>
                             <p>{pdfData.greeting}</p> <br />
                             <h2><strong>{pdfData.proposal_title}</strong></h2> <br /> <br /><br /> <br />
-                            
+
                         </div>
                     </div>
                 </Card>
