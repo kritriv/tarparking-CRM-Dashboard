@@ -39,6 +39,7 @@ import ViewSpecification from "../Views/Specification/ViewSpecification";
 import QuotePage from "../pages/Quote/quote";
 import CreateQuote from "../Views/Quote/CreateQuote";
 import EditQuote from "../Views/Quote/EditQuote";
+import ViewPdf from "../Views/Pdf/ViewPdf";
 
 const routes = [
     { path: '/', element: <Home /> },
@@ -91,6 +92,7 @@ const routes = [
     { path: '/specifications/edit-specification/:id', element: <EditSpecification /> },
 
     { path: '/quotes', element: <QuotePage /> },
+    { path: '/quotes/pdf/:id', element: <ViewPdf /> },
     { path: '/quotes/create', element: <CreateQuote /> },
     { path: '/quotes/edit-quote/:id', element: <EditQuote /> },
 ];

@@ -10,6 +10,8 @@ import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
 import DeleteQuoteModal from "../../Views/Quote/DeleteQuote";
 
+import PDFViewer from '../../Views/Pdf/ViewPdf';
+
 const QuotePage = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredQuoteData, setFilteredQuoteData] = useState([]);
@@ -33,12 +35,13 @@ const QuotePage = () => {
   };
 
   const handleViewPDF = (record) => {
-    // navigate(`/quotes/pdf/${record.id}`);
-    notification.info({
-      message: "View PDF",
-      description: "PDF functionality is not implemented yet.",
-      duration: 3,
-    });
+    navigate(`/quotes/pdf/${record.id}`);
+    // notification.info({
+    //   message: "View PDF",
+    //   description: "PDF functionality is not implemented yet.",
+    //   duration: 3,
+    // });
+    // return <PDFViewer record={record} />;
   };
 
   const handleDelete = (record) => {

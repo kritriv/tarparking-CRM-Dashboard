@@ -168,7 +168,6 @@ const CreateQuotePage = () => {
             };
 
             const mergedValues = { ...allStepValues, item: mergedItemObject, tnc: tncObject, quote_price: priceFieldValue };
-            console.log(mergedValues)
             await APIService.QuoteApi.createResource(mergedValues);
 
             notification.success({
