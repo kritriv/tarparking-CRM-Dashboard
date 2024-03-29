@@ -53,15 +53,6 @@ const PDFViewer = () => {
                             grid-template-columns: 1fr;
                             gap: 2.7rem;
                         }
-
-                        .page {
-                            padding: 15% 5%;
-                            background-image: url("https://www.tarparking.com/crm/uploads/images/quote_bg.png");
-                            background-repeat: no-repeat;
-                            background-size: 100% 95%;
-                            height: 100%
-                        }
-
                         .page2{
                             padding: 14% 5%;
                         }
@@ -109,6 +100,16 @@ const PDFViewer = () => {
 
                         body {
                             font-family: Arial, sans-serif;
+                        }
+
+                        @media print {
+                            body .page {
+                                padding: 15% 5%;
+                                background-image: url("https://www.tarparking.com/crm/uploads/images/quote_bg.png");
+                                background-repeat: no-repeat;
+                                background-size: 100% 92%;
+                                height: 100%
+                            }
                         }
                     </style>
             </head>
@@ -331,94 +332,110 @@ const PDFViewer = () => {
                     <div class="page page5">
                         <h2 style="text-align: center;"><strong>Term And Conditions </strong></h2>
                         <table>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Prices <b /></p>
                                     <p style="padding-left: 50px; font-weight: normal">${tncData.prices}</p>
                                 </td>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Payment terms <b /></p>
                                     <p style="padding-left: 50px; ">
-                                        <ul>
-                                            ${tncData.payment_terms.map(term => `<li style="font-weight: normal; line-height: 1.5rem;">${term}</li>`).join('')}
-                                        </ul>
+                                    <ul>
+                                        ${tncData.payment_terms.map(term => `<li style="font-weight: normal; line-height: 1.5rem;">
+                                            ${term}</li>`).join('')}
+                                    </ul>
                                     </p>
                                 </td>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Packing & Forwarding <b /></p>
                                     <p style="padding-left: 50px; font-weight: normal">${tncData.packing_forwarding}</p>
                                 </td>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Client responsibility(on Site) <b /></p>
                                     <p style="padding-left: 50px; ">
-                                        <ul>
-                                            ${tncData.client_responsibilities.map(responsibily => `<li style="font-weight: normal; line-height: 1.5rem;">${responsibily}</li>`).join('')}
-                                        </ul>
+                                    <ul>
+                                        ${tncData.client_responsibilities.map(responsibily => `<li
+                                            style="font-weight: normal; line-height: 1.5rem;">${responsibily}</li>`).join('')}
+                                    </ul>
                                     </p>
                                 </td>
                             </tr>
-                            <tr>   
+                        </table>
+                    </div>
+                    <div class="page page5">
+                        <table>
+
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Material Delivery<b /></p>
                                     <p style="padding-left: 50px; font-weight: normal">${tncData.material_delivery}</p>
                                 </td>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Installation Process<b /></p>
                                     <p style="padding-left: 50px; ">
-                                        <ul>
-                                            ${tncData.installation_process.map(process => `<li style="font-weight: normal; line-height: 1.5rem;">${process}</li>`).join('')}
-                                        </ul>
+                                    <ul>
+                                        ${tncData.installation_process.map(process => `<li
+                                            style="font-weight: normal; line-height: 1.5rem;">${process}</li>`).join('')}
+                                    </ul>
                                     </p>
                                 </td>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Operation<b /></p>
                                     <p style="padding-left: 50px; font-weight: normal">${tncData.operation}</p>
                                 </td>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Force Majeure<b /></p>
                                     <p style="padding-left: 50px; font-weight: normal">${tncData.force_majeure}</p>
                                 </td>
                             </tr>
-                            <tr>   
+                        </table>
+                    </div>
+                    <div class="page page5">
+                        <table>
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Warranty<b /></p>
                                     <p style="padding-left: 50px; font-weight: normal">${tncData.warranty}</p>
                                 </td>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Termination<b /></p>
                                     <p style="padding-left: 50px; font-weight: normal">${tncData.termination}</p>
                                 </td>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Jurisdiction<b /></p>
                                     <p style="padding-left: 50px; font-weight: normal">${tncData.jurisdiction}</p>
                                 </td>
                             </tr>
-                            <tr>   
+                            <tr>
                                 <td>
                                     <p style="background-color: #F7CAAC; padding: 10px;"><b>Validity<b /></p>
                                     <p style="padding-left: 50px; font-weight: normal">${tncData.validity}</p>
                                 </td>
-                            </tr>
+                            </tr> 
                         </table>
+                    </div>
+                    <div class="page6">
+                        <img src="${pdfData.back_image}" width="60%"  style="margin: 5% 20% 0"></img>
                     </div>
                 </div>
             </body>
+
             </html>
             `;
             printWindow.document.open();

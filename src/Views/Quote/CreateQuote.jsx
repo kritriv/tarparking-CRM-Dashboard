@@ -377,7 +377,7 @@ const CreateQuotePage = () => {
                                         <Form.Item
                                             name="back_image"
                                             label="Back Image URL"
-                                            initialValue={"https://tarparking.com/crm/uploads/images"}
+                                            initialValue={"https://tarparking.com/crm/uploads/images/quote_back_img.png"}
                                             rules={[{ required: true, message: "Please upload an image" }]}
                                         >
                                             <Input placeholder="Image Back URL" readOnly value={imageURL} />
