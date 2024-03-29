@@ -297,7 +297,7 @@ const EditSubProductPage = () => {
                                 label="Image URL"
                                 rules={[{ required: true, message: "Please upload an image" }]}
                             >
-                                <Input placeholder="Image URL" readOnly value={imageURL} />
+                                <Input placeholder="Image URL" value={imageURL} />
                             </Form.Item>
                         </Form>
                     </div>
