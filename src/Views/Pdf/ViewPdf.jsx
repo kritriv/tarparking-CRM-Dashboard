@@ -36,6 +36,10 @@ const PDFViewer = () => {
     const handleDownloadPDF = () => {
         if (pdfData) {
             const printWindow = window.open('', '_blank');
+            const backgroundUrl = "https://www.tarparking.com/crm/uploads/images/quote_bg.png";
+            const productImageUrl = itemData.image;
+            const backImageUrl = pdfData.back_image;
+
             const htmlContent = `
             <html>
                 <head>
@@ -105,7 +109,7 @@ const PDFViewer = () => {
                         @media print {
                             body .page {
                                 padding: 15% 5%;
-                                background-image: url("https://www.tarparking.com/crm/uploads/images/quote_bg.png");
+                                background-image: url("${backgroundUrl}");
                                 background-repeat: no-repeat;
                                 background-size: 100% 92%;
                                 height: 100%
@@ -271,7 +275,7 @@ const PDFViewer = () => {
                             </tr>
                         </table>
                         <div className="image_wrapper">
-                            <img src="${itemData.image}" alt="" width="60%"  style="margin: 5% 20% 0"/>
+                            <img src="${productImageUrl}" alt="" width="60%"  style="margin: 5% 20% 0"/>
                         </div>
                     </div>
                     <div class="page page4">
@@ -431,7 +435,7 @@ const PDFViewer = () => {
                         </table>
                     </div>
                     <div class="page6">
-                        <img src="${pdfData.back_image}" width="60%"  style="margin: 5% 20% 0"></img>
+                        <img src="${backImageUrl}" width="100%"  ></img>
                     </div>
                 </div>
             </body>
@@ -441,7 +445,11 @@ const PDFViewer = () => {
             printWindow.document.open();
             printWindow.document.write(htmlContent);
             printWindow.document.close();
-            printWindow.print();
+            // printWindow.print();
+            setTimeout(() => {
+                printWindow.print();
+            }, 1000); 
+            
         }
     };
 
