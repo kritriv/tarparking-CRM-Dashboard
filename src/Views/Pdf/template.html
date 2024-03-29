@@ -16,19 +16,37 @@
             gap: 2.7rem;
         }
 
-        .page {
-            padding: 15% 5%;
-            background-image: url("https://www.tarparking.com/crm/uploads/images/quote_bg.png");
-            background-repeat: no-repeat;
-            background-size: 100% 95%;
-            height: 100%
+        .page2 {
+            padding: 14% 5%;
         }
 
         .page2 table tr td {
-            font-size: 12px
+            font-size: 14px;
         }
 
-        ;
+        .page3 tr:nth-child(n) {
+            background-color: #FBE5D5;
+        }
+
+        .page3 tr:nth-child(1) {
+            background-color: #F7CAAC;
+        }
+
+        .page3 tr:nth-last-child(1) {
+            background-color: #F7CAAC;
+        }
+
+        .page4 {
+            margin-bottom: 5rem !important;
+        }
+
+        .page5 tr:nth-child(n) {
+            background-color: #ffffff;
+        }
+
+        .page5 tr td {
+            border: 1px solid #ffffff !important;
+        }
 
         table {
             font-family: arial, sans-serif;
@@ -53,6 +71,16 @@
 
         body {
             font-family: Arial, sans-serif;
+        }
+
+        @media print {
+            body .page {
+                padding: 15% 5%;
+                background-image: url("${backgroundUrl}");
+                background-repeat: no-repeat;
+                background-size: 100% 92%;
+                height: 100%
+            }
         }
     </style>
 </head>
@@ -158,12 +186,121 @@
                     <td>${itemData.specifications.material_quality} </td>
                 </tr>
             </table>
-            <img src="${itemData.image}" alt="" width="80%" align="center" style="padding: 5rem;" />
-            <img src="https://www.tarparking.com/tarparking-assets/parking-product/puzzle-parking-overground-front.webp"
-                alt="" width="60%" style="padding: 1rem; margin: 0 50%;" />
-
         </div>
-
+        <div class="page page3">
+            <p><strong>Price Details:</strong></p>
+            <table>
+                <tr>
+                    <td><b><b /></td>
+                    <td><b>Price per system in INR<b /></td>
+                    <td><b>Total price in INR<b /></td>
+                </tr>
+                <tr>
+                    <td><b>Quantity of Model<b /></td>
+                    <td>${pdfData.quote_price.quantity}</td>
+                    <td><b><b /></td>
+                </tr>
+                <tr>
+                    <td><b>Basic price<b /></td>
+                    <td>${pdfData.quote_price.basic_rate}</td>
+                    <td>${(pdfData.quote_price.basic_rate) * (pdfData.quote_price.quantity)}</td>
+                </tr>
+                <tr>
+                    <td><b>Installation cost<b /></td>
+                    <td>${pdfData.quote_price.installation_charges}</td>
+                    <td>${(pdfData.quote_price.installation_charges) * (pdfData.quote_price.quantity)}</td>
+                </tr>
+                <tr>
+                    <td><b>Freight cost<b /></td>
+                    <td>${pdfData.quote_price.freight_cost}</td>
+                    <td>${pdfData.quote_price.freight_cost}</td>
+                </tr>
+                <tr>
+                    <td><b>Material unloading cost<b /></td>
+                    <td>${pdfData.quote_price.unloading_cost}</td>
+                    <td>${pdfData.quote_price.unloading_cost}</td>
+                </tr>
+                <tr>
+                    <td><b>Transport Charge<b /></td>
+                    <td>${pdfData.quote_price.transport_charge}</td>
+                    <td>${pdfData.quote_price.transport_charge}</td>
+                </tr>
+                <tr>
+                    <td><b>GST ${pdfData.quote_price.tax_rate}%<b /></td>
+                    <td>${(pdfData.quote_price.taxtotal) / (pdfData.quote_price.quantity)}</td>
+                    <td>${pdfData.quote_price.taxtotal}</td>
+                </tr>
+                <tr>
+                    <td><b>Other Discount <b /></td>
+                    <td></td>
+                    <td>${pdfData.quote_price.discount}</td>
+                </tr>
+                <tr>
+                    <td><b>Total price<b /></td>
+                    <td>₹ ${(pdfData.quote_price.basic_rate + pdfData.quote_price.installation_charges) +
+                        (pdfData.quote_price.taxtotal) / (pdfData.quote_price.quantity)}.00</td>
+                    <td>₹ ${pdfData.quote_price.total_price}.00</td>
+                </tr>
+            </table>
+            <div className="image_wrapper">
+                <img src="${productImageUrl}" alt="" width="60%" style="margin: 5% 20% 0" />
+            </div>
+        </div>
+        <div class="page page4">
+            <br><br>
+            <p><strong>Company Details:</strong></p> <br>
+            <table>
+                <tr>
+                    <td><b>Company Name <b /></td>
+                    <td>${pdfData.ourCompany.name}</td>
+                </tr>
+                <tr>
+                    <td><b>Office Address<b /></td>
+                    <td>${pdfData.ourCompany.address.office}</td>
+                </tr>
+                <tr>
+                    <td><b>Factory Address<b /></td>
+                    <td>${pdfData.ourCompany.address.factory}</td>
+                </tr>
+                <tr>
+                    <td><b>Mobile no. <b /></td>
+                    <td>${pdfData.ourCompany.phones[0]}, ${pdfData.ourCompany.phones[1]}</td>
+                </tr>
+                <tr>
+                    <td><b>E-mail<b /></td>
+                    <td>${pdfData.ourCompany.emails[0]}, ${pdfData.ourCompany.emails[1]}</td>
+                </tr>
+                <tr>
+                    <td><b>Website<b /></td>
+                    <td>${pdfData.ourCompany.websites[0]}, ${pdfData.ourCompany.websites[1]}</td>
+                </tr>
+                <tr>
+                    <td><b>CIN No.<b /></td>
+                    <td>${pdfData.ourCompany.cin_no}</td>
+                </tr>
+                <tr>
+                    <td><b>TAN No.<b /></td>
+                    <td>${pdfData.ourCompany.tan_no}</td>
+                </tr>
+                <tr>
+                    <td><b>PAN No.<b /></td>
+                    <td>${pdfData.ourCompany.pan_no}</td>
+                </tr>
+                <tr>
+                    <td><b>GST No.<b /></td>
+                    <td>${pdfData.ourCompany.gst_no}</td>
+                </tr>
+                <tr>
+                    <td><b>Bank Details<b /></td>
+                    <td>
+                        <p><b>Bank Name: </b>${pdfData.ourCompany.bank_details.bank_name}</p>
+                        <p><b>Account No.: </b>${pdfData.ourCompany.bank_details.account_no}</p>
+                        <p><b>IFSC Code: </b>${pdfData.ourCompany.bank_details.ifsc}</p>
+                        <p><b>Branch: </b>${pdfData.ourCompany.bank_details.branch}</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <div class="page page5">
             <h2 style="text-align: center;"><strong>Term And Conditions </strong></h2>
             <table>
@@ -204,7 +341,6 @@
             </table>
         </div>
         <div class="page page5">
-            <h2 style="text-align: center;"><strong>Term And Conditions </strong></h2>
             <table>
 
                 <tr>
@@ -236,17 +372,16 @@
                         <p style="padding-left: 50px; font-weight: normal">${tncData.force_majeure}</p>
                     </td>
                 </tr>
+            </table>
+        </div>
+        <div class="page page5">
+            <table>
                 <tr>
                     <td>
                         <p style="background-color: #F7CAAC; padding: 10px;"><b>Warranty<b /></p>
                         <p style="padding-left: 50px; font-weight: normal">${tncData.warranty}</p>
                     </td>
                 </tr>
-            </table>
-        </div>
-        <div class="page page5">
-            <h2 style="text-align: center;"><strong>Term And Conditions </strong></h2>
-            <table>
                 <tr>
                     <td>
                         <p style="background-color: #F7CAAC; padding: 10px;"><b>Termination<b /></p>
@@ -266,6 +401,9 @@
                     </td>
                 </tr>
             </table>
+        </div>
+        <div class="page6">
+            <img src="${backImageUrl}" width="100%"></img>
         </div>
     </div>
 </body>

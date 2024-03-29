@@ -448,8 +448,8 @@ const PDFViewer = () => {
             // printWindow.print();
             setTimeout(() => {
                 printWindow.print();
-            }, 1000); 
-            
+            }, 1000);
+
         }
     };
 
