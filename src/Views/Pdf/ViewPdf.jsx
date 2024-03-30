@@ -472,7 +472,6 @@ const PDFViewer = () => {
                             <p>Dear Sir/Madam,</p>
                             <p>{pdfData.greeting}</p> <br />
                             <h2><strong>{pdfData.proposal_title}</strong></h2> <br /> <br /><br /> <br />
-
                         </div>
                     </div>
                 </Card>

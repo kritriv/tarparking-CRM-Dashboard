@@ -30,7 +30,6 @@ const Home = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    // Call the fetchUserData function with currentPage
     fetchUserData(currentPage);
     return () => {
       controller.abort();

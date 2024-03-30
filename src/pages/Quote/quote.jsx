@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card, Tag, Input, Spin, notification } from "antd";
+import { Space, Button, Card, Tag, Input, Spin } from "antd";
 import { BiEditAlt, BiRefresh } from "react-icons/bi";
 import { MdDeleteSweep } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
 import DeleteQuoteModal from "../../Views/Quote/DeleteQuote";
-
-import PDFViewer from '../../Views/Pdf/ViewPdf';
 
 const QuotePage = () => {
   const [searchText, setSearchText] = useState("");
@@ -93,7 +91,6 @@ const QuotePage = () => {
     }
   };
 
-  // console.log(QuoteData)
   const QuoteTableData =
     QuoteData &&
     QuoteData.map((item) => ({
@@ -210,7 +207,6 @@ const QuotePage = () => {
       align: 'center',
       render: (_, record) => (
         <Space>
-          {/* <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button> */}
           <Button type="link" onClick={() => handleViewPDF(record)}><FaFilePdf size={18} color="red" /></Button>
           <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
           <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red" /></Button>
