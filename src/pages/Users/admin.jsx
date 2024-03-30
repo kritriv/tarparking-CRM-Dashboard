@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import TableComponent from "../../components/Table";
 import PaginationComponent from "../../components/Pagination";
 import DeleteUserModal from "../../Views/User/DeleteUser";
-import { ifElse } from "ramda";
 
 const AdminPage = () => {
     const [searchText, setSearchText] = useState("");

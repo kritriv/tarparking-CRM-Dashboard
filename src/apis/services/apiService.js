@@ -16,7 +16,7 @@ const generateResourceApi = (entity) => {
     const apiConfig = createApi(entity);
 
     const createResource = (data) => apiClient.post({ url: apiConfig.Create, data });
-    const listResource = (page, size, query, category) => {
+    const listResource = (page, size, query, category, status) => {
         let url = apiConfig.List;
 
         if (page !== undefined && size !== undefined) {
@@ -25,6 +25,10 @@ const generateResourceApi = (entity) => {
 
         if (query) {
             url += `&query=${query}`;
+        }
+
+        if (status) {
+            url += `?status=${status}`;
         }
 
         if (category) {
