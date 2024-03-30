@@ -3,32 +3,46 @@ import { Card, Col, Row } from "antd";
 import { APIService } from "../../apis"
 import SummaryCard from "../../components/Dashboard/SummaryCard";
 import CustomerPreviewCard from "../../components/Dashboard/CustomerPreviewCard";
+import PreviewCard from "../../components/Dashboard/PreviewCard";
 
 const Home = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageSize, setCurrentPageSize] = useState(10);
   const [clientTotal, setClientTotal] = useState([]);
   const [activeClientTotal, setActiveClientTotal] = useState([]);
   const [newClientTotal, setNewClientTotal] = useState([]);
   const [quoteTotal, setQuoteTotal] = useState([]);
+  const [quoteData, setQuoteData] = useState([]);
   const [userTotal, setUserTotal] = useState([]);
   const [categoryTotal, setCategoryTotal] = useState([]);
   const [productTotal, setProductTotal] = useState([]);
   const [SubProductTotal, setSubProductTotal] = useState([]);
 
-
+  const fetchData = async (api, setter, setData) => {
+    try {
+      setLoading(true);
+      setError(false);
+      const response = await api.listResource();
+      if (setData) {
+        setData(response.data);
+      }
+      setter(response.data.length);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError(true);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetchClientData(currentPage, currentPageSize);
-    fetchQuoteData(currentPage, currentPageSize);
-    fetchUserData(currentPage, currentPageSize);
-    fetchCategoryData(currentPage, currentPageSize);
-    fetchProductData(currentPage, currentPageSize);
-    fetchSubProductData(currentPage, currentPageSize);
-  }, [currentPage, currentPageSize]);
-
+    fetchClientData();
+    fetchData(APIService.QuoteApi, setQuoteTotal, setQuoteData);
+    fetchData(APIService.UserApi, setUserTotal);
+    fetchData(APIService.CategoryApi, setCategoryTotal);
+    fetchData(APIService.ProductApi, setProductTotal);
+    fetchData(APIService.SubProductApi, setSubProductTotal);
+  }, []);
 
   const fetchClientData = async () => {
     try {
@@ -58,83 +72,19 @@ const Home = () => {
     }
   };
 
-
-  const fetchQuoteData = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-      const response = await APIService.QuoteApi.listResource();
-      setQuoteTotal(response.data.length);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setError(true);
-      setLoading(false);
+  const entityData = [
+    {
+      result: { quoteData },
+      entity: 'quote',
+      title: 'Quotation',
     }
-  };
-
-  const fetchUserData = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-      const response = await APIService.UserApi.listResource();
-      setUserTotal(response.data.length);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setError(true);
-      setLoading(false);
-    }
-  };
-
-  const fetchCategoryData = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-      const response = await APIService.CategoryApi.listResource();
-      setCategoryTotal(response.data.length);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setError(true);
-      setLoading(false);
-    }
-  };
-
-  const fetchProductData = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-      const response = await APIService.ProductApi.listResource();
-      setProductTotal(response.data.length);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setError(true);
-      setLoading(false);
-    }
-  };
-
-  const fetchSubProductData = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-      const response = await APIService.SubProductApi.listResource();
-      setSubProductTotal(response.data.length);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setError(true);
-      setLoading(false);
-    }
-  };
+  ];
 
   return (
     <div className="home-card-area">
       <Row gutter={[16, 16]}>
-        {/* Left Column with 6 Cards */}
         <Col xs={24} sm={12} md={8} lg={18}>
-          <Row gutter={[16, 16]}>
+          <Row gutter={[16, 16]} style={{ marginBottom: '1rem' }}>
             <Col xs={24} sm={12} md={12} lg={8}>
               <Card>
                 <SummaryCard
@@ -202,8 +152,46 @@ const Home = () => {
               </Card>
             </Col>
           </Row>
+          <Row gutter={[16, 16]}>
+            <Col span={24}>
+              <Card>
+                <Row gutter={[16, 16]}>
+                  {entityData.map((data, index) => {
+                    const { result, entity, title } = data;
+                    const quoteData = result?.quoteData || [];
+
+                    // Calculate total number of quotes
+                    const totalQuotes = quoteData.length;
+
+                    // Calculate percentages for each status
+                    const statistics = !loading && quoteData.reduce((acc, item) => {
+                      const status = item?.status;
+                      acc[status] = acc[status] ? acc[status] + 1 : 1;
+                      return acc;
+                    }, {});
+
+                    // Convert counts to percentages
+                    for (const status in statistics) {
+                      statistics[status] = ((statistics[status] || 0) / totalQuotes) * 100;
+                    }
+
+                    // console.log('Statistics:', statistics);
+                    return (
+                      <Col key={index} xs={24} sm={12} lg={24}>
+                        <PreviewCard
+                          title={title}
+                          isLoading={loading}
+                          entity={entity}
+                          statistics={statistics}
+                        />
+                      </Col>
+                    );
+                  })}
+                </Row>
+              </Card>
+            </Col>
+          </Row>
         </Col>
-        {/* Right Column with 1 Large Card */}
         <Col xs={24} sm={12} lg={5}>
           <Card>
             <CustomerPreviewCard

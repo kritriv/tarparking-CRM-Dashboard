@@ -143,8 +143,8 @@ const QuotePage = () => {
           value: "accepted",
         },
         {
-          text: "Send",
-          value: "send",
+          text: "Sent",
+          value: "sent",
         }
       ],
       onFilter: (value, record) => record.status === value,
@@ -165,9 +165,9 @@ const QuotePage = () => {
           color = 'green';
           text = 'Accepted';
         }
-        if (status === 'send') {
+        if (status === 'sent') {
           color = 'green';
-          text = 'Send';
+          text = 'Sent';
         }
 
         return (

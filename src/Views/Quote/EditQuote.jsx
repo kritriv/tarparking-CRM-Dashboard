@@ -206,7 +206,7 @@ const EditQuotePage = () => {
                                         <Form.Item name="status" label=" Quote Status" rules={[{ required: true, message: "Select Quote  Status" }]}>
                                             <Select placeholder="Select Status">
                                                 <Select.Option value="pending">Pending</Select.Option>
-                                                <Select.Option value="send">Send</Select.Option>
+                                                <Select.Option value="sent">Sent</Select.Option>
                                                 <Select.Option value="accepted">Accepted</Select.Option>
                                                 <Select.Option value="cancelled">Cancelled</Select.Option>
                                                 <Select.Option value="on hold">On Hold</Select.Option>
