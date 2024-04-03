@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card, Tag, Input, Spin } from "antd";
+import { Space, Button, Card, Tag, Input, Spin, Dropdown, Menu } from "antd";
 import { BiEditAlt, BiRefresh } from "react-icons/bi";
 import { MdDeleteSweep } from "react-icons/md";
 import { FaFilePdf } from "react-icons/fa6";
@@ -80,6 +80,7 @@ const QuotePage = () => {
       setError(false);
       const response = await APIService.QuoteApi.listResource(page, pageSize);
       setQuoteData(response.data);
+      setFilteredQuoteData(response.data);
       setTotalQuote(response.total);
       setCurrentPage(page);
       setCurrentPageSize(pageSize);
@@ -204,16 +205,34 @@ const QuotePage = () => {
     {
       title: "Actions",
       dataIndex: "",
-      align: 'center',
+      fixed: "right",
       render: (_, record) => (
-        <Space>
-          <Button type="link" onClick={() => handleViewPDF(record)}><FaFilePdf size={18} color="red" /></Button>
-          <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
-          <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red" /></Button>
-        </Space>
+        <Dropdown
+          overlay={renderActionsDropdown(record)}
+          trigger={['click']}
+          onClick={(e) => e.preventDefault()}
+        >
+          <Button type="link" onClick={e => e.preventDefault()} style={{ fontSize: 25, paddingBottom: 50 }}>
+            <span className="ellipsis">...</span>
+          </Button>
+        </Dropdown>
       ),
     },
   ];
+
+  const renderActionsDropdown = (record) => (
+    <Menu>
+      <Menu.Item key="view" onClick={() => handleViewPDF(record)} >
+        <FaFilePdf color="red"/> PDF
+      </Menu.Item>
+      <Menu.Item key="edit" onClick={() => handleEdit(record)}>
+        <BiEditAlt /> Edit
+      </Menu.Item>
+      <Menu.Item key="delete" onClick={() => handleDelete(record)} danger>
+        <MdDeleteSweep /> Delete
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <Card title="Quote List" extra={
@@ -228,13 +247,13 @@ const QuotePage = () => {
         />
         <Button icon={<BiRefresh />} onClick={handleRefresh} />
       </Space>
-    } style={{ padding: 20, margin: 10 }}>
-      <Space direction="vertical" style={{ display: "flex" }} wrap>
+    } className="custom-card">
+      <Space direction="vertical" style={{ width: "100%" }}>
         <TableComponent
           pagination={false}
           style={{ margin: "30px" }}
           columns={columns}
-          data={filteredQuoteData.length > 0 ? filteredQuoteData : QuoteTableData}
+          data={QuoteTableData}
           onChange={onChange}
         />
         <PaginationComponent

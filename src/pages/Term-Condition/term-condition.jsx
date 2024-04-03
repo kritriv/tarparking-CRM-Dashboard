@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Space, Button, Card, Input, Spin } from "antd";
+import { Space, Button, Card, Input, Spin, Dropdown, Menu } from "antd";
 import { BiEditAlt, BiRefresh } from "react-icons/bi";
 import { IoMdEye } from "react-icons/io";
 import { MdDeleteSweep } from "react-icons/md";
@@ -73,6 +73,7 @@ const TncPage = () => {
             setError(false);
             const response = await APIService.TncApi.listResource(page, pageSize);
             setTncData(response.data);
+            setFilteredTncData(response.data);
             setTotalTnc(response.total);
             setCurrentPage(page);
             setCurrentPageSize(pageSize);
@@ -128,15 +129,34 @@ const TncPage = () => {
         {
             title: "Actions",
             dataIndex: "",
+            fixed: "right",
             render: (_, record) => (
-                <Space>
-                    <Button type="link" onClick={() => handleView(record)}><IoMdEye size={18} /></Button>
-                    <Button type="link" onClick={() => handleEdit(record)}><BiEditAlt size={18} /></Button>
-                    <Button type="link" onClick={() => handleDelete(record)}><MdDeleteSweep size={18} color="red" /></Button>
-                </Space>
+                <Dropdown
+                    overlay={renderActionsDropdown(record)}
+                    trigger={['click']}
+                    onClick={(e) => e.preventDefault()}
+                >
+                    <Button type="link" onClick={e => e.preventDefault()} style={{ fontSize: 25, paddingBottom: 50 }}>
+                        <span className="ellipsis">...</span>
+                    </Button>
+                </Dropdown>
             ),
         },
     ];
+
+    const renderActionsDropdown = (record) => (
+        <Menu>
+            <Menu.Item key="view" onClick={() => handleView(record)}>
+                <IoMdEye /> View
+            </Menu.Item>
+            <Menu.Item key="edit" onClick={() => handleEdit(record)}>
+                <BiEditAlt /> Edit
+            </Menu.Item>
+            <Menu.Item key="delete" onClick={() => handleDelete(record)} danger>
+                <MdDeleteSweep /> Delete
+            </Menu.Item>
+        </Menu>
+    );
 
     return (
         <Card title="Term & Conditions" extra={
@@ -151,13 +171,13 @@ const TncPage = () => {
                 />
                 <Button icon={<BiRefresh />} onClick={handleRefresh} />
             </Space>
-        } style={{ padding: 20, margin: 10 }}>
-            <Space direction="vertical" style={{ display: "flex" }} wrap>
+        } className="custom-card">
+            <Space direction="vertical" style={{ width: "100%" }}>
                 <TableComponent
                     pagination={false}
                     style={{ margin: "30px" }}
                     columns={columns}
-                    data={filteredTncData.length > 0 ? filteredTncData : TncTableData}
+                    data={TncTableData}
                     onChange={onChange}
                 />
                 <PaginationComponent
