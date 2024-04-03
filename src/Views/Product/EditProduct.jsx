@@ -31,10 +31,11 @@ const EditProductPage = () => {
         try {
             setLoading(true);
             const response = await APIService.ProductApi.readResource(id);
+            // console.log(response.data)
             if (response.success) {
                 form.setFieldsValue({
                     ...response.data,
-                    category: response.data.category.name,
+                    category: response.data.category.id,
                 });
                 setProductData(response.data);
             } else {
@@ -73,6 +74,7 @@ const EditProductPage = () => {
         try {
             form.validateFields().then((values) => {
                 setLoading(true);
+                console.log(values)
                 APIService.ProductApi.updateResource(id, values)
                     .then(() => {
                         notification.success({
