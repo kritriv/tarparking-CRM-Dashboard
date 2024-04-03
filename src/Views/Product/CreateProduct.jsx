@@ -59,19 +59,19 @@ const CreateProductPage = () => {
     };
 
     return (
-        <Card title="Create Product" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={150}>
-                <Col span={18}>
+        <Card title="Create Product" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card">
+            <Row gutter={[16, 16]}>
+                <Col xl={18} md={24} xs={24}>
                     <div>
                         <h2>Product Information</h2>
                         <Form form={form} layout="vertical">
                             <Row gutter={16}>
-                                <Col span={6}>
+                                <Col xl={6} md={24} xs={24}>
                                     <Form.Item name="status" label="Status" rules={[{ required: true }]}>
                                         <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} md={24} xs={24}>
                                     <Form.Item
                                         name="createdby"
                                         label="CreatedBy (You)"
@@ -83,7 +83,7 @@ const CreateProductPage = () => {
                                 </Col>
                             </Row>
                             <Row gutter={50}>
-                                <Col span={12}>
+                                <Col xl={12} md={24} xs={24}>
                                     <Form.Item
                                         name="category"
                                         label="Category Name"
@@ -100,7 +100,7 @@ const CreateProductPage = () => {
                                         </Select>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} md={24} xs={24}>
                                     <Form.Item
                                         name="name"
                                         label="Product Name"

@@ -83,9 +83,9 @@ const Home = () => {
   return (
     <div className="home-card-area">
       <Row gutter={[16, 16]}>
-        <Col xs={24} sm={12} md={8} lg={18}>
+        <Col md={24} xl={18}>
           <Row gutter={[16, 16]} style={{ marginBottom: '1rem' }}>
-            <Col xs={24} sm={12} md={12} lg={8}>
+            <Col sm={24} xs={24} md={24} lg={8}>
               <Card>
                 <SummaryCard
                   title={"Clients"}
@@ -96,7 +96,7 @@ const Home = () => {
                 />
               </Card>
             </Col>
-            <Col xs={24} sm={12} md={12} lg={8}>
+            <Col md={24} xs={24} lg={8}>
               <Card>
                 <SummaryCard
                   title={"Quotes"}
@@ -107,7 +107,7 @@ const Home = () => {
                 />
               </Card>
             </Col>
-            <Col xs={24} sm={12} md={12} lg={8}>
+            <Col md={24} xs={24} lg={8}>
               <Card>
                 <SummaryCard
                   title={"Users"}
@@ -118,7 +118,7 @@ const Home = () => {
                 />
               </Card>
             </Col>
-            <Col xs={24} sm={12} md={12} lg={8}>
+            <Col md={24} xs={24} lg={8}>
               <Card>
                 <SummaryCard
                   title={"Categories"}
@@ -129,7 +129,7 @@ const Home = () => {
                 />
               </Card>
             </Col>
-            <Col xs={24} sm={12} md={12} lg={8}>
+            <Col md={24} xs={24} lg={8}>
               <Card>
                 <SummaryCard
                   title={"Products"}
@@ -140,7 +140,7 @@ const Home = () => {
                 />
               </Card>
             </Col>
-            <Col xs={24} sm={12} md={12} lg={8}>
+            <Col md={24} xs={24} lg={8}>
               <Card>
                 <SummaryCard
                   title={"Sub Products"}
@@ -177,7 +177,7 @@ const Home = () => {
 
                     // console.log('Statistics:', statistics);
                     return (
-                      <Col key={index} xs={24} sm={12} lg={24}>
+                      <Col key={index} lg={24}>
                         <PreviewCard
                           title={title}
                           isLoading={loading}
@@ -192,7 +192,7 @@ const Home = () => {
             </Col>
           </Row>
         </Col>
-        <Col xs={24} sm={12} lg={5}>
+        <Col md={24} xl={6}>
           <Card>
             <CustomerPreviewCard
               activeCustomer={activeClientTotal}

@@ -86,22 +86,22 @@ const EditTncPage = () => {
     };
 
     return (
-        <Card title="Edit Tnc Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={150}>
-                <Col span={12}>
+        <Card title="Edit Tnc Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card">
+            <Row gutter={[50, 16]}>
+                <Col xl={14} sm={24}  xs={24}>
                     <div>
                         <h2>Product Select Info</h2>
                         <Form form={form} layout="vertical">
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item name="sub_product" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
-                                        <Input readOnly />
+                                        <TextArea readOnly />
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <h2>Term & Condition Info</h2>
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="payment_terms" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -145,7 +145,7 @@ const EditTncPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="client_responsibilities" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -189,7 +189,7 @@ const EditTncPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="installation_process" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -229,20 +229,16 @@ const EditTncPage = () => {
                                             </>
                                         )}
                                     </Form.List>
-                                    <Form.Item>
-                                        <Button type="primary" onClick={handleEditTnc} loading={loading}>
-                                            Update
-                                        </Button>
-                                    </Form.Item>
+
                                 </Col>
                             </Row>
                         </Form>
                     </div>
                 </Col>
 
-                <Col span={10}>
+                <Col xl={10} sm={24}  xs={24}>
                     <Row gutter={16}>
-                        <Col span={24}>
+                        <Col span={24}  xs={24}>
                             <div>
                                 <Form form={form} layout="vertical">
 
@@ -309,7 +305,11 @@ const EditTncPage = () => {
                                     >
                                         <TextArea placeholder="Enter Validity Info" autoSize={{ minRows: 1, maxRows: 12 }} />
                                     </Form.Item>
-
+                                    <Form.Item>
+                                        <Button type="primary" onClick={handleEditTnc} loading={loading}>
+                                            Update
+                                        </Button>
+                                    </Form.Item>
                                 </Form>
                             </div>
                         </Col>

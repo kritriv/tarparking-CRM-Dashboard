@@ -86,22 +86,22 @@ const EditSpecificationPage = () => {
     };
 
     return (
-        <Card title="Edit Specification Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={150}>
-                <Col span={12}>
+        <Card title="Edit Specification Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card" >
+            <Row gutter={[50, 16]}>
+                <Col xl={12} md={24}  xs={24}>
                     <div>
                         <h2>Product Select Info</h2>
                         <Form form={form} layout="vertical">
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item name="sub_product" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
-                                        <Input readOnly />
+                                        <TextArea readOnly />
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <h2>Specifications Details</h2>
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["lifting_height", "top"]}
                                         label="Lifting Height Top"
@@ -110,7 +110,7 @@ const EditSpecificationPage = () => {
                                         <InputNumber placeholder="Enter Lifting Height Top" style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["lifting_height", "ground"]}
                                         label="Lifting Height ground"
@@ -121,7 +121,7 @@ const EditSpecificationPage = () => {
                                 </Col>
                             </Row>
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["platform", "length"]}
                                         label="Platform length"
@@ -130,7 +130,7 @@ const EditSpecificationPage = () => {
                                         <InputNumber placeholder="Enter Platform length" style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["platform", "width"]}
                                         label="Platform width"
@@ -141,7 +141,7 @@ const EditSpecificationPage = () => {
                                 </Col>
                             </Row>
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["travelling_speed", "lifting"]}
                                         label="Travelling Speed Lifting"
@@ -150,7 +150,7 @@ const EditSpecificationPage = () => {
                                         <Input placeholder="Enter Travelling Speed Lifting" style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["travelling_speed", "horizontal"]}
                                         label="Travelling Speed horizontal"
@@ -162,7 +162,7 @@ const EditSpecificationPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="safety" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -206,7 +206,7 @@ const EditSpecificationPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="features" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -252,9 +252,9 @@ const EditSpecificationPage = () => {
                     </div>
                 </Col>
 
-                <Col span={10}>
+                <Col xl={10} md={24}  xs={24}>
                     <Row gutter={16}>
-                        <Col span={24}>
+                        <Col span={24}  xs={24}>
                             <div>
                                 <Form form={form} layout="vertical">
 

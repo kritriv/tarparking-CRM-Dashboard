@@ -5,6 +5,8 @@ import { APIService } from "../../apis";
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../../store/userStore";
 
+const { TextArea } = Input;
+
 const EditClientPage = () => {
     const { id } = useParams();
     const userInfo = useUserInfo();
@@ -81,19 +83,19 @@ const EditClientPage = () => {
     };
 
     return (
-        <Card title="Edit Client" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={150}>
-                <Col span={12}>
+        <Card title="Edit Client" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card">
+            <Row gutter={[50, 16]}>
+                <Col md={24} xl={12} xs={24}>
                     <div>
                         <h2>Client Information</h2>
                         <Form form={form} layout="vertical" initialValues={clientData}>
                             <Row gutter={16}>
-                                <Col span={6}>
+                                <Col xs={24} sm={24} xl={6}>
                                     <Form.Item name="status" label="Status">
                                         <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked={clientData?.status === 'true'} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xs={24} sm={24} xl={12}>
                                     <Form.Item
                                         name="editBy"
                                         label="EditBy (You)"
@@ -104,14 +106,14 @@ const EditClientPage = () => {
                                 </Col>
                             </Row>
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col md={24} xl={12} xs={24}>
                                     <Form.Item name="username" label="Username">
                                         <Input placeholder="Enter Username" />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col md={24} xl={12} xs={24}>
                                     <Form.Item name="name" label="Name">
-                                        <Input placeholder="Enter Name" />
+                                        <TextArea placeholder="Enter Name" />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -142,7 +144,7 @@ const EditClientPage = () => {
                         </Form>
                     </div>
                 </Col>
-                <Col span={10}>
+                <Col md={24} xl={10}>
                     <div>
                         <h2>Address Information</h2>
                         <Form form={form} layout="vertical">
@@ -157,10 +159,10 @@ const EditClientPage = () => {
                                 name={["address", "street"]}
                                 label="Street"
                             >
-                                <Input placeholder="Enter Street" />
+                                <TextArea placeholder="Enter Street" />
                             </Form.Item>
                             <Row gutter={16}>
-                                <Col span={18}>
+                                <Col xs={24} md={24} xl={18}>
                                     <Form.Item
                                         name={["address", "city"]}
                                         label="City"
@@ -168,7 +170,7 @@ const EditClientPage = () => {
                                         <Input placeholder="Enter City" />
                                     </Form.Item>
                                 </Col>
-                                <Col span={4}>
+                                <Col xs={24} md={24} xl={4}>
                                     <Form.Item
                                         name={["address", "pincode"]}
                                         label="Pincode"

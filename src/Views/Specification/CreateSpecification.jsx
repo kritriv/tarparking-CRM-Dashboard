@@ -96,14 +96,14 @@ const CreateSpecificationPage = () => {
     };
 
     return (
-        <Card title="Create Specification Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={150}>
-                <Col span={12}>
+        <Card title="Create Specification Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card" >
+            <Row gutter={[50, 16]}>
+                <Col xl={12} md={24}  xs={24}>
                     <div>
                         <h2>Product Select Info</h2>
                         <Form form={form} layout="vertical">
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item name="category" label="Category Name" rules={[{ required: true, message: "Select Category Name" }]}>
                                         <Select placeholder="Select Category" onChange={handleCategoryChange}>
                                             {categories.map((category) => (
@@ -114,7 +114,7 @@ const CreateSpecificationPage = () => {
                                         </Select>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item name="product" label="Product Name" rules={[{ required: true, message: "Select Product Name" }]}>
                                         <Select placeholder="Select Product" onChange={handleProductChange}>
                                             {products.map((product) => (
@@ -125,7 +125,7 @@ const CreateSpecificationPage = () => {
                                         </Select>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item name="sub_product" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
                                         <Select placeholder="Select Sub Product">
                                             {subproducts.map((subproduct) => (
@@ -139,7 +139,7 @@ const CreateSpecificationPage = () => {
                             </Row>
                             <h2>Specifications Details</h2>
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["lifting_height", "top"]}
                                         label="Lifting Height Top"
@@ -148,7 +148,7 @@ const CreateSpecificationPage = () => {
                                         <InputNumber placeholder="Enter Lifting Height Top" style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["lifting_height", "ground"]}
                                         label="Lifting Height ground"
@@ -159,7 +159,7 @@ const CreateSpecificationPage = () => {
                                 </Col>
                             </Row>
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["platform", "length"]}
                                         label="Platform length"
@@ -168,7 +168,7 @@ const CreateSpecificationPage = () => {
                                         <InputNumber placeholder="Enter Platform length" style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["platform", "width"]}
                                         label="Platform width"
@@ -179,7 +179,7 @@ const CreateSpecificationPage = () => {
                                 </Col>
                             </Row>
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["travelling_speed", "lifting"]}
                                         label="Travelling Speed Lifting"
@@ -188,7 +188,7 @@ const CreateSpecificationPage = () => {
                                         <Input placeholder="Enter Travelling Speed Lifting" style={{ width: '100%' }} />
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item
                                         name={["travelling_speed", "horizontal"]}
                                         label="Travelling Speed horizontal"
@@ -200,7 +200,7 @@ const CreateSpecificationPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="safety" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -244,7 +244,7 @@ const CreateSpecificationPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="features" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -290,9 +290,9 @@ const CreateSpecificationPage = () => {
                     </div>
                 </Col>
 
-                <Col span={10}>
+                <Col xl={10} md={24}  xs={24}>
                     <Row gutter={16}>
-                        <Col span={24}>
+                        <Col span={24}  xs={24}>
                             <div>
                                 <Form form={form} layout="vertical">
 

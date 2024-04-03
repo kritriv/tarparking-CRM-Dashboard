@@ -50,33 +50,33 @@ const ViewCompanyPage = () => {
     };
 
     return (
-        <Card title="View Company Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={150}>
+        <Card title="View Company Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card">
+            <Row gutter={[50, 16]}>
                 {/* Left Side - Company Information */}
-                <Col span={12}>
+                <Col xl={12} sm={24}  xs={24}>
                     <div>
                         <h2>Company Information</h2>
                         <Form form={form} layout="vertical" initialValues={companyData}>
                             <Row gutter={16}>
-                                <Col span={6}>
+                                <Col xl={6} sm={24}  xs={24}>
                                     <Form.Item name="status" label="Status" rules={[{ required: true }]}>
                                         <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked disabled />
                                     </Form.Item>
                                 </Col>
-                                <Col span={18}>
+                                <Col xl={18} sm={24}  xs={24}>
                                     <Form.Item name="name" label="Name" rules={[{ required: true, message: "Please enter Name" }]}>
                                         <Input placeholder="Enter Name" readOnly />
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <Row gutter={10}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.List name="emails" initialValue={['']}>
                                         {(fields) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }) => (
                                                     <Row gutter={50} key={key}>
-                                                        <Col span={22}>
+                                                        <Col span={22}  xs={24}>
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={name}
@@ -96,13 +96,13 @@ const ViewCompanyPage = () => {
                                         )}
                                     </Form.List>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.List name="websites" initialValue={['']}>
                                         {(fields) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }) => (
                                                     <Row gutter={50} key={key}>
-                                                        <Col span={22}>
+                                                        <Col span={22}  xs={24}>
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={name}
@@ -121,13 +121,13 @@ const ViewCompanyPage = () => {
                                         )}
                                     </Form.List>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.List name="phones" initialValue={['']}>
                                         {(fields) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }) => (
                                                     <Row gutter={50} key={key}>
-                                                        <Col span={22}>
+                                                        <Col span={22}  xs={24}>
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={name}
@@ -180,9 +180,9 @@ const ViewCompanyPage = () => {
                 </Col>
 
                 {/* Right Side - Address & Account details */}
-                <Col span={10}>
+                <Col xl={10} sm={24}  xs={24}>
                     <Row gutter={16}>
-                        <Col span={24}>
+                        <Col span={24}  xs={24}>
                             <div>
                                 <h2>Address details</h2>
                                 <Form form={form} layout="vertical">
@@ -203,7 +203,7 @@ const ViewCompanyPage = () => {
                                 </Form>
                             </div>
                         </Col>
-                        <Col span={24}>
+                        <Col span={24}  xs={24}>
                             <div>
                                 <h2>Bank details</h2>
                                 <Form form={form} layout="vertical">

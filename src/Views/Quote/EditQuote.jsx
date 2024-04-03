@@ -126,9 +126,9 @@ const EditQuotePage = () => {
     };
 
     return (
-        <Card title="Create Quotation" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={10}>
-                <Col span={8}>
+        <Card title="Create Quotation" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card">
+            <Row gutter={[16, 16]}>
+                <Col xl={8} sm={24} xs={24}>
                     <Row gutter={16}>
                         <Col span={24}>
                             <Steps direction="vertical" current={currentStep}>
@@ -170,7 +170,7 @@ const EditQuotePage = () => {
                         </Col>
                     </Row>
                 </Col>
-                <Col span={16}>
+                <Col xl={16} md={24}  xs={24}>
                     <div>
                         <Form
                             form={form}
@@ -193,7 +193,7 @@ const EditQuotePage = () => {
                         >
                             {currentStep === 0 && (
                                 <Row gutter={50}>
-                                    <Col span={12}>
+                                    <Col xl={12} sm={24}  xs={24}>
                                         <Form.Item
                                             name="editBy"
                                             label="EditBy (You)"
@@ -202,7 +202,7 @@ const EditQuotePage = () => {
                                             <Input placeholder="Enter EditBy Id" disabled />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col xl={12} sm={24}  xs={24}>
                                         <Form.Item name="status" label=" Quote Status" rules={[{ required: true, message: "Select Quote  Status" }]}>
                                             <Select placeholder="Select Status">
                                                 <Select.Option value="pending">Pending</Select.Option>
@@ -213,32 +213,32 @@ const EditQuotePage = () => {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col xl={12} sm={24}  xs={24}>
                                         <Form.Item name={["item", "categoryName"]} label="Category Name" rules={[{ required: true, message: "Select Category Name" }]}>
                                             <Input readOnly />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col xl={12} sm={24}  xs={24}>
                                         <Form.Item name={["item", "mainProduct"]} label="Product Name" rules={[{ required: true, message: "Select Product Name" }]}>
                                             <Input readOnly />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col xl={12} sm={24}  xs={24}>
                                         <Form.Item name={["item", "productName"]} label="Sub Product Name" rules={[{ required: true, message: "SelectSub Product" }]}>
                                             <Input readOnly />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col xl={12} sm={24}  xs={24}>
                                         <Form.Item name={["client", "name"]} label="Client" rules={[{ required: true, message: "Select Client" }]}>
                                             <Input readOnly />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col xl={12} sm={24}  xs={24}>
                                         <Form.Item name={["ourCompany", "name"]} label="Our Company" rules={[{ required: true, message: "Select Our Company" }]}>
                                             <Input readOnly />
                                         </Form.Item>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col xl={12} sm={24}  xs={24}>
                                         <Form.Item
                                             name="refno"
                                             label="Ref No"
@@ -251,7 +251,7 @@ const EditQuotePage = () => {
                             )}
                             {currentStep === 1 && (
                                 <Row gutter={16}>
-                                    <Col span={18}>
+                                    <Col xl={18} sm={24} xs={24}>
                                         <Form.Item
                                             name="subject"
                                             label="Quote Subject"
@@ -297,7 +297,7 @@ const EditQuotePage = () => {
                                             <Col span={22}>
                                                 <div>
                                                     <Row gutter={30}>
-                                                        <Col span={12}>
+                                                        <Col xl={12} sm={24}  xs={24}>
                                                             <Form.Item
                                                                 name={["item", "categoryName"]}
                                                                 label="Category Name"
@@ -307,7 +307,7 @@ const EditQuotePage = () => {
                                                                 <Input placeholder="Enter Category name" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={12}>
+                                                        <Col xl={12} sm={24}  xs={24}>
                                                             <Form.Item
                                                                 name={["item", "mainProduct"]}
                                                                 label="Main Product"
@@ -317,7 +317,7 @@ const EditQuotePage = () => {
                                                                 <Input placeholder="Enter Main Product" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={12}>
+                                                        <Col xl={12} sm={24}  xs={24}>
                                                             <Form.Item
                                                                 name={["item", "productName"]}
                                                                 label="Product Name"
@@ -327,7 +327,7 @@ const EditQuotePage = () => {
                                                                 <Input placeholder="Enter Quote name" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={12}>
+                                                        <Col xl={12} sm={24}  xs={24}>
                                                             <Form.Item
                                                                 name={["item", "model_no"]}
                                                                 label="Model No"
@@ -337,7 +337,7 @@ const EditQuotePage = () => {
                                                                 <Input placeholder="Enter Model No" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={12}>
+                                                        <Col xl={12} sm={24}  xs={24}>
                                                             <Form.Item
                                                                 name={["item", "hsn"]}
                                                                 label="HSN No"
@@ -347,7 +347,7 @@ const EditQuotePage = () => {
                                                                 <Input placeholder="Enter HSN No" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={12}>
+                                                        <Col xl={12} sm={24}  xs={24}>
                                                             <Form.Item
                                                                 name={["item", "image"]}
                                                                 label="Product Image URL"
@@ -368,7 +368,7 @@ const EditQuotePage = () => {
                                             <Col span={22}>
                                                 <div>
                                                     <Row gutter={30}>
-                                                        <Col span={8}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "quantity"]}
                                                                 label="Enter Quantity "
@@ -378,7 +378,7 @@ const EditQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Quantity" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={8}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "basic_rate"]}
                                                                 label="Basic rate"
@@ -388,7 +388,7 @@ const EditQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Basic rate" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={8}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "installation_charges"]}
                                                                 label="Installation Charges"
@@ -398,7 +398,7 @@ const EditQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Installation" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={8}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "freight_cost"]}
                                                                 label="freight Cost"
@@ -407,7 +407,7 @@ const EditQuotePage = () => {
                                                                 <InputNumber placeholder="Enter freight Cost" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={8}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "unloading_cost"]}
                                                                 label="Unloading Cost"
@@ -416,7 +416,7 @@ const EditQuotePage = () => {
                                                                 <InputNumber placeholder="Enter unloading Cost" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={8}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "transport_charge"]}
                                                                 label="Transport Charges"
@@ -425,7 +425,7 @@ const EditQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Transport Charges" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={8}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "discount"]}
                                                                 label="Other Discount"
@@ -434,7 +434,7 @@ const EditQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Discount" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={8}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "tax_rate"]}
                                                                 label="Tax Rate (GST)"
@@ -444,7 +444,7 @@ const EditQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Tax Rate" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col span={8}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "total_price"]}
                                                                 label="Total Value"
@@ -465,10 +465,10 @@ const EditQuotePage = () => {
                                     <h2>Product Specifications</h2>
                                     <Divider />
                                     <Row gutter={50} >
-                                        <Col span={12}>
+                                        <Col xl={12} sm={24}  xs={24}>
                                             <div>
                                                 <Row gutter={16}>
-                                                    <Col span={12} >
+                                                    <Col xl={12} sm={24}  xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "lifting_height", "top"]}
                                                             label="Lifting Height Top"
@@ -478,7 +478,7 @@ const EditQuotePage = () => {
                                                             <InputNumber placeholder="Enter Lifting Height Top" style={{ width: '100%' }} />
                                                         </Form.Item>
                                                     </Col>
-                                                    <Col span={12} >
+                                                    <Col xl={12} sm={24}  xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "lifting_height", "ground"]}
                                                             label="Lifting Height ground"
@@ -490,7 +490,7 @@ const EditQuotePage = () => {
                                                     </Col>
                                                 </Row>
                                                 <Row gutter={16}>
-                                                    <Col span={12} >
+                                                    <Col xl={12} sm={24}  xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "platform", "length"]}
                                                             label="Platform length"
@@ -500,7 +500,7 @@ const EditQuotePage = () => {
                                                             <InputNumber placeholder="Enter Platform length" style={{ width: '100%' }} />
                                                         </Form.Item>
                                                     </Col>
-                                                    <Col span={12} >
+                                                    <Col xl={12} sm={24}  xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "platform", "width"]}
                                                             label="Platform width"
@@ -512,7 +512,7 @@ const EditQuotePage = () => {
                                                     </Col>
                                                 </Row>
                                                 <Row gutter={16}>
-                                                    <Col span={12} >
+                                                    <Col xl={12} sm={24}  xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "travelling_speed", "lifting"]}
                                                             label="Travelling Speed Lifting"
@@ -522,7 +522,7 @@ const EditQuotePage = () => {
                                                             <Input placeholder="Enter Travelling Speed Lifting" style={{ width: '100%' }} />
                                                         </Form.Item>
                                                     </Col>
-                                                    <Col span={12} >
+                                                    <Col xl={12} sm={24}  xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "travelling_speed", "horizontal"]}
                                                             label="Travelling Speed horizontal"
@@ -542,7 +542,7 @@ const EditQuotePage = () => {
                                                                 <>
                                                                     {fields.map(({ key, name, ...restField }) => (
                                                                         <Row gutter={16} key={key}>
-                                                                            <Col span={18}>
+                                                                            <Col xl={18} sm={24} xs={24}>
                                                                                 <Form.Item
                                                                                     {...restField}
                                                                                     name={name}
@@ -586,7 +586,7 @@ const EditQuotePage = () => {
                                                                 <>
                                                                     {fields.map(({ key, name, ...restField }) => (
                                                                         <Row gutter={16} key={key}>
-                                                                            <Col span={18}>
+                                                                            <Col xl={18} sm={24} xs={24}>
                                                                                 <Form.Item
                                                                                     {...restField}
                                                                                     name={name}
@@ -624,7 +624,7 @@ const EditQuotePage = () => {
                                                 </Row>
                                             </div>
                                         </Col>
-                                        <Col span={10}>
+                                        <Col xl={10} sm={24} xs={24}>
                                             <Row gutter={16}>
                                                 <Col span={24} >
                                                     <div >
@@ -721,7 +721,7 @@ const EditQuotePage = () => {
                                     <h2>Terms & Conditions</h2>
                                     <Divider />
                                     <Row gutter={50}>
-                                        <Col span={12}>
+                                        <Col xl={12} sm={24}  xs={24}>
                                             <div>
                                                 <Row gutter={10}>
                                                     <Col span={24}>
@@ -730,7 +730,7 @@ const EditQuotePage = () => {
                                                                 <>
                                                                     {fields.map(({ key, name, ...restField }) => (
                                                                         <Row gutter={16} key={key}>
-                                                                            <Col span={18}>
+                                                                            <Col xl={18} sm={24} xs={24}>
                                                                                 <Form.Item
                                                                                     {...restField}
                                                                                     name={name}
@@ -775,7 +775,7 @@ const EditQuotePage = () => {
                                                                 <>
                                                                     {fields.map(({ key, name, ...restField }) => (
                                                                         <Row gutter={16} key={key}>
-                                                                            <Col span={18}>
+                                                                            <Col xl={18} sm={24} xs={24}>
                                                                                 <Form.Item
                                                                                     {...restField}
                                                                                     name={name}
@@ -819,7 +819,7 @@ const EditQuotePage = () => {
                                                                 <>
                                                                     {fields.map(({ key, name, ...restField }) => (
                                                                         <Row gutter={16} key={key}>
-                                                                            <Col span={18}>
+                                                                            <Col xl={18} sm={24} xs={24}>
                                                                                 <Form.Item
                                                                                     {...restField}
                                                                                     name={name}
@@ -857,7 +857,7 @@ const EditQuotePage = () => {
                                                 </Row>
                                             </div>
                                         </Col>
-                                        <Col span={10}>
+                                        <Col xl={10} sm={24} xs={24}>
                                             <Row gutter={16}>
                                                 <Col span={24}>
                                                     <div>

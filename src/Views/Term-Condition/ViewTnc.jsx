@@ -53,28 +53,28 @@ const ViewTncPage = () => {
     };
 
     return (
-        <Card title="View Tnc Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={0}>
-                <Col span={14}>
+        <Card title="View Tnc Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card">
+            <Row gutter={[50, 16]}>
+                <Col xl={14} sm={24}  xs={24}>
                     <div>
                         <h2>Product Select Info</h2>
                         <Form form={form} layout="vertical">
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item name="sub_product" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
-                                        <Input readOnly />
+                                        <TextArea readOnly />
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <h2>Term & Condition Info</h2>
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="payment_terms" initialValue={['']}>
                                         {(fields) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }) => (
                                                     <Row gutter={16} key={key}>
-                                                        <Col span={18}>
+                                                        <Col span={18}  xs={24}>
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={name}
@@ -83,7 +83,7 @@ const ViewTncPage = () => {
                                                                     { required: true, message: 'Please enter Payment Terms' },
                                                                 ]}
                                                             >
-                                                                <TextArea placeholder="Enter Payment Terms" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                                                <TextArea placeholder="Enter Payment Terms" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                                             </Form.Item>
                                                         </Col>
                                                     </Row>
@@ -95,13 +95,13 @@ const ViewTncPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="client_responsibilities" initialValue={['']}>
                                         {(fields) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }) => (
                                                     <Row gutter={16} key={key}>
-                                                        <Col span={18}>
+                                                        <Col span={18}  xs={24}>
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={name}
@@ -110,7 +110,7 @@ const ViewTncPage = () => {
                                                                     { required: true, message: 'Please enter Client Responsibilities' },
                                                                 ]}
                                                             >
-                                                                <TextArea placeholder="Enter Client Responsibilities" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                                                <TextArea placeholder="Enter Client Responsibilities" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                                             </Form.Item>
                                                         </Col>
                                                     </Row>
@@ -122,13 +122,13 @@ const ViewTncPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="installation_process" initialValue={['']}>
                                         {(fields) => (
                                             <>
                                                 {fields.map(({ key, name, ...restField }) => (
                                                     <Row gutter={16} key={key}>
-                                                        <Col span={18}>
+                                                        <Col span={18}  xs={24}>
                                                             <Form.Item
                                                                 {...restField}
                                                                 name={name}
@@ -137,7 +137,7 @@ const ViewTncPage = () => {
                                                                     { required: true, message: 'Please enter Installation Process' },
                                                                 ]}
                                                             >
-                                                                <TextArea placeholder="Enter Installation Process" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                                                <TextArea placeholder="Enter Installation Process" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                                             </Form.Item>
                                                         </Col>
                                                     </Row>
@@ -145,20 +145,15 @@ const ViewTncPage = () => {
                                             </>
                                         )}
                                     </Form.List>
-                                    <Form.Item>
-                                        <Button type="primary" onClick={handleBack} loading={loading}>
-                                            Go Back
-                                        </Button>
-                                    </Form.Item>
                                 </Col>
                             </Row>
                         </Form>
                     </div>
                 </Col>
 
-                <Col span={10}>
+                <Col xl={10} sm={24}  xs={24}>
                     <Row gutter={16}>
-                        <Col span={24}>
+                        <Col span={24}  xs={24}>
                             <div>
                                 <Form form={form} layout="vertical">
 
@@ -167,65 +162,69 @@ const ViewTncPage = () => {
                                         label="Prices"
                                         rules={[{ required: true, message: "Please enter prices" }]}
                                     >
-                                        <TextArea placeholder="Enter prices Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                        <TextArea placeholder="Enter prices Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name="packing_forwarding"
                                         label="Packing Forwarding"
                                         rules={[{ required: true, message: "Please enter Packing Forwarding" }]}
                                     >
-                                        <TextArea placeholder="Enter Packing Forwarding Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                        <TextArea placeholder="Enter Packing Forwarding Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name="material_delivery"
                                         label="Material Delivery"
                                         rules={[{ required: true, message: "Please enter Material Delivery" }]}
                                     >
-                                        <TextArea placeholder="Enter Material Delivery Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                        <TextArea placeholder="Enter Material Delivery Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name="operation"
                                         label="Operation"
                                         rules={[{ required: true, message: "Please enter Operation" }]}
                                     >
-                                        <TextArea placeholder="Enter Operation Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                        <TextArea placeholder="Enter Operation Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name="force_majeure"
                                         label="Force Majeure"
                                         rules={[{ required: true, message: "Please enter Force Majeure" }]}
                                     >
-                                        <TextArea placeholder="Enter Force Majeure Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                        <TextArea placeholder="Enter Force Majeure Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name="warranty"
                                         label="Warranty"
                                         rules={[{ required: true, message: "Please enter Warranty" }]}
                                     >
-                                        <TextArea placeholder="Enter Warranty Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                        <TextArea placeholder="Enter Warranty Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name="termination"
                                         label="Termination"
                                         rules={[{ required: true, message: "Please enter Termination" }]}
                                     >
-                                        <TextArea placeholder="Enter Termination Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                        <TextArea placeholder="Enter Termination Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name="jurisdiction"
                                         label="Jurisdiction"
                                         rules={[{ required: true, message: "Please enter Jurisdiction" }]}
                                     >
-                                        <TextArea placeholder="Enter Jurisdiction Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                        <TextArea placeholder="Enter Jurisdiction Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                     </Form.Item>
                                     <Form.Item
                                         name="validity"
                                         label="Validity"
                                         rules={[{ required: true, message: "Please enter Validity" }]}
                                     >
-                                        <TextArea placeholder="Enter Validity Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly/>
+                                        <TextArea placeholder="Enter Validity Info" autoSize={{ minRows: 1, maxRows: 12 }} readOnly />
                                     </Form.Item>
-
+                                    <Form.Item>
+                                        <Button type="primary" onClick={handleBack} loading={loading}>
+                                            Go Back
+                                        </Button>
+                                    </Form.Item>
                                 </Form>
                             </div>
                         </Col>

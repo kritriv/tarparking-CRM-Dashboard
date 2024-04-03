@@ -72,20 +72,20 @@ const ViewProductPage = () => {
         <Card
             title="View Sub Product"
             extra={<Button onClick={() => handleBack()}>Go Back to List</Button>}
-            style={{ padding: 50, margin: 10 }}
+            className="custom-card"
         >
-            <Row gutter={16}>
-                <Col span={18}>
+            <Row gutter={[16, 16]}>
+                <Col xl={18} md={24}  xs={24}>
                     <div>
                         <h2>Sub Product Information</h2>
                         <Form form={form} layout="vertical" initialValues={subProductData}>
                             <Row gutter={30}>
-                                <Col span={3}>
+                                <Col xl={3} md={24}  xs={24}>
                                     <Form.Item name="status" label="Status" rules={[{ required: true }]}>
                                         <Switch checkedChildren="Active" unCheckedChildren="Inactive" defaultChecked />
                                     </Form.Item>
                                 </Col>
-                                <Col span={7}>
+                                <Col xl={7} md={24}  xs={24}>
                                     <Form.Item
                                         name="editBy"
                                         label="EditBy (You)"
@@ -94,19 +94,19 @@ const ViewProductPage = () => {
                                         <Input placeholder="Enter EditBy Id" disabled />
                                     </Form.Item>
                                 </Col>
-                                <Col span={7}>
+                                <Col xl={7} md={24}  xs={24}>
                                     <Form.Item name="category" label="Category Name" rules={[{ required: true, message: "Select Category Name" }]}>
                                         <Input placeholder="Enter Category name" readOnly />
                                     </Form.Item>
                                 </Col>
-                                <Col span={7}>
+                                <Col xl={7} md={24}  xs={24}>
                                     <Form.Item name="product" label="Product Name" rules={[{ required: true, message: "Select Product Name" }]}>
                                         <Input placeholder="Enter Product name" readOnly />
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <Row gutter={30}>
-                                <Col span={8}>
+                                <Col xl={8} md={24}  xs={24}>
                                     <Form.Item
                                         name="name"
                                         label="Sub Product Name"
@@ -115,7 +115,7 @@ const ViewProductPage = () => {
                                         <Input placeholder="Enter Sub Product name" readOnly />
                                     </Form.Item>
                                 </Col>
-                                <Col span={8}>
+                                <Col xl={8} md={24}  xs={24}>
                                     <Form.Item
                                         name="model_no"
                                         label="Model No"
@@ -124,7 +124,7 @@ const ViewProductPage = () => {
                                         <Input placeholder="Enter Model No" readOnly />
                                     </Form.Item>
                                 </Col>
-                                <Col span={8}>
+                                <Col xl={8} md={24}  xs={24}>
                                     <Form.Item
                                         name="hsn"
                                         label="HSN No"
@@ -135,7 +135,7 @@ const ViewProductPage = () => {
                                 </Col>
                             </Row>
                             <Row gutter={30}>
-                                <Col span={8}>
+                                <Col xl={8} md={24}  xs={24}>
                                     <Form.Item
                                         name={["price", "basic_rate"]}
                                         label="Basic rate"
@@ -144,7 +144,7 @@ const ViewProductPage = () => {
                                         <InputNumber placeholder="Basic rate" style={{ width: '100%' }} readOnly />
                                     </Form.Item>
                                 </Col>
-                                <Col span={8}>
+                                <Col xl={8} md={24}  xs={24}>
                                     <Form.Item
                                         name={["price", "installation_charges"]}
                                         label="Charges"
@@ -153,7 +153,7 @@ const ViewProductPage = () => {
                                         <InputNumber placeholder="Installation Charges" style={{ width: '100%' }} readOnly />
                                     </Form.Item>
                                 </Col>
-                                <Col span={8}>
+                                <Col xl={8} md={24}  xs={24}>
                                     <Form.Item
                                         name={["price", "subTotal"]}
                                         label="Sub Total"
@@ -173,7 +173,7 @@ const ViewProductPage = () => {
                         </Form>
                     </div>
                 </Col>
-                <Col span={6}>
+                <Col xl={6} md={24}  xs={24}>
                     <Row>
                         <div style={{ marginBottom: 16 }}>
                             <label>Image Preview</label>

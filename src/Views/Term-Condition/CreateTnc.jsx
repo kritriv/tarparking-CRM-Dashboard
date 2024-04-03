@@ -96,14 +96,14 @@ const CreateTncPage = () => {
     };
 
     return (
-        <Card title="Create Tnc Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} style={{ padding: 50, margin: 10 }}>
-            <Row gutter={150}>
-                <Col span={12}>
+        <Card title="Create Tnc Details" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card">
+            <Row gutter={[50, 16]}>
+                <Col xl={12} sm={24}  xs={24}>
                     <div>
                         <h2>Product Select Info</h2>
                         <Form form={form} layout="vertical">
                             <Row gutter={16}>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item name="category" label="Category Name" rules={[{ required: true, message: "Select Category Name" }]}>
                                         <Select placeholder="Select Category" onChange={handleCategoryChange}>
                                             {categories.map((category) => (
@@ -114,7 +114,7 @@ const CreateTncPage = () => {
                                         </Select>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item name="product" label="Product Name" rules={[{ required: true, message: "Select Product Name" }]}>
                                         <Select placeholder="Select Product" onChange={handleProductChange}>
                                             {products.map((product) => (
@@ -125,7 +125,7 @@ const CreateTncPage = () => {
                                         </Select>
                                     </Form.Item>
                                 </Col>
-                                <Col span={12}>
+                                <Col xl={12} sm={24}  xs={24}>
                                     <Form.Item name="sub_product" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
                                         <Select placeholder="Select Sub Product">
                                             {subproducts.map((subproduct) => (
@@ -139,7 +139,7 @@ const CreateTncPage = () => {
                             </Row>
                             <h2>Term & Condition Info</h2>
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="payment_terms" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -183,7 +183,7 @@ const CreateTncPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="client_responsibilities" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -227,7 +227,7 @@ const CreateTncPage = () => {
                             </Row>
                             <Divider />
                             <Row gutter={10}>
-                                <Col span={24}>
+                                <Col span={24}  xs={24}>
                                     <Form.List name="installation_process" initialValue={['']}>
                                         {(fields, { add, remove }) => (
                                             <>
@@ -273,9 +273,9 @@ const CreateTncPage = () => {
                     </div>
                 </Col>
 
-                <Col span={10}>
+                <Col xl={10} sm={24}  xs={24}>
                     <Row gutter={16}>
-                        <Col span={24}>
+                        <Col span={24}  xs={24}>
                             <div>
                                 <Form form={form} layout="vertical">
 
