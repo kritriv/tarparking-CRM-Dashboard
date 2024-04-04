@@ -164,25 +164,27 @@ const Home = () => {
                     const totalQuotes = quoteData.length;
 
                     // Calculate percentages for each status
-                    const statistics = !loading && quoteData.reduce((acc, item) => {
+                    const statistics1 = !loading && quoteData.reduce((acc, item) => {
                       const status = item?.status;
                       acc[status] = acc[status] ? acc[status] + 1 : 1;
                       return acc;
                     }, {});
 
                     // Convert counts to percentages
-                    for (const status in statistics) {
-                      statistics[status] = ((statistics[status] || 0) / totalQuotes) * 100;
+                    for (const status in statistics1) {
+                      statistics1[status] = (statistics1[status] / totalQuotes) * 100;
                     }
 
-                    // console.log('Statistics:', statistics);
+                    // Convert to array of objects
+                    const stats = Object.entries(statistics1).map(([tag, value]) => ({ tag, value }));
+
                     return (
                       <Col key={index} lg={24}>
                         <PreviewCard
                           title={title}
                           isLoading={loading}
                           entity={entity}
-                          statistics={statistics}
+                          statistics={stats}
                         />
                       </Col>
                     );

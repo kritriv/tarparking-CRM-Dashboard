@@ -97,7 +97,6 @@ const EditQuotePage = () => {
                 delete mergedValues.editBy;
                 delete mergedValues.ourCompany;
 
-                console.log(mergedValues)
                 APIService.QuoteApi.updateResource(id, mergedValues)
                     .then(() => {
                         notification.success({
