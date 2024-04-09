@@ -28,7 +28,7 @@ function LoginForm() {
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <div
-        style={{ marginBottom: "1rem", fontSize: "1.5rem", fontWeight: "bold" }}
+        style={{ marginBottom: "1rem", fontSize: "2rem", fontWeight: "bold" }}
       >
         Sign In
       </div>
@@ -39,15 +39,15 @@ function LoginForm() {
       >
         <Form.Item
           name="email"
-          rules={[{ required: true, message: "user name required" }]}
+          rules={[{ required: true, message: "Username required" }]}
         >
-          <Input placeholder="email" />
+          <Input placeholder="Enter Email" />
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: "passord required" }]}
+          rules={[{ required: true, message: "Password required" }]}
         >
-          <Input.Password type="password" placeholder="password" />
+          <Input.Password type="password" placeholder="Enter Password" />
         </Form.Item>
         <Form.Item>
           <Button

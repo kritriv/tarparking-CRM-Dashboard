@@ -28,7 +28,7 @@ const defaultStatistics = [
 const defaultQuoteStatistics = [
   { tag: 'pending', value: 0 },
   { tag: 'sent', value: 0 },
-  { tag: 'accepted', value: 50 },
+  { tag: 'accepted', value: 0 },
   { tag: 'cancelled', value: 0 },
   { tag: 'on hold', value: 0 },
 ];
@@ -36,7 +36,7 @@ const defaultQuoteStatistics = [
 const PreviewState = ({ tag, color, value }) => {
   return (
     <div style={{ color: '#595959', marginBottom: 5 }}>
-      <div className="left alignLeft capitalize">{tag}</div>
+      <div className="left alignLeft">{tag.charAt(0).toUpperCase() + tag.slice(1)}</div>
       <div className="right alignRight">{value} %</div>
       <Progress
         percent={value}
@@ -83,7 +83,7 @@ export default function PreviewCard({
           statisticsMap
             .sort(customSort)
             .map((status, index) => (
-              <PreviewState key={index} tag={status.tag} color={status.color} value={status.value} />
+              <PreviewState key={index} tag={status.tag} color={status.color} value={Math.floor(status.value)}/>
             ))
         )}
       </div>

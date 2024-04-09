@@ -153,7 +153,7 @@ const Home = () => {
             </Col>
           </Row>
           <Row gutter={[16, 16]}>
-            <Col span={24}>
+            <Col span={24} xs={24}>
               <Card>
                 <Row gutter={[16, 16]}>
                   {entityData.map((data, index) => {
@@ -179,7 +179,7 @@ const Home = () => {
                     const stats = Object.entries(statistics1).map(([tag, value]) => ({ tag, value }));
 
                     return (
-                      <Col key={index} lg={24}>
+                      <Col key={index} lg={24} xs={24}>
                         <PreviewCard
                           title={title}
                           isLoading={loading}
@@ -194,7 +194,7 @@ const Home = () => {
             </Col>
           </Row>
         </Col>
-        <Col md={24} xl={6}>
+        <Col md={24} xs={24} xl={6}>
           <Card>
             <CustomerPreviewCard
               activeCustomer={activeClientTotal}
