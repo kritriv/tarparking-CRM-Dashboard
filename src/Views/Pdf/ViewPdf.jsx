@@ -33,12 +33,37 @@ const PDFViewer = () => {
         }
     };
 
-    const handleDownloadPDF = () => {
+    const handleDownloadPDF = async () => {
         if (pdfData) {
             const printWindow = window.open('', '_blank');
-            const backgroundUrl = "https://www.tarparking.com/crm/uploads/images/quote_bg.png";
-            const productImageUrl = itemData.image;
-            const backImageUrl = pdfData.back_image;
+            // const backgroundUrl = await "https://www.tarparking.com/crm/uploads/images/quote_bg.png";
+            // const productImageUrl = await itemData.image;
+            // const backImageUrl = await pdfData.back_image;
+
+            // Define image loading promises
+            const backgroundPromise = new Promise(resolve => {
+                const backgroundImg = new Image();
+                backgroundImg.onload = () => resolve("https://www.tarparking.com/crm/uploads/images/quote_bg.png");
+                backgroundImg.src = "https://www.tarparking.com/crm/uploads/images/quote_bg.png";
+            });
+
+            const productImagePromise = new Promise(resolve => {
+                const productImg = new Image();
+                productImg.onload = () => resolve(itemData.image);
+                productImg.src = itemData.image;
+            });
+
+            const backImagePromise = new Promise(resolve => {
+                const backImg = new Image();
+                backImg.onload = () => resolve(pdfData.back_image);
+                backImg.src = pdfData.back_image;
+            });
+
+            const [backgroundUrl, productImageUrl, backImageUrl] = await Promise.all([
+                backgroundPromise,
+                productImagePromise,
+                backImagePromise
+            ]);
 
             const htmlContent = `
             <html>
@@ -51,7 +76,7 @@ const PDFViewer = () => {
                             height: 100%;
 
                         }
-
+                        
                         .pages {
                             display: grid;
                             grid-template-columns: 1fr;
@@ -107,6 +132,10 @@ const PDFViewer = () => {
                         }
 
                         @media print {
+                            @page { margin: 0; }
+                            header { display: none; }
+                            body { color: black; }
+                            img { display: block; }
                             body .page {
                                 padding: 15% 5%;
                                 background-image: url("${backgroundUrl}");
@@ -442,6 +471,7 @@ const PDFViewer = () => {
 
             </html>
             `;
+
             printWindow.document.open();
             printWindow.document.write(htmlContent);
             printWindow.document.close();
