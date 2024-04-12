@@ -257,6 +257,11 @@ const PDFViewer = () => {
                                 <td><b>Price per system in INR<b /></td>
                                 <td><b>Total price in INR<b /></td>
                             </tr>
+                            <tr>   
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             <tr>
                                 <td><b>Quantity of Model<b /></td>
                                 <td>${pdfData.quote_price.quantity}</td>
@@ -274,18 +279,13 @@ const PDFViewer = () => {
                             </tr>
                             <tr>
                                 <td><b>Freight cost<b /></td>
-                                <td>${pdfData.quote_price.freight_cost}</td>
-                                <td>${pdfData.quote_price.freight_cost}</td>
+                                <td>${pdfData.quote_price.freight_cost === 0 ? 'Excluded - as per actual' : 'Included'}</td>
+                                <td>${pdfData.quote_price.freight_cost === 0 ? 'Excluded - as per actual' : 'Included'}</td>
                             </tr>
                             <tr>
                                 <td><b>Material unloading cost<b /></td>
-                                <td>${pdfData.quote_price.unloading_cost}</td>
-                                <td>${pdfData.quote_price.unloading_cost}</td>
-                            </tr>
-                            <tr>
-                                <td><b>Transport Charge<b /></td>
-                                <td>${pdfData.quote_price.transport_charge}</td>
-                                <td>${pdfData.quote_price.transport_charge}</td>
+                                <td>${pdfData.quote_price.unloading_cost === 0 ? 'Excluded - as per actual' : 'Included'}</td>
+                                <td>${pdfData.quote_price.unloading_cost === 0 ? 'Excluded - as per actual' : 'Included'}</td>
                             </tr>
                             <tr>
                                 <td><b>GST ${pdfData.quote_price.tax_rate}%<b /></td>
@@ -296,6 +296,11 @@ const PDFViewer = () => {
                                 <td><b>Other Discount <b /></td>
                                 <td></td>
                                 <td>${pdfData.quote_price.discount}</td>
+                            </tr>
+                            <tr>   
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td><b>Total price<b /></td>

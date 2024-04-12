@@ -190,9 +190,9 @@ const CreateQuotePage = () => {
     return (
         <Card title="Create Quotation" extra={<Button onClick={() => handleBack()}>Go Back to List</Button>} className="custom-card">
             <Row gutter={[16, 16]}>
-                <Col xl={8} md={24}  xs={24}>
+                <Col xl={8} md={24} xs={24}>
                     <Row gutter={16}>
-                        <Col span={24}  xs={24}>
+                        <Col span={24} xs={24}>
                             <Steps direction="vertical" current={currentStep}>
                                 <Step title="Product Selection" description="Select category, product, and sub-product" />
                                 <Step title="Quote Information" description="Enter quote details" />
@@ -232,17 +232,17 @@ const CreateQuotePage = () => {
                         </Col>
                     </Row>
                 </Col>
-                <Col xl={16} md={24}  xs={24}>
+                <Col xl={16} md={24} xs={24}>
                     <div>
                         <Form
                             form={form}
                             layout="vertical"
                             onValuesChange={(changedValues, allValues) => {
                                 if (currentStep === 2) {
-                                    const { basic_rate, installation_charges, discount, freight_cost, unloading_cost, transport_charge, tax_rate, quantity } = allValues.quote_price;
+                                    const { basic_rate, installation_charges, discount, tax_rate, quantity } = allValues.quote_price;
                                     const item_sub_total = (basic_rate + installation_charges) * quantity;
                                     const taxtotal = ((item_sub_total * tax_rate) / 100);
-                                    const total_price = item_sub_total + taxtotal + freight_cost + unloading_cost + transport_charge - discount;
+                                    const total_price = item_sub_total + taxtotal + - discount;
                                     // console.log(item_sub_total)
                                     form.setFieldsValue({
                                         quote_price: {
@@ -256,7 +256,7 @@ const CreateQuotePage = () => {
                         >
                             {currentStep === 0 && (
                                 <Row gutter={50}>
-                                    <Col xl={12} sm={24}  xs={24}>
+                                    <Col xl={12} sm={24} xs={24}>
                                         <Form.Item
                                             name="createdby"
                                             label="CreatedBy (You)"
@@ -266,7 +266,7 @@ const CreateQuotePage = () => {
                                             <Input placeholder="Enter CreatedBy Id" readOnly />
                                         </Form.Item>
                                     </Col>
-                                    <Col xl={12} sm={24}  xs={24}>
+                                    <Col xl={12} sm={24} xs={24}>
                                         <Form.Item name="category" label="Category Name" rules={[{ required: true, message: "Select Category Name" }]}>
                                             <Select placeholder="Select Category" onChange={handleCategoryChange}>
                                                 {categories.map((category) => (
@@ -277,7 +277,7 @@ const CreateQuotePage = () => {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col xl={12} sm={24}  xs={24}>
+                                    <Col xl={12} sm={24} xs={24}>
                                         <Form.Item name="product" label="Product Name" rules={[{ required: true, message: "Select Product Name" }]}>
                                             <Select placeholder="Select Product" onChange={handleProductChange}>
                                                 {products.map((product) => (
@@ -288,7 +288,7 @@ const CreateQuotePage = () => {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col xl={12} sm={24}  xs={24}>
+                                    <Col xl={12} sm={24} xs={24}>
                                         <Form.Item name={["item", "id"]} label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
                                             <Select placeholder="Select Sub Product" onChange={handleSubProductChange}>
                                                 {subproducts.map((subproduct) => (
@@ -299,7 +299,7 @@ const CreateQuotePage = () => {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col xl={12} sm={24}  xs={24}>
+                                    <Col xl={12} sm={24} xs={24}>
                                         <Form.Item name="client" label="Client" rules={[{ required: true, message: "Select Client" }]}>
                                             <Select
                                                 showSearch
@@ -317,7 +317,7 @@ const CreateQuotePage = () => {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col xl={12} sm={24}  xs={24}>
+                                    <Col xl={12} sm={24} xs={24}>
                                         <Form.Item name="ourCompany" label="Our Company" rules={[{ required: true, message: "Select Our Company" }]}>
                                             <Select
                                                 showSearch
@@ -335,7 +335,7 @@ const CreateQuotePage = () => {
                                             </Select>
                                         </Form.Item>
                                     </Col>
-                                    <Col xl={12} sm={24}  xs={24}>
+                                    <Col xl={12} sm={24} xs={24}>
                                         <Form.Item
                                             name="refno"
                                             label="Ref No"
@@ -349,7 +349,7 @@ const CreateQuotePage = () => {
                             )}
                             {currentStep === 1 && (
                                 <Row gutter={16}>
-                                    <Col span={18}  xs={24}>
+                                    <Col span={18} xs={24}>
                                         <Form.Item
                                             name="subject"
                                             label="Quote Subject"
@@ -397,10 +397,10 @@ const CreateQuotePage = () => {
                                     <div>
                                         <h2>Product Information</h2>
                                         <Row gutter={50}>
-                                            <Col span={22}  xs={24}>
+                                            <Col span={22} xs={24}>
                                                 <div>
                                                     <Row gutter={30}>
-                                                        <Col xl={12} sm={24}  xs={24}>
+                                                        <Col xl={12} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["item", "categoryName"]}
                                                                 label="Category Name"
@@ -410,7 +410,7 @@ const CreateQuotePage = () => {
                                                                 <Input placeholder="Enter Category name" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={12} sm={24}  xs={24}>
+                                                        <Col xl={12} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["item", "mainProduct"]}
                                                                 label="Main Product"
@@ -420,7 +420,7 @@ const CreateQuotePage = () => {
                                                                 <Input placeholder="Enter Main Product" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={12} sm={24}  xs={24}>
+                                                        <Col xl={12} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["item", "productName"]}
                                                                 label="Product Name"
@@ -430,7 +430,7 @@ const CreateQuotePage = () => {
                                                                 <Input placeholder="Enter Sub Product name" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={12} sm={24}  xs={24}>
+                                                        <Col xl={12} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["item", "model_no"]}
                                                                 label="Model No"
@@ -440,7 +440,7 @@ const CreateQuotePage = () => {
                                                                 <Input placeholder="Enter Model No" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={12} sm={24}  xs={24}>
+                                                        <Col xl={12} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["item", "hsn"]}
                                                                 label="HSN No"
@@ -450,7 +450,7 @@ const CreateQuotePage = () => {
                                                                 <Input placeholder="Enter HSN No" readOnly />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={12} sm={24}  xs={24}>
+                                                        <Col xl={12} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["item", "image"]}
                                                                 label="Product Image URL"
@@ -468,10 +468,10 @@ const CreateQuotePage = () => {
                                     <div>
                                         <h2>Price Details</h2>
                                         <Row gutter={50}>
-                                            <Col xl={22} md={24}  xs={24}>
+                                            <Col xl={22} md={24} xs={24}>
                                                 <div>
                                                     <Row gutter={30}>
-                                                        <Col xl={8} sm={24}  xs={24}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "quantity"]}
                                                                 label="Enter Quantity "
@@ -481,7 +481,7 @@ const CreateQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Quantity" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={8} sm={24}  xs={24}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "basic_rate"]}
                                                                 label="Basic rate"
@@ -491,7 +491,7 @@ const CreateQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Basic rate" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={8} sm={24}  xs={24}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "installation_charges"]}
                                                                 label="Installation Charges"
@@ -501,34 +501,35 @@ const CreateQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Installation" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={8} sm={24}  xs={24}>
-                                                            <Form.Item
-                                                                name={["quote_price", "freight_cost"]}
-                                                                label="freight Cost"
-                                                                initialValue={0}
-                                                            >
-                                                                <InputNumber placeholder="Enter freight Cost" style={{ width: '100%' }} />
+                                                        <Col xl={8} sm={24} xs={24}>
+                                                            <Form.Item name={["quote_price", "freight_cost"]} label="Freight Cost" >
+                                                                <Select
+                                                                    placeholder="Select Freight Cost" style={{ width: '100%' }}
+                                                                >
+                                                                    <Select.Option value={0}>
+                                                                        Excluded - as per actual
+                                                                    </Select.Option>
+                                                                    <Select.Option value={1}>
+                                                                        Included
+                                                                    </Select.Option>
+                                                                </Select>
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={8} sm={24}  xs={24}>
-                                                            <Form.Item
-                                                                name={["quote_price", "unloading_cost"]}
-                                                                label="Unloading Cost"
-                                                                initialValue={0}
-                                                            >
-                                                                <InputNumber placeholder="Enter unloading Cost" style={{ width: '100%' }} />
+                                                        <Col xl={8} sm={24} xs={24}>
+                                                            <Form.Item name={["quote_price", "unloading_cost"]} label="Unloading Cost" >
+                                                                <Select
+                                                                    placeholder="Select Unloading Cost" style={{ width: '100%' }}
+                                                                >
+                                                                    <Select.Option value={0}>
+                                                                        Excluded - as per actual
+                                                                    </Select.Option>
+                                                                    <Select.Option value={1}>
+                                                                        Included
+                                                                    </Select.Option>
+                                                                </Select>
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={8} sm={24}  xs={24}>
-                                                            <Form.Item
-                                                                name={["quote_price", "transport_charge"]}
-                                                                label="Transport Charges"
-                                                                initialValue={0}
-                                                            >
-                                                                <InputNumber placeholder="Enter Transport Charges" style={{ width: '100%' }} />
-                                                            </Form.Item>
-                                                        </Col>
-                                                        <Col xl={8} sm={24}  xs={24}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "discount"]}
                                                                 label="Other Discount"
@@ -537,7 +538,7 @@ const CreateQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Discount" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={8} sm={24}  xs={24}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "tax_rate"]}
                                                                 label="Tax Rate (GST)"
@@ -547,7 +548,7 @@ const CreateQuotePage = () => {
                                                                 <InputNumber placeholder="Enter Tax Rate" style={{ width: '100%' }} />
                                                             </Form.Item>
                                                         </Col>
-                                                        <Col xl={8} sm={24}  xs={24}>
+                                                        <Col xl={8} sm={24} xs={24}>
                                                             <Form.Item
                                                                 name={["quote_price", "total_price"]}
                                                                 label="Total Value"
@@ -568,10 +569,10 @@ const CreateQuotePage = () => {
                                     <h2>Product Specifications</h2>
                                     <Divider />
                                     <Row gutter={50} >
-                                        <Col xl={12} sm={24}  xs={24}>
+                                        <Col xl={12} sm={24} xs={24}>
                                             <div>
                                                 <Row gutter={16}>
-                                                    <Col xl={12} sm={24}  xs={24} >
+                                                    <Col xl={12} sm={24} xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "lifting_height", "top"]}
                                                             label="Lifting Height Top"
@@ -581,7 +582,7 @@ const CreateQuotePage = () => {
                                                             <InputNumber placeholder="Enter Lifting Height Top" style={{ width: '100%' }} />
                                                         </Form.Item>
                                                     </Col>
-                                                    <Col xl={12} sm={24}  xs={24} >
+                                                    <Col xl={12} sm={24} xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "lifting_height", "ground"]}
                                                             label="Lifting Height ground"
@@ -593,7 +594,7 @@ const CreateQuotePage = () => {
                                                     </Col>
                                                 </Row>
                                                 <Row gutter={16}>
-                                                    <Col xl={12} sm={24}  xs={24} >
+                                                    <Col xl={12} sm={24} xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "platform", "length"]}
                                                             label="Platform length"
@@ -603,7 +604,7 @@ const CreateQuotePage = () => {
                                                             <InputNumber placeholder="Enter Platform length" style={{ width: '100%' }} />
                                                         </Form.Item>
                                                     </Col>
-                                                    <Col xl={12} sm={24}  xs={24} >
+                                                    <Col xl={12} sm={24} xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "platform", "width"]}
                                                             label="Platform width"
@@ -615,7 +616,7 @@ const CreateQuotePage = () => {
                                                     </Col>
                                                 </Row>
                                                 <Row gutter={16}>
-                                                    <Col xl={12} sm={24}  xs={24} >
+                                                    <Col xl={12} sm={24} xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "travelling_speed", "lifting"]}
                                                             label="Travelling Speed Lifting"
@@ -625,7 +626,7 @@ const CreateQuotePage = () => {
                                                             <Input placeholder="Enter Travelling Speed Lifting" style={{ width: '100%' }} />
                                                         </Form.Item>
                                                     </Col>
-                                                    <Col xl={12} sm={24}  xs={24} >
+                                                    <Col xl={12} sm={24} xs={24} >
                                                         <Form.Item
                                                             name={["specifications", "travelling_speed", "horizontal"]}
                                                             label="Travelling Speed horizontal"
@@ -638,7 +639,7 @@ const CreateQuotePage = () => {
                                                 </Row>
                                                 <Divider />
                                                 <Row gutter={10}>
-                                                    <Col span={24}  xs={24}>
+                                                    <Col span={24} xs={24}>
                                                         {/* Safety Fields */}
                                                         <Form.List name={["specifications", "safety"]} initialValue={specifications && specifications.safety ? specifications.safety : ['']}>
                                                             {(fields, { add, remove }) => (
@@ -683,7 +684,7 @@ const CreateQuotePage = () => {
                                                 </Row>
                                                 <Divider />
                                                 <Row gutter={10}>
-                                                    <Col span={24}  xs={24}>
+                                                    <Col span={24} xs={24}>
                                                         <Form.List name={["specifications", "features"]} initialValue={specifications && specifications.features ? specifications.features : ['']}>
                                                             {(fields, { add, remove }) => (
                                                                 <>
@@ -727,9 +728,9 @@ const CreateQuotePage = () => {
                                                 </Row>
                                             </div>
                                         </Col>
-                                        <Col xl={10} md={24}  xs={24}>
+                                        <Col xl={10} md={24} xs={24}>
                                             <Row gutter={16}>
-                                                <Col span={24}  xs={24} >
+                                                <Col span={24} xs={24} >
                                                     <div >
                                                         <Form.Item
                                                             name={["specifications", "system_module"]}
@@ -824,10 +825,10 @@ const CreateQuotePage = () => {
                                     <h2>Terms & Conditions</h2>
                                     <Divider />
                                     <Row gutter={50}>
-                                        <Col xl={12} sm={24}  xs={24}>
+                                        <Col xl={12} sm={24} xs={24}>
                                             <div>
                                                 <Row gutter={10}>
-                                                    <Col span={24}  xs={24}>
+                                                    <Col span={24} xs={24}>
                                                         <Form.List name={["tnc", "payment_terms"]} initialValue={tnc && tnc.payment_terms ? tnc.payment_terms : ['']}>
                                                             {(fields, { add, remove }) => (
                                                                 <>
@@ -872,7 +873,7 @@ const CreateQuotePage = () => {
                                                 <Divider />
                                                 <Row gutter={10}>
                                                     <h4>Client Responsibility</h4>
-                                                    <Col span={24}  xs={24}>
+                                                    <Col span={24} xs={24}>
                                                         <Form.List name={["tnc", "client_responsibilities"]} initialValue={tnc && tnc.client_responsibilities ? tnc.client_responsibilities : ['']}>
                                                             {(fields, { add, remove }) => (
                                                                 <>
@@ -916,7 +917,7 @@ const CreateQuotePage = () => {
                                                 </Row>
                                                 <Divider />
                                                 <Row gutter={10}>
-                                                    <Col span={24}  xs={24}>
+                                                    <Col span={24} xs={24}>
                                                         <Form.List name={["tnc", "installation_process"]} initialValue={tnc && tnc.installation_process ? tnc.installation_process : ['']}>
                                                             {(fields, { add, remove }) => (
                                                                 <>
@@ -960,9 +961,9 @@ const CreateQuotePage = () => {
                                                 </Row>
                                             </div>
                                         </Col>
-                                        <Col xl={10} md={24}  xs={24}>
+                                        <Col xl={10} md={24} xs={24}>
                                             <Row gutter={16}>
-                                                <Col span={24}  xs={24}>
+                                                <Col span={24} xs={24}>
                                                     <div>
                                                         <Form.Item
                                                             name={["tnc", "prices"]}
