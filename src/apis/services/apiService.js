@@ -55,6 +55,7 @@ const generateResourceApi = (entity) => {
 export const UserApi = generateResourceApi('User');
 export const CompanyApi = generateResourceApi('Company');
 export const ClientApi = generateResourceApi('Client');
+export const LeadApi = generateResourceApi('Lead');
 export const CategoryApi = generateResourceApi('Category');
 export const ProductApi = generateResourceApi('Product');
 export const SubProductApi = generateResourceApi('SubProduct');

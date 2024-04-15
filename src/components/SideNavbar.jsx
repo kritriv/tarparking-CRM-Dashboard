@@ -4,6 +4,7 @@ import {
 } from "react-icons/ai";
 import { RiCustomerService2Line } from "react-icons/ri";
 import { TbFileInvoice } from "react-icons/tb";
+import { GrTableAdd } from "react-icons/gr";
 import { FaTags, FaUsersGear } from "react-icons/fa6";
 import { IoSettingsOutline } from "react-icons/io5";
 import reactLogo from "../assets/tarparking.svg";
@@ -22,6 +23,12 @@ const sidebarMenuItems = [
   },
   {
     key: "2",
+    icon: <GrTableAdd />,
+    label: "Leads",
+    path: "/leads",
+  },
+  {
+    key: "3",
     icon: <RiCustomerService2Line />,
     label: "Clients",
     path: "/clients",
@@ -38,7 +45,7 @@ const sidebarMenuItems = [
     ],
   },
   {
-    key: "3",
+    key: "4",
     icon: <TbFileInvoice />,
     label: "Quotation",
     path: "/quotes",

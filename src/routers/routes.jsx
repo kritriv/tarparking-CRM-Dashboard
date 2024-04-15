@@ -5,22 +5,32 @@ import UserPage from "../pages/Users/user";
 import ViewUser from "../Views/User/ViewUser";
 import CreateUser from "../Views/User/CreateUser";
 import EditUser from "../Views/User/EditUser";
+
 import ClientPage from "../pages/Clients/client";
 import ViewClient from "../Views/Client/ViewClient";
 import CreateClient from "../Views/Client/CreateClient";
 import EditClient from "../Views/Client/EditClient";
+
+import LeadPage from "../pages/Lead/lead";
+import ViewLead from "../Views/Lead/ViewLead";
+import CreateLead from "../Views/Lead/CreateLead";
+import EditLead from "../Views/Lead/EditLead";
+
 import CompanyPage from "../pages/Company/company";
 import CreateCompany from "../Views/Company/CreateCompany";
 import EditCompany from "../Views/Company/EditCompany";
 import ViewCompany from "../Views/Company/ViewCompany";
+
 import CategoryPage from "../pages/Category/category";
 import CreateCategory from "../Views/Category/CreateCategory";
 import EditCategory from "../Views/Category/EditCategory";
 import ViewCategory from "../Views/Category/ViewCategory";
+
 import ProductPage from "../pages/Product/product";
 import CreateProduct from "../Views/Product/CreateProduct";
 import EditProduct from "../Views/Product/EditProduct";
 import ViewProduct from "../Views/Product/ViewProduct";
+
 import SubProductPage from "../pages/SubProduct/subProduct";
 import CreateSubProduct from "../Views/SubProduct/CreateSubProduct";
 import EditSubProduct from "../Views/SubProduct/EditSubProduct";
@@ -65,6 +75,11 @@ const routes = [
     { path: '/clients/:id', element: <ViewClient /> },
     { path: '/clients/create', element: <CreateClient /> },
     { path: '/clients/edit-client/:id', element: <EditClient /> },
+
+    { path: '/leads', element: <LeadPage /> },
+    { path: '/leads/:id', element: <ViewLead /> },
+    { path: '/leads/create', element: <CreateLead /> },
+    { path: '/leads/edit-lead/:id', element: <EditLead /> },
 
     { path: '/category', element: <CategoryPage /> },
     { path: '/category/:id', element: <ViewCategory /> },
