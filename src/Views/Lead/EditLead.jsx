@@ -14,6 +14,12 @@ const EditLeadPage = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [leadData, setLeadData] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedSubProduct, setSelectedSubProduct] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [subproducts, setSubProducts] = useState([]);
 
     const navigate = useNavigate();
 
@@ -21,11 +27,66 @@ const EditLeadPage = () => {
         navigate(`/leads`);
     };
 
+    const handleCategoryChange = (value) => {
+        const selectedCategory = categories.find((category) => category.id === value);
+        setSelectedCategory(selectedCategory);
+    };
+
+    const handleProductChange = (value) => {
+        const selectedProduct = products.find((product) => product.id === value);
+        setSelectedProduct(selectedProduct);
+    };
+
+    const handleSubProductChange = (value) => {
+        const selectedSubProduct = subproducts.find((subproduct) => subproduct.id === value);
+        setSelectedSubProduct(selectedSubProduct);
+        form.setFieldsValue({ interestedIn: value });
+    };
+
+    useEffect(() => {
+        // Fetch categories
+        APIService.CategoryApi.listResource()
+            .then((response) => {
+                setCategories(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching categories:", error);
+            });
+    }, []);
+
+    useEffect(() => {
+        // Fetch products based on selected category
+        if (selectedCategory && selectedCategory.products && selectedCategory.products.length > 0) {
+            let categoryId = `category=${selectedCategory.id}`;
+            APIService.ProductApi.listResource(undefined, undefined, undefined, categoryId)
+                .then((response) => {
+                    setProducts(response.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Products:", error);
+                });
+        }
+    }, [selectedCategory]);
+
+    useEffect(() => {
+        // Fetch sub-products based on selected product
+        if (selectedProduct && selectedProduct.sub_products) {
+            let productId = `product=${selectedProduct.id}`;
+            APIService.SubProductApi.listResource(undefined, undefined, undefined, productId)
+                .then((response) => {
+                    setSubProducts(response.data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching Sub Products:", error);
+                });
+        }
+    }, [selectedProduct]);
+
     useEffect(() => {
         fetchLeadData(id);
     }, [id]);
 
-    
+
     const fetchLeadData = async (id) => {
         try {
             setLoading(true);
@@ -33,7 +94,8 @@ const EditLeadPage = () => {
             if (response.success) {
                 form.setFieldsValue({
                     ...response.data,
-                    interestedIn: response.data.interestedIn.name,
+                    interestedIn: response.data.interestedIn.id,
+                    interestedInName: response.data.interestedIn.name,
                     interestedIn_cat: response.data.interestedIn.category.name,
                     interestedIn_pro: response.data.interestedIn.product.name,
                 });
@@ -199,18 +261,47 @@ const EditLeadPage = () => {
                             <Row gutter={16}>
                                 <Col xs={24} md={24} xl={12}>
                                     <Form.Item name="interestedIn_cat" label="Category Name" rules={[{ required: true, message: "Select Category Name" }]}>
-                                        <Input readOnly />
+                                        <Select placeholder="Select Category" onChange={handleCategoryChange}>
+                                            {categories.map((category) => (
+                                                <Select.Option key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
                                     </Form.Item>
                                 </Col>
                                 <Col xs={24} md={24} xl={12}>
                                     <Form.Item name="interestedIn_pro" label="Product Name" rules={[{ required: true, message: "Select Product Name" }]}>
+                                        <Select placeholder="Select Product" onChange={handleProductChange}>
+                                            {products.map((product) => (
+                                                <Select.Option key={product.id} value={product.id}>
+                                                    {product.name}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+
+                                </Col>
+                            </Row>
+                            <Row gutter={16}>
+                                <Col xs={24} md={24} xl={12}>
+                                    <Form.Item name="interestedIn" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
                                         <Input readOnly />
                                     </Form.Item>
                                 </Col>
+                                <Col xs={24} md={24} xl={12}>
+                                    <Form.Item name="interestedInName" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
+                                        <Select placeholder="Select Sub Product" onChange={handleSubProductChange}>
+                                            {subproducts.map((subproduct) => (
+                                                <Select.Option key={subproduct.id} value={subproduct.id}>
+                                                    {subproduct.name}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
                             </Row>
-                            <Form.Item name="interestedIn" label="Sub Product Name" rules={[{ required: true, message: "Select Sub Product Name" }]}>
-                                <Input readOnly />
-                            </Form.Item>
+
                             <Form.Item>
                                 <Button type="primary" onClick={handleEditLead} loading={loading}>
                                     Update Lead
