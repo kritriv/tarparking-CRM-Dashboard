@@ -121,16 +121,21 @@ const LeadPage = () => {
       sorter: (a, b) => a.type.localeCompare(b.type),
       align: 'center',
       filters: [
-        {
-          text: "Company",
-          value: "company",
-        },
-        {
-          text: "People",
-          value: "people",
-        }
+        { text: "Company", value: "company" },
+        { text: "People", value: "people" }
       ],
       onFilter: (value, record) => record.type === value,
+      filterSearch: true,
+      render: (_, { type }) => {
+        const color = type === 'people' ? 'cyan' : 'purple';
+        const text = type === 'people' ? 'People' : 'Company';
+
+        return (
+          <Tag color={color} key={type}>
+            {text}
+          </Tag>
+        );
+      },
     },
     {
       title: "Status",
@@ -138,24 +143,52 @@ const LeadPage = () => {
       sorter: (a, b) => a.status.localeCompare(b.status),
       align: 'center',
       filters: [
-        {
-          text: "Active",
-          value: true,
-        },
-        {
-          text: "Deactive",
-          value: false,
-        }
+        { text: "Draft", value: "draft" },
+        { text: "New", value: "new" },
+        { text: "In Negotiate", value: "innegotiate" },
+        { text: "Won", value: "won" },
+        { text: "Lose", value: "lose" },
+        { text: "Canceled", value: "canceled" },
+        { text: "On hold", value: "onhold" },
+        { text: "Waiting", value: "waiting" },
       ],
       onFilter: (value, record) => record.status === value,
       filterSearch: true,
       render: (_, { status }) => {
-        let color = 'green';
-        let text = 'Active';
+        let color = 'purple';
+        let text = 'Draft';
 
-        if (status === false || status === 'false') {
-          color = 'red';
-          text = 'Inactive';
+        switch (status) {
+          case 'new':
+            color = 'blue';
+            text = 'New';
+            break;
+          case 'innegotiate':
+            color = 'cyan';
+            text = 'In Negotiate';
+            break;
+          case 'won':
+            color = 'green';
+            text = 'Won';
+            break;
+          case 'lose':
+            color = 'red';
+            text = 'Lose';
+            break;
+          case 'canceled':
+            color = 'red';
+            text = 'Canceled';
+            break;
+          case 'onhold':
+            color = 'brown';
+            text = 'On hold';
+            break;
+          case 'waiting':
+            color = 'yellow';
+            text = 'Waiting';
+            break;
+          default:
+            break;
         }
 
         return (
@@ -165,7 +198,6 @@ const LeadPage = () => {
         );
       },
     },
-
     {
       title: "Name",
       dataIndex: "name",
@@ -191,24 +223,56 @@ const LeadPage = () => {
       sorter: (a, b) => a.source.localeCompare(b.source),
       align: 'center',
       filters: [
-        {
-          text: "Active",
-          value: true,
-        },
-        {
-          text: "Deactive",
-          value: false,
-        }
+        { text: "LinkedIn", value: "linkedin" },
+        { text: "Website", value: "website" },
+        { text: "Social Media", value: "socialmedia" },
+        { text: "Ads", value: "ads" },
+        { text: "Friends", value: "friends" },
+        { text: "Sales", value: "sales" },
+        { text: "IndiaMart", value: "indiamart" },
+        { text: "Other", value: "other" },
       ],
       onFilter: (value, record) => record.source === value,
       filterSearch: true,
       render: (_, { source }) => {
         let color = 'green';
-        let text = 'Active';
+        let text = 'LinkedIn';
 
-        if (source === false || source === 'false') {
-          color = 'red';
-          text = 'Inactive';
+        switch (source) {
+          case 'linkedin':
+            color = 'green';
+            text = 'LinkedIn';
+            break;
+          case 'website':
+            color = 'blue';
+            text = 'Website';
+            break;
+          case 'socialmedia':
+            color = 'cyan';
+            text = 'Social Media';
+            break;
+          case 'ads':
+            color = 'purple';
+            text = 'Advertisement';
+            break;
+          case 'friends':
+            color = 'orange';
+            text = 'Friends';
+            break;
+          case 'sales':
+            color = 'yellow';
+            text = 'Sales';
+            break;
+          case 'indiamart':
+            color = 'brown';
+            text = 'IndiaMart';
+            break;
+          case 'other':
+            color = 'red';
+            text = 'Other';
+            break;
+          default:
+            break;
         }
 
         return (
@@ -235,6 +299,7 @@ const LeadPage = () => {
       ),
     },
   ];
+
 
   const renderActionsDropdown = (record) => (
     <Menu>
