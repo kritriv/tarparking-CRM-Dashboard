@@ -74,7 +74,7 @@ const CreateSubProductPage = () => {
                 setLoading(true);
                 // Include the imageURL in the payload
                 const payload = { ...values, image: imageURL };
-
+                console.log(payload)
                 APIService.SubProductApi.createResource(payload)
                     .then(() => {
                         notification.success({
