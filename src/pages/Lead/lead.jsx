@@ -95,6 +95,7 @@ const LeadPage = () => {
       status: item.status,
       email: item.email,
       phone: item.phone,
+      interestedIn: item.interestedIn.name,
       source: item.source,
       address: item.address,
     }));
@@ -212,6 +213,10 @@ const LeadPage = () => {
       title: "Phone",
       dataIndex: "phone",
       sorter: (a, b) => a.phone.localeCompare(b.phone),
+    },
+    {
+      title: "Interesting in",
+      dataIndex: "interestedIn",
     },
     {
       title: "Address",
