@@ -116,7 +116,7 @@ const ViewLeadPage = () => {
                         </Form>
                     </div>
                 </Col>
-                <Col md={24} xl={10}>
+                <Col md={24} xl={10} xs={24}>
                     <div>
                         <h2>Interested Product</h2>
                         <Form form={form} layout="vertical">

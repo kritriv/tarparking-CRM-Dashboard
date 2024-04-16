@@ -100,8 +100,8 @@ const QuotePage = () => {
       id: item.id,
       status: item.status,
       createdby: item.createdby.username,
-      client: item.client.name,
-      clientCompany: item.client.company,
+      client: item.client ? item.client.name : null,
+      clientCompany: item.client ? item.client.company : null,
       item: JSON.parse(item.item).productName,
       quotePrice: `₹ ${item.quote_price.total_price}`,
     }));
