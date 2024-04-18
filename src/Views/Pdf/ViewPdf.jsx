@@ -488,12 +488,18 @@ const PDFViewer = () => {
         }
     };
 
-
+    const  handleDownloadPDFs = async () => {
+        notification.info({
+              message: "View PDF",
+              description: "PDF functionality is not implemented yet.",
+              duration: 3,
+            });
+    }
 
     const renderPDF = () => {
         if (pdfData) {
             return (
-                <Card title="View Quotation" extra={<Button type='primary' onClick={handleDownloadPDF}>Download</Button>} style={{ padding: 50, margin: 10 }}>
+                <Card title="View Quotation" extra={<Button type='primary' onClick={handleDownloadPDFs}>Download</Button>} style={{ padding: 50, margin: 10 }}>
                     <div className="pages">
                         <div className="page">
                             <p><strong>Ref:</strong> {pdfData.refno}</p>
