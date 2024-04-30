@@ -117,6 +117,7 @@ const SideBarComponent = ({ collapsed, setCollapsed }) => {
             collapsedWidth={0}
             breakpoint="lg"
             onBreakpoint={(broken) => setCollapsed(broken)}
+            style={{ position: "fixed", zIndex: 99, height: "100vh" }}
           >
             <div className="brand-container">
               <Image width={100} src={reactLogo} alt="Brand Logo" />

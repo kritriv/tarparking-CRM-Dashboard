@@ -121,6 +121,7 @@ const Navbar = ({ collapsed, toggleCollapse }) => {
         justifyContent: "space-between",
         alignItems: "center",
       }}
+      onClick={toggleCollapse}
     >
       <Flex align="center">
         <Button
