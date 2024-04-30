@@ -7,7 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5001/",
+        target: "https://tarprking-quatation.onrender.com/",
+        // target: "http://localhost:5001/",
         // target: "http://43.205.53.234/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
